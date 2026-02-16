@@ -5,7 +5,7 @@ export function useLandingAssets() {
 
   useEffect(() => {
     const texture = new Image();
-    texture.src = "/Texturelabs_Paper_373XL.jpg";
+    texture.src = "/Texturelabs_Paper_373XL.webp";
 
     const video = document.createElement("video");
     video.src = "/ink-splatter.mp4";
@@ -16,7 +16,6 @@ export function useLandingAssets() {
       new Promise((res) => (texture.onload = res)),
       new Promise((res) => (video.onloadeddata = res)),
     ]).then(() => {
-      // one extra frame so layout is stable
       requestAnimationFrame(() => setReady(true));
     });
   }, []);

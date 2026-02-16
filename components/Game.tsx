@@ -371,7 +371,7 @@ const Game: React.FC<GameProps> = ({
         <div
           className="absolute inset-0 z-0 opacity-60 mix-blend-multiply"
           style={{
-            backgroundImage: "url('/Texturelabs_Paper_373XL.jpg')",
+            backgroundImage: "url('/Texturelabs_Paper_373XL.webp')",
             backgroundSize: "cover",
           }}
         />
@@ -400,7 +400,7 @@ const Game: React.FC<GameProps> = ({
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
-          backgroundImage: "url('/Texturelabs_Paper_373XL.jpg')",
+          backgroundImage: "url('/Texturelabs_Paper_373XL.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           opacity: 0.65,
@@ -418,7 +418,9 @@ const Game: React.FC<GameProps> = ({
           >
             <div
               className="absolute inset-0 opacity-20 pointer-events-none"
-              style={{ backgroundImage: "url('/Texturelabs_Paper_373XL.jpg')" }}
+              style={{
+                backgroundImage: "url('/Texturelabs_Paper_373XL.webp')",
+              }}
             />
 
             <div className="relative z-10 flex flex-col items-center text-center">

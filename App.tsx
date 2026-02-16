@@ -4,13 +4,11 @@ import Selection from "./components/Selection";
 import Game from "./components/Game";
 import Results from "./components/Results";
 import { useLandingAssets } from "./useLandingAssets";
-import React from "react";
-import ReactDOM from "react-dom/client";
 
 import { AppState, Lesson, Difficulty, GameStats, GameToken } from "./types";
 
 const App: React.FC = () => {
-  const assetsReady = useLandingAssets();
+  const assetsReady = true;
   const [screen, setScreen] = useState<AppState>("landing");
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [difficulty, setDifficulty] = useState<Difficulty>("medium");
@@ -80,7 +78,7 @@ const App: React.FC = () => {
               <div
                 className="absolute inset-0 z-0 opacity-60 mix-blend-multiply pointer-events-none"
                 style={{
-                  backgroundImage: "url('/Texturelabs_Paper_373XL.jpg')",
+                  backgroundImage: "url('/Texturelabs_Paper_373XL.webp')",
                   backgroundSize: "cover",
                 }}
               />

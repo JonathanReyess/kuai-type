@@ -205,7 +205,7 @@ const Results: React.FC<ResultsProps> = ({
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
-          backgroundImage: "url('/Texturelabs_Paper_373XL.jpg')",
+          backgroundImage: "url('/Texturelabs_Paper_373XL.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           opacity: 0.65,
