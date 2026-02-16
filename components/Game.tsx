@@ -58,17 +58,17 @@ const TypingDemo = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center p-6 bg-gray-50 border-2 border-dashed border-gray-300 rounded-md my-4">
-      <div className="text-sm text-gray-500 font-serif mb-2 uppercase tracking-widest">
+    <div className="flex flex-col items-center p-4 sm:p-6 bg-gray-50 border-2 border-dashed border-gray-300 rounded-md my-3 sm:my-4">
+      <div className="text-xs sm:text-sm text-gray-500 font-serif mb-2 uppercase tracking-widest">
         Example
       </div>
       {/* Character Card */}
       <div
-        className={`relative transition-all duration-300 px-2 py-1 rounded-md mb-4 border-2
+        className={`relative transition-all duration-300 px-2 py-1 rounded-md mb-3 sm:mb-4 border-2
         ${phase === "success" ? "bg-black text-white border-black scale-110" : "bg-white text-black border-gray-200"}`}
       >
         <span
-          className="text-5xl"
+          className="text-4xl sm:text-5xl"
           style={{ fontFamily: "'Ma Shan Zheng', cursive" }}
         >
           好
@@ -76,14 +76,14 @@ const TypingDemo = () => {
       </div>
 
       {/* Simulated Input */}
-      <div className="relative h-10 w-32 border-b-2 border-black flex items-center justify-center">
-        <span className="font-serif text-xl font-bold">{text}</span>
+      <div className="relative h-8 sm:h-10 w-28 sm:w-32 border-b-2 border-black flex items-center justify-center">
+        <span className="font-serif text-lg sm:text-xl font-bold">{text}</span>
         {/* Blinking Cursor */}
-        <span className="h-6 w-0.5 bg-black animate-pulse ml-0.5"></span>
+        <span className="h-5 sm:h-6 w-0.5 bg-black animate-pulse ml-0.5"></span>
 
         {/* Enter Key Hint */}
         {text === "hao3" && phase === "typing" && (
-          <span className="absolute -right-12 text-lg font-serif text-gray-600 animate-bounce">
+          <span className="absolute -right-10 sm:-right-12 text-base sm:text-lg font-serif text-gray-600 animate-bounce">
             ↵ Enter
           </span>
         )}
@@ -161,7 +161,7 @@ const Game: React.FC<GameProps> = ({
       let startIndex = 0;
       while (
         startIndex < data.length &&
-        /[，。？！"“：；]/.test(data[startIndex].char)
+        /[，。？！""：；]/.test(data[startIndex].char)
       ) {
         startIndex++;
       }
@@ -317,16 +317,16 @@ const Game: React.FC<GameProps> = ({
         .trim()
         .replace(/\s+/g, "");
       const punctuationMap: Record<string, string> = {
-        "，": ",",
-        "。": ".",
-        "？": "?",
-        "！": "!",
-        "“": '"',
-        "”": '"',
-        "‘": "'",
-        "’": "'",
-        "：": ":",
-        "；": ";",
+        "\uff0c": ",", // ，
+        "\u3002": ".", // 。
+        "\uff1f": "?", // ？
+        "\uff01": "!", // ！
+        "\u201c": '"', // "
+        "\u201d": '"', // "
+        "\u2018": "'", // '
+        "\u2019": "'", // '
+        "\uff1a": ":", // ：
+        "\uff1b": ";", // ；
       };
 
       let target = punctuationMap[rawTarget] || rawTarget;
@@ -349,7 +349,7 @@ const Game: React.FC<GameProps> = ({
     let nextIndex = currentIndex + 1;
     while (
       nextIndex < tokens.length &&
-      /[，。？！"“：；]/.test(tokens[nextIndex].char)
+      /[，。？！""：；]/.test(tokens[nextIndex].char)
     ) {
       nextIndex++;
     }
@@ -366,7 +366,7 @@ const Game: React.FC<GameProps> = ({
 
   if (loading) {
     return (
-      <div className="relative min-h-screen w-full overflow-hidden bg-[#f8f7f4]">
+      <div className="relative min-h-screen w-full overflow-hidden bg-[#f8f7f4] flex flex-col items-center justify-center">
         <style>{gameStyles}</style>
         <div
           className="absolute inset-0 z-0 opacity-60 mix-blend-multiply"
@@ -376,12 +376,12 @@ const Game: React.FC<GameProps> = ({
           }}
         />
         <div
-          className="relative z-10 text-4xl mb-4 blink-text"
+          className="relative z-10 text-3xl sm:text-4xl mb-4 blink-text"
           style={calliFont}
         >
           Loading...
         </div>
-        <div className="relative z-10 text-xl font-serif text-gray-500">
+        <div className="relative z-10 text-lg sm:text-xl font-serif text-gray-500 text-center px-4">
           {reviewTokens.length > 0
             ? "Generating Custom Level..."
             : "Preparing Lesson..."}
@@ -411,10 +411,10 @@ const Game: React.FC<GameProps> = ({
       {/* --- TUTORIAL OVERLAY --- */}
       {showTutorial && (
         <div
-          className={`fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${isExitingTutorial ? "opacity-0" : "opacity-100"}`}
+          className={`fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300 p-4 ${isExitingTutorial ? "opacity-0" : "opacity-100"}`}
         >
           <div
-            className={`bg-[#f8f7f4] w-full max-w-md p-8 border-4 border-black shadow-2xl rounded-md relative transform transition-all duration-300 ${isExitingTutorial ? "scale-90 translate-y-10" : "scale-100"}`}
+            className={`bg-[#f8f7f4] w-full max-w-md p-5 sm:p-8 border-4 border-black shadow-2xl rounded-md relative transform transition-all duration-300 max-h-[90vh] overflow-y-auto ${isExitingTutorial ? "scale-90 translate-y-10" : "scale-100"}`}
           >
             <div
               className="absolute inset-0 opacity-20 pointer-events-none"
@@ -422,41 +422,44 @@ const Game: React.FC<GameProps> = ({
             />
 
             <div className="relative z-10 flex flex-col items-center text-center">
-              <h2 className="text-3xl mb-6 tracking-wide" style={protestFont}>
+              <h2
+                className="text-2xl sm:text-3xl mb-4 sm:mb-6 tracking-wide"
+                style={protestFont}
+              >
                 How to Play
               </h2>
 
               {/* Animated Demo */}
               <TypingDemo />
 
-              <div className="space-y-4 text-lg font-serif mb-8 text-left w-full px-4">
-                <div className="flex items-start gap-3">
-                  <span className="bg-black text-white w-6 h-6 flex items-center justify-center rounded-full text-xs shrink-0 mt-1">
+              <div className="space-y-3 sm:space-y-4 text-base sm:text-lg font-serif mb-6 sm:mb-8 text-left w-full px-2 sm:px-4">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <span className="bg-black text-white w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full text-xs shrink-0 mt-1">
                     1
                   </span>
                   <p>
                     Type the <strong>Pinyin + Tone</strong> number.
                   </p>
                 </div>
-                <div className="flex items-start gap-3">
-                  <span className="bg-black text-white w-6 h-6 flex items-center justify-center rounded-full text-xs shrink-0 mt-1">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <span className="bg-black text-white w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full text-xs shrink-0 mt-1">
                     2
                   </span>
                   <p>
                     Press{" "}
-                    <span className="font-bold border border-black px-2 rounded text-sm">
+                    <span className="font-bold border border-black px-1.5 sm:px-2 rounded text-xs sm:text-sm">
                       Enter
                     </span>{" "}
                     to submit.
                   </p>
                 </div>
-                <div className="flex items-start gap-3">
-                  <span className="bg-black text-white w-6 h-6 flex items-center justify-center rounded-full text-xs shrink-0 mt-1">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <span className="bg-black text-white w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full text-xs shrink-0 mt-1">
                     3
                   </span>
                   <p>
                     Press{" "}
-                    <span className="font-bold border border-black px-2 py-1 rounded text-sm">
+                    <span className="font-bold border border-black px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-xs sm:text-sm">
                       Space
                     </span>{" "}
                     to skip.
@@ -477,17 +480,17 @@ const Game: React.FC<GameProps> = ({
       )}
       {/* --- PAUSE MENU OVERLAY --- */}
       {isPaused && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#f8f7f4] w-full max-w-xs p-8 border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-sm window-popout relative">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-[#f8f7f4] w-full max-w-xs p-6 sm:p-8 border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-sm window-popout relative">
             <div className="text-center">
               <h2
-                className="text-4xl mb-8 tracking-widest uppercase"
+                className="text-3xl sm:text-4xl mb-6 sm:mb-8 tracking-widest uppercase"
                 style={protestFont}
               >
                 Paused
               </h2>
 
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-3 sm:gap-4">
                 <Button
                   onClick={() => setIsPaused(false)}
                   className="w-full rounded-sm"
@@ -505,36 +508,42 @@ const Game: React.FC<GameProps> = ({
       )}
       {/* CONTENT LAYER */}
       <div
-        className={`relative z-10 flex flex-col max-w-5xl mx-auto p-4 md:p-8 min-h-screen ${showTutorial ? "blur-sm" : "window-popout"}`}
+        className={`relative z-10 flex flex-col max-w-5xl mx-auto p-3 sm:p-4 md:p-8 min-h-screen ${showTutorial ? "blur-sm" : "window-popout"}`}
       >
         {/* STICKY HEADER */}
-        <div className="flex justify-between items-end mb-12 border-b-4 border-black pb-4 sticky top-0 backdrop-blur-sm z-20 pt-4">
-          <div className="flex flex-col w-32">
-            <span className="text-md font-serif text-gray-600 uppercase tracking-widest">
+        <div className="flex justify-between items-end mb-6 sm:mb-8 md:mb-12 border-b-2 sm:border-b-4 border-black pb-3 sm:pb-4 sticky top-0 backdrop-blur-sm z-20 pt-3 sm:pt-4 ">
+          <div className="flex flex-col w-20 sm:w-24 md:w-32">
+            <span className="text-xs sm:text-sm md:text-md font-serif text-gray-600 uppercase tracking-wider sm:tracking-widest">
               Progress
             </span>
-            <div className="text-3xl font-bold" style={protestFont}>
+            <div
+              className="text-xl sm:text-2xl md:text-3xl font-bold"
+              style={protestFont}
+            >
               {Math.round(progressPercentage)}%
             </div>
           </div>
 
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center flex-1 mx-2">
             <div
-              className="text-4xl mb-5 text-center hidden md:block"
+              className="text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3 md:mb-5 text-center hidden sm:block line-clamp-1"
               style={calliFont}
             >
               {lesson.title}
             </div>
-            <div className="text-xl font-serif font-bold tracking-widest tabular-nums">
+            <div className="text-base sm:text-lg md:text-xl font-serif font-bold tracking-widest tabular-nums">
               {formatTime(elapsedTime)}
             </div>
           </div>
 
-          <div className="flex flex-col items-end w-32">
-            <span className="text-md font-serif text-gray-600 uppercase tracking-widest">
+          <div className="flex flex-col items-end w-20 sm:w-24 md:w-32">
+            <span className="text-xs sm:text-sm md:text-md font-serif text-gray-600 uppercase tracking-wider sm:tracking-widest">
               Score
             </span>
-            <div className="text-3xl font-bold" style={protestFont}>
+            <div
+              className="text-xl sm:text-2xl md:text-3xl font-bold"
+              style={protestFont}
+            >
               {score}
             </div>
           </div>
@@ -544,32 +553,32 @@ const Game: React.FC<GameProps> = ({
         <div className="flex-grow flex flex-col justify-center relative">
           <div
             ref={containerRef}
-            className="flex flex-wrap gap-x-4 gap-y-12 text-4xl md:text-5xl leading-relaxed py-12 px-4 transition-all"
+            className="flex flex-wrap gap-x-2 sm:gap-x-3 md:gap-x-4 gap-y-8 sm:gap-y-10 md:gap-y-12 text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-relaxed py-8 sm:py-10 md:py-12 px-2 sm:px-4 transition-all"
             style={calliFont}
             onClick={() => !showTutorial && inputRef.current?.focus()}
           >
             {tokens.map((token, idx) => {
               const isCompleted = idx < currentIndex;
               const isCurrent = idx === currentIndex;
-              const isPunctuation = /[，。？！"“：；]/.test(token.char);
+              const isPunctuation = /[，。？！""：；]/.test(token.char);
               const wasMissed = missedIndices.has(idx);
 
               return (
                 <div
                   key={idx}
                   data-active={isCurrent}
-                  className={`relative transition-all duration-300 px-2 py-1 rounded-md
+                  className={`relative transition-all duration-300 px-1 sm:px-2 py-0.5 sm:py-1 rounded-md
                                         ${isCompleted ? (wasMissed ? "text-red-400/80" : "text-black/20") : "text-black"}
-                                        ${isCurrent ? "bg-black text-white transform scale-125 shadow-2xl z-10" : ""}
+                                        ${isCurrent ? "bg-black text-white transform scale-110 sm:scale-125 shadow-xl sm:shadow-2xl z-10" : ""}
                                         ${isCurrent && shake ? "animate-shake bg-red-900" : ""}
                                     `}
                 >
                   {token.char}
 
                   {isCurrent && (
-                    <div className="absolute -top-14 left-1/2 -translate-x-1/2 whitespace-nowrap text-xl font-serif text-black font-bold tracking-wider bg-white px-3 py-1 border-2 border-black shadow-lg z-20">
+                    <div className="absolute -top-10 sm:-top-12 md:-top-14 left-1/2 -translate-x-1/2 whitespace-nowrap text-sm sm:text-base md:text-xl font-serif text-black font-bold tracking-wider bg-white px-2 sm:px-3 py-0.5 sm:py-1 border-2 border-black shadow-lg z-20">
                       {input || (
-                        <span className="inline-block w-2 h-5 bg-black animate-pulse align-middle"></span>
+                        <span className="inline-block w-1.5 sm:w-2 h-4 sm:h-5 bg-black animate-pulse align-middle"></span>
                       )}
                     </div>
                   )}
@@ -594,11 +603,19 @@ const Game: React.FC<GameProps> = ({
 
           {/* HINT FOOTER */}
           {!showTutorial && (
-            <div className="fixed bottom-8 left-1/2 -translate-x-1/2 text-gray-700 font-serif text-sm tracking-[0.2em] text-center w-full uppercase footer-enter">
-              Type Pinyin + Tone (e.g.{" "}
-              <span className="text-black font-bold">hao3</span>)
-              <span className="mx-2 opacity-30">|</span>
-              Press <span className="text-black font-bold">Space</span> to Skip
+            <div className="fixed bottom-4 sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 text-gray-700 font-serif text-xs sm:text-sm tracking-wider sm:tracking-[0.2em] text-center w-full px-4 uppercase footer-enter">
+              <span className="hidden sm:inline">
+                Type Pinyin + Tone (e.g.{" "}
+              </span>
+              <span className="sm:hidden">Pinyin + Tone (</span>
+              <span className="text-black font-bold">hao3</span>
+              <span className="hidden sm:inline">)</span>
+              <span className="sm:hidden">)</span>
+              <span className="mx-1 sm:mx-2 opacity-30">|</span>
+              <span className="hidden sm:inline">Press </span>
+              <span className="text-black font-bold">Space</span>
+              <span className="hidden sm:inline"> to Skip</span>
+              <span className="sm:hidden"> = Skip</span>
             </div>
           )}
         </div>

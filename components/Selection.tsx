@@ -52,27 +52,22 @@ const Selection: React.FC<SelectionProps> = ({ onSelect, onBack }) => {
 
   const selectedLesson = LESSONS.find((l) => l.id === selectedLessonId);
 
-  // FIXED SNIPPET LOGIC
   const getStorySnippet = (): string => {
     if (!selectedLessonId || !difficulty) return "";
 
-    // Convert "Easy" to "easy" to match storyData keys
     const diffKey = difficulty.toLowerCase() as Lowercase<Difficulty>;
 
-    // Access the database
     const lessonData = PRE_GENERATED_STORIES[selectedLessonId];
     if (!lessonData) return "No data found for this lesson.";
 
     const stories = lessonData[diffKey];
     if (!stories || stories.length === 0) return "No preview available.";
 
-    // Grab the first 30 characters
     const previewText = stories[0]
       .slice(0, 30)
       .map((token: GameToken) => token.char)
       .join("");
 
-    // Only add ellipsis if the text doesn't end in a Chinese or English period
     const endsWithPeriod =
       previewText.endsWith("。") || previewText.endsWith(".");
 
@@ -103,51 +98,59 @@ const Selection: React.FC<SelectionProps> = ({ onSelect, onBack }) => {
         }}
       />
 
-      <div className="relative z-10 p-8 max-w-6xl mx-auto flex flex-col min-h-screen">
-        <header className="mb-12 flex justify-between items-center border-b-2 border-black pb-4">
+      <div className="relative z-10 p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto flex flex-col min-h-screen">
+        {/* Header */}
+        <header className="mb-6 sm:mb-8 lg:mb-12 flex justify-between items-center border-b-2 border-black pb-3 sm:pb-4">
           <button
             onClick={onBack}
-            className="font-serif hover:underline text-lg"
+            className="font-serif hover:underline text-base sm:text-lg"
           >
             ← Back
           </button>
           <h2
-            className="text-4xl tracking-widest uppercase"
+            className="text-2xl sm:text-3xl lg:text-4xl tracking-widest uppercase"
             style={protestFont}
           >
             Preparation
           </h2>
-          <div className="w-16"></div>
+          <div className="w-12 sm:w-16"></div>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 flex-grow">
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 flex-grow">
           {/* Left: Lessons */}
-          <div className="space-y-8">
-            <h3 className="text-3xl mb-6 tracking-wide" style={protestFont}>
+          <div className="space-y-4 sm:space-y-6 lg:space-y-8">
+            <h3
+              className="text-2xl sm:text-3xl mb-4 sm:mb-6 tracking-wide"
+              style={protestFont}
+            >
               Select a Lesson
             </h3>
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {LESSONS.map((lesson) => (
                 <button
                   key={lesson.id}
                   onClick={() => setSelectedLessonId(lesson.id)}
-                  className={`w-full text-left p-6 border-2 transition-all duration-300 rounded-sm
+                  className={`w-full text-left p-4 sm:p-5 lg:p-6 border-2 transition-all duration-300 rounded-sm
                     ${selectedLessonId === lesson.id ? "border-black bg-black text-white" : "border-gray-300 hover:border-black text-black"}
                   `}
                 >
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h4 className="text-3xl mb-2" style={calligraphyFont}>
+                  <div className="flex justify-between items-start sm:items-center gap-2">
+                    <div className="flex-1 min-w-0">
+                      <h4
+                        className="text-2xl sm:text-3xl mb-1 sm:mb-2 truncate"
+                        style={calligraphyFont}
+                      >
                         {lesson.title}
                       </h4>
                       <p
-                        className={`text-sm font-serif ${selectedLessonId === lesson.id ? "text-gray-300" : "text-gray-500"}`}
+                        className={`text-xs sm:text-sm font-serif line-clamp-2 ${selectedLessonId === lesson.id ? "text-gray-300" : "text-gray-500"}`}
                       >
                         {lesson.description}
                       </p>
                     </div>
                     {selectedLessonId === lesson.id && (
-                      <span className="text-xl font-serif blink-text">
+                      <span className="text-base sm:text-xl font-serif blink-text whitespace-nowrap flex-shrink-0">
                         Selected
                       </span>
                     )}
@@ -158,18 +161,23 @@ const Selection: React.FC<SelectionProps> = ({ onSelect, onBack }) => {
           </div>
 
           {/* Right: Difficulty & Preview Details */}
-          <div className="flex flex-col space-y-8">
+          <div className="flex flex-col space-y-6 sm:space-y-8">
             <div>
-              <h3 className="text-3xl mb-6 tracking-wide" style={protestFont}>
+              <h3
+                className="text-2xl sm:text-3xl mb-4 sm:mb-6 tracking-wide"
+                style={protestFont}
+              >
                 Difficulty
               </h3>
-              <div className="flex space-x-4 mb-8">
+
+              {/* Difficulty Buttons - Stack on very small screens */}
+              <div className="flex flex-col xs:flex-row gap-2 xs:gap-3 sm:gap-4 mb-6 sm:mb-8">
                 {(["Easy", "Medium", "Hard"] as unknown as Difficulty[]).map(
                   (diff) => (
                     <button
                       key={diff}
                       onClick={() => setDifficulty(diff)}
-                      className={`flex-1 py-4 text-xl font-serif border-2 transition-all rounded-sm
+                      className={`flex-1 py-3 sm:py-4 text-lg sm:text-xl font-serif border-2 transition-all rounded-sm
                       ${difficulty === diff ? "bg-black text-white border-black" : "border-gray-300 text-gray-500 hover:border-black hover:text-black"}
                     `}
                     >
@@ -180,39 +188,39 @@ const Selection: React.FC<SelectionProps> = ({ onSelect, onBack }) => {
               </div>
 
               {/* Difficulty Info Card */}
-              <div className="min-h-[220px] border-3 border-2 border-gray-300 p-6 flex flex-col justify-center rounded-sm bg-white/20 backdrop-blur-sm">
+              <div className="min-h-[180px] sm:min-h-[200px] lg:min-h-[220px] border-2 border-gray-300 p-4 sm:p-5 lg:p-6 flex flex-col justify-center rounded-sm bg-white/20 backdrop-blur-sm">
                 {difficulty ? (
-                  <div className="animate-slide-up space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="border-l-2 border-black pl-3">
-                        <p className="text-[10px] uppercase text-gray-400 font-bold">
+                  <div className="animate-slide-up space-y-3 sm:space-y-4">
+                    <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                      <div className="border-l-2 border-black pl-2 sm:pl-3">
+                        <p className="text-[9px] sm:text-[10px] uppercase text-gray-400 font-bold">
                           Length
                         </p>
-                        <p className="font-serif text-lg">
+                        <p className="font-serif text-base sm:text-lg">
                           {DIFFICULTY_METADATA[difficulty].length}
                         </p>
                       </div>
-                      <div className="border-l-2 border-black pl-3">
-                        <p className="text-[10px] uppercase text-gray-500 font-bold">
+                      <div className="border-l-2 border-black pl-2 sm:pl-3">
+                        <p className="text-[9px] sm:text-[10px] uppercase text-gray-500 font-bold">
                           Focus
                         </p>
-                        <p className="font-serif text-lg">
+                        <p className="font-serif text-base sm:text-lg">
                           {DIFFICULTY_METADATA[difficulty].focus}
                         </p>
                       </div>
                     </div>
 
-                    <p className="font-serif text-gray-700 italic border-t border-gray-200 pt-3 text-md">
+                    <p className="font-serif text-gray-700 italic border-t border-gray-200 pt-2 sm:pt-3 text-sm sm:text-md">
                       {DIFFICULTY_METADATA[difficulty].desc}
                     </p>
 
                     {selectedLessonId && (
-                      <div className="bg-black/5 p-4 rounded-sm border border-black/10">
-                        <p className="text-[12px] uppercase text-gray mb-1">
+                      <div className="bg-black/5 p-3 sm:p-4 rounded-sm border border-black/10">
+                        <p className="text-[10px] sm:text-[12px] uppercase text-gray mb-1">
                           Passage Preview
                         </p>
                         <p
-                          className="text-2xl tracking-tight leading-relaxed"
+                          className="text-xl sm:text-2xl tracking-tight leading-relaxed"
                           style={calligraphyFont}
                         >
                           {getStorySnippet()}
@@ -221,27 +229,28 @@ const Selection: React.FC<SelectionProps> = ({ onSelect, onBack }) => {
                     )}
                   </div>
                 ) : (
-                  <div className="text-center text-gray-500 font-serif italic text-lg">
+                  <div className="text-center text-gray-500 font-serif italic text-base sm:text-lg px-2">
                     Select a difficulty to preview level info
                   </div>
                 )}
               </div>
             </div>
 
-            <div className="flex-grow flex items-end pt-8">
-              <div className="flex gap-4 w-full">
+            {/* Action Buttons */}
+            <div className="flex-grow flex items-end pt-4 sm:pt-6 lg:pt-8">
+              <div className="flex flex-col xs:flex-row gap-3 sm:gap-4 w-full">
                 <Button
                   variant="secondary"
                   disabled={!selectedLessonId}
                   onClick={() => setShowPreview(true)}
-                  className="flex-1 rounded-sm"
+                  className="flex-1 rounded-sm py-3 sm:py-4 text-sm sm:text-base"
                 >
                   Preview Words
                 </Button>
                 <Button
                   disabled={!selectedLessonId || !difficulty}
                   onClick={handleStart}
-                  className="flex-1 rounded-sm"
+                  className="flex-1 rounded-sm py-3 sm:py-4 text-sm sm:text-base"
                 >
                   BEGIN
                 </Button>
