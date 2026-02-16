@@ -4,6 +4,8 @@ import Selection from "./components/Selection";
 import Game from "./components/Game";
 import Results from "./components/Results";
 import { useLandingAssets } from "./useLandingAssets";
+import React from "react";
+import ReactDOM from "react-dom/client";
 
 import { AppState, Lesson, Difficulty, GameStats, GameToken } from "./types";
 
