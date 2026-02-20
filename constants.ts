@@ -381,6 +381,109 @@ export const vocabHealth = [
   },
 ];
 
+export const vocabGender = [
+  { simplified: "平等", pinyin: "píngděng", definition: "equal, equality" },
+  {
+    simplified: "重男轻女",
+    pinyin: "zhòng nán qīng nǚ",
+    definition:
+      "to regard males as superior to females, to privilege men over women",
+  },
+  { simplified: "妇女", pinyin: "fùnǚ", definition: "women" },
+  { simplified: "地位", pinyin: "dìwèi", definition: "position, status" },
+  {
+    simplified: "情况",
+    pinyin: "qíngkuàng",
+    definition: "situation, condition",
+  },
+  {
+    simplified: "逐渐",
+    pinyin: "zhújiàn",
+    definition: "gradually, little by little",
+  },
+  { simplified: "机会", pinyin: "jīhuì", definition: "opportunity" },
+  {
+    simplified: "改革开放",
+    pinyin: "gǎigé kāifàng",
+    definition: "to reform and open up, Reform and Opening-Up",
+  },
+  { simplified: "以来", pinyin: "yǐlái", definition: "since" },
+  { simplified: "企业", pinyin: "qǐyè", definition: "enterprise, business" },
+  { simplified: "单位", pinyin: "dānwèi", definition: "unit" },
+  { simplified: "出现", pinyin: "chūxiàn", definition: "to appear, to arise" },
+  {
+    simplified: "现象",
+    pinyin: "xiànxiàng",
+    definition: "phenomenon, appearance",
+  },
+  { simplified: "工厂", pinyin: "gōngchǎng", definition: "factory" },
+  {
+    simplified: "同工同酬",
+    pinyin: "tóng gōng tóng chóu",
+    definition: "equal pay for equal work",
+  },
+  { simplified: "女性", pinyin: "nǚxìng", definition: "female gender, woman" },
+  {
+    simplified: "超过",
+    pinyin: "chāoguò",
+    definition: "to surpass, to exceed",
+  },
+  { simplified: "丈夫", pinyin: "zhàngfu", definition: "husband" },
+  { simplified: "妻子", pinyin: "qīzi", definition: "wife" },
+  { simplified: "互相", pinyin: "hùxiāng", definition: "mutually, each other" },
+  {
+    simplified: "家务",
+    pinyin: "jiāwù",
+    definition: "household chores, household duties",
+  },
+  { simplified: "模范", pinyin: "mófàn", definition: "exemplary, model" },
+  {
+    simplified: "表现",
+    pinyin: "biǎoxiàn",
+    definition: "to display, to manifest",
+  },
+  { simplified: "男子", pinyin: "nánzǐ", definition: "man, male" },
+  {
+    simplified: "队",
+    pinyin: "duì",
+    definition: "team, a row or line of people",
+  },
+  { simplified: "讨厌", pinyin: "tǎoyàn", definition: "to dislike, to loathe" },
+  { simplified: "队员", pinyin: "duìyuán", definition: "team member" },
+  { simplified: "骄傲", pinyin: "jiāo’ào", definition: "proud, arrogant" },
+  { simplified: "输", pinyin: "shū", definition: "to lose, to be defeated" },
+  {
+    simplified: "成绩",
+    pinyin: "chéngjì",
+    definition: "performance, achievement",
+  },
+  { simplified: "公平", pinyin: "gōngpíng", definition: "fair, just" },
+  { simplified: "由", pinyin: "yóu", definition: "by" },
+  { simplified: "市场", pinyin: "shìchǎng", definition: "market" },
+  { simplified: "职业", pinyin: "zhíyè", definition: "occupation, profession" },
+  { simplified: "薪水", pinyin: "xīnshuǐ", definition: "salary, pay" },
+  { simplified: "消息", pinyin: "xiāoxi", definition: "news, message" },
+  { simplified: "赢", pinyin: "yíng", definition: "to win" },
+  {
+    simplified: "冠军",
+    pinyin: "guànjūn",
+    definition: "champion, first place in a competition",
+  },
+  {
+    simplified: "相信",
+    pinyin: "xiāngxìn",
+    definition: "to believe, to trust",
+  },
+  { simplified: "比分", pinyin: "bǐfēn", definition: "score" },
+  {
+    simplified: "乒乓球",
+    pinyin: "pīngpāngqiú",
+    definition: "ping pong, table tennis",
+  },
+  { simplified: "德国", pinyin: "Déguó", definition: "Germany" },
+  { simplified: "西班牙", pinyin: "Xībānyá", definition: "Spain" },
+];
+
 export const LESSONS: Lesson[] = [
   {
     id: "festival",
@@ -405,5 +508,11 @@ export const LESSONS: Lesson[] = [
     title: "生活与健康",
     description: "Learn about healthy living habits in China.",
     vocabulary: vocabHealth,
+  },
+  {
+    id: "gender",
+    title: "男女平等",
+    description: "Learn about gender equality in China.",
+    vocabulary: vocabGender,
   },
 ];
