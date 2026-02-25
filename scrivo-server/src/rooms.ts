@@ -74,6 +74,7 @@ export function upsertPlayer(
     name: playerName,
     currentIndex: 0,
     wpm: 0,
+    score: 0,
     finished: false,
   });
   room.sockets.set(playerId, socket);
@@ -93,6 +94,7 @@ export function updateProgress(
   playerId: string,
   currentIndex: number,
   wpm: number,
+  score?: number,
 ): PlayerState | null {
   const room = rooms.get(code);
   if (!room) return null;
@@ -100,6 +102,7 @@ export function updateProgress(
   if (!player) return null;
   player.currentIndex = currentIndex;
   player.wpm = wpm;
+  if (score !== undefined) player.score = score;
   return player;
 }
 

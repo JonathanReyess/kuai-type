@@ -38,6 +38,8 @@ export default function ChallengeLinkModal({
   const [opponentJoined, setOpponentJoined] = useState(false);
   const [opponentName, setOpponentName] = useState("");
   const wsRef = useRef<WebSocket | null>(null);
+  const hostNameRef = useRef<string>("");
+  const roomCodeRef = useRef<string>("");
 
   const challengeLink = roomCode
     ? `${window.location.origin}/battle/${roomCode}`
@@ -53,6 +55,7 @@ export default function ChallengeLinkModal({
     const name = nameInput.trim();
     if (!name) return;
     setPhase("creating");
+    hostNameRef.current = name;
 
     const result = await createBattleRoom(lessonId, difficulty, tokens, name);
     if ("error" in result) {
@@ -62,6 +65,7 @@ export default function ChallengeLinkModal({
     }
 
     const code = result.code;
+    roomCodeRef.current = code;
     setRoomCode(code);
 
     // Persist host config so BattlePage can skip the name screen
@@ -85,16 +89,18 @@ export default function ChallengeLinkModal({
       if (event.type === "OPPONENT_JOINED") {
         setOpponentName(event.opponent.name);
         setOpponentJoined(true);
-        setTimeout(() => {
-          socket.close();
-          onClose();
-          navigate(`/battle/${code}`);
-        }, 1500);
+        // Stay in the modal — host clicks "Start Game" to proceed
+      }
+      if (event.type === "GAME_START") {
+        // Server confirmed start — navigate now; BattlePage will receive its
+        // own GAME_START on the new socket it opens
+        socket.close();
+        onClose();
+        navigate(`/battle/${roomCodeRef.current}`);
       }
     };
 
     socket.onerror = () => {
-      // Non-fatal — host can still enter manually
       console.warn("Modal WS error — opponent detection unavailable");
     };
 
@@ -108,10 +114,18 @@ export default function ChallengeLinkModal({
     });
   };
 
-  const handleGoToBattle = () => {
-    wsRef.current?.close();
-    onClose();
-    navigate(`/battle/${roomCode}`);
+  const handleStartGame = () => {
+    const socket = wsRef.current;
+    if (!socket || socket.readyState !== WebSocket.OPEN) {
+      // Socket dropped — navigate anyway; BattlePage will handle it
+      onClose();
+      navigate(`/battle/${roomCode}`);
+      return;
+    }
+    // Send START_GAME on the modal socket (still the registered host socket —
+    // BattlePage hasn't mounted yet so it hasn't evicted us)
+    socket.send(JSON.stringify({ type: "START_GAME", code: roomCode }));
+    // Navigation happens in onmessage when GAME_START bounces back
   };
 
   return (
@@ -248,7 +262,6 @@ export default function ChallengeLinkModal({
             >
               {opponentJoined ? (
                 <div className="flex items-center justify-center gap-3">
-                  {/* Crossed swords SVG */}
                   <svg
                     viewBox="0 0 511.999 511.999"
                     className="w-5 h-5 fill-white shrink-0"
@@ -256,7 +269,7 @@ export default function ChallengeLinkModal({
                     <path d="M497.916,1.279c-8.811-3.179-18.56-0.277-24.213,7.125C460.199,26.09,415.89,74.41,373.394,85.439 c-6.635,1.707-12.075,6.571-14.571,12.992c-0.256,0.704-27.776,70.315-102.336,146.176 c-74.56-75.861-102.08-145.472-102.336-146.176c-2.475-6.421-7.915-11.285-14.571-12.992C88.53,72.191,38.674,8.874,38.162,8.234 c-5.739-7.36-15.701-10.176-24.32-6.848C5.095,4.671-0.494,13.247,0.039,22.548c0.149,2.88,4.331,71.168,34.645,139.029 c2.219,4.971,6.741,15.125,32.363,19.179c-3.093,13.653-1.685,20.48,3.669,26.965c4.757,5.696,69.504,74.389,116.096,106.709 l-8.341,8.32c-6.571-10.496-18.133-17.536-31.211-17.792h-0.427c-11.605,0-21.099,9.28-21.333,20.928 c-0.192,10.411,7.104,19.221,16.939,21.269c1.984,8.512,5.44,16.64,10.005,24.299c0.021,0.043,0.021,0.085,0.064,0.128 c0.043,0.107,0.107,0.171,0.171,0.256L48.914,475.583c-8.32,8.341-8.32,21.845,0,30.165c4.16,4.181,9.621,6.251,15.083,6.251 c5.461,0,10.923-2.069,15.083-6.251l103.808-103.787c7.381,4.331,15.296,7.595,23.659,9.493 c2.133,9.579,10.688,16.64,20.779,16.64h0.725c11.776-0.384,21.013-10.24,20.608-22.016c-0.363-11.477-6.251-21.461-14.827-28.16 c15.061-12.523,28.992-22.976,40.747-31.253l22.72,22.827c-0.725,0.171-1.387,0.576-2.112,0.704 c-17.301,3.051-30.315,18.133-30.869,35.883c-0.405,11.776,8.832,21.632,20.629,22.016h0.704c10.091,0,18.645-7.061,20.779-16.64 c8.213-1.856,16.021-5.056,23.36-9.323L432.85,505.706c4.181,4.203,9.643,6.293,15.147,6.293c5.44,0,10.859-2.048,15.019-6.187 c8.384-8.277,8.427-21.803,0.128-30.165L360.124,372.138c4.757-7.829,8.363-16.192,10.411-24.981 c9.835-2.048,17.131-10.859,16.939-21.269c-0.213-11.648-9.728-20.928-21.333-20.928h-0.405 c-17.877,0.341-33.152,13.205-36.309,30.549c-0.277,1.493-1.067,2.816-1.493,4.267l-16.149-16.213 c46.293-25.813,125.205-109.525,130.475-115.819c5.397-6.443,6.805-13.269,3.669-26.987c25.643-4.053,30.165-14.187,32.363-19.157 c30.4-68.032,33.557-136.491,33.685-139.371C512.38,12.927,506.663,4.436,497.916,1.279z" />
                   </svg>
                   <span className="font-serif text-sm uppercase tracking-wider font-bold">
-                    {opponentName} joined — entering battle…
+                    {opponentName} is ready!
                   </span>
                 </div>
               ) : (
@@ -269,16 +282,20 @@ export default function ChallengeLinkModal({
               )}
             </div>
 
-            {/* Enter manually — hidden once opponent joins and auto-nav starts */}
-            {!opponentJoined && (
-              <button
-                onClick={handleGoToBattle}
-                className="w-full py-4 bg-black text-white font-serif uppercase tracking-[0.2em] hover:bg-gray-900 transition-all"
-                style={protestFont}
-              >
-                Enter Battle Room
-              </button>
-            )}
+            {/* Start Game button — replaces Enter Battle Room once opponent joins */}
+            <button
+              onClick={opponentJoined ? handleStartGame : undefined}
+              disabled={!opponentJoined}
+              className={`w-full py-4 font-serif uppercase tracking-[0.2em] transition-all
+                ${
+                  opponentJoined
+                    ? "bg-black text-white hover:bg-gray-900 cursor-pointer"
+                    : "bg-gray-100 text-gray-400 cursor-not-allowed border-2 border-gray-200"
+                }`}
+              style={protestFont}
+            >
+              {"⚔ Start Game"}
+            </button>
           </>
         )}
       </div>

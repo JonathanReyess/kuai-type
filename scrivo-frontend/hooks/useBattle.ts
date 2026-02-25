@@ -13,14 +13,15 @@ export interface OpponentState {
   name: string;
   currentIndex: number;
   wpm: number;
+  score: number;
   finished: boolean;
 }
 
 export type BattlePhase =
   | "idle"
   | "connecting"
-  | "waiting" // host waiting for opponent
-  | "starting" // opponent just joined
+  | "waiting" // waiting for opponent to arrive
+  | "lobby" // both players present, host hasn't started yet
   | "countdown" // 3-2-1 before game begins
   | "playing"
   | "finished"
@@ -42,8 +43,9 @@ interface UseBattleReturn {
   winner: string | null;
   isWinner: boolean;
   countdown: number | null;
-  sendProgress: (currentIndex: number, wpm: number) => void;
+  sendProgress: (currentIndex: number, wpm: number, score: number) => void;
   sendFinished: (wpm: number, accuracy: number, score: number) => void;
+  sendStartGame: (roomCode: string) => void;
 }
 
 export function useBattle({
@@ -62,7 +64,6 @@ export function useBattle({
   const [countdown, setCountdown] = useState<number | null>(null);
   const [winner, setWinner] = useState<string | null>(null);
 
-  // Use refs for values needed inside the socket callbacks to avoid stale closures
   const opponentRef = useRef<OpponentState | null>(null);
 
   useEffect(() => {
@@ -101,24 +102,25 @@ export function useBattle({
           break;
 
         case "OPPONENT_JOINED":
+          // Both players are present — move to lobby to wait for host's "Start Game"
           opponentRef.current = event.opponent;
           setOpponent(event.opponent);
-          setPhase("starting");
+          setPhase("lobby");
           break;
 
         case "GAME_START": {
+          // Host has clicked Start Game — begin countdown for everyone
           setTokens(event.tokens);
           setLessonId(event.lessonId);
           setDifficulty(event.difficulty);
           setPhase("countdown");
-          // Tick against the server-provided absolute timestamp so both
-          // clients switch to "playing" at the exact same wall-clock moment
+
           const startsAt: number = event.startsAt;
           const tick = () => {
             const remaining = Math.ceil((startsAt - Date.now()) / 1000);
             if (remaining > 0) {
               setCountdown(remaining);
-              setTimeout(tick, 200); // poll frequently for accuracy
+              setTimeout(tick, 200);
             } else {
               setCountdown(null);
               setPhase("playing");
@@ -151,7 +153,6 @@ export function useBattle({
     };
 
     socket.onclose = () => {
-      // Only set error if we didn't already handle it via an ERROR message
       setPhase((current) => {
         if (current === "finished" || current === "error") return current;
         setErrorMessage("Connection lost.");
@@ -168,13 +169,18 @@ export function useBattle({
       socket.close();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Empty deps — connect once on mount, never reconnect
-
-  const sendProgress = useCallback((currentIndex: number, wpm: number) => {
-    if (ws.current?.readyState === WebSocket.OPEN) {
-      ws.current.send(JSON.stringify({ type: "PROGRESS", currentIndex, wpm }));
-    }
   }, []);
+
+  const sendProgress = useCallback(
+    (currentIndex: number, wpm: number, score: number) => {
+      if (ws.current?.readyState === WebSocket.OPEN) {
+        ws.current.send(
+          JSON.stringify({ type: "PROGRESS", currentIndex, wpm, score }),
+        );
+      }
+    },
+    [],
+  );
 
   const sendFinished = useCallback(
     (wpm: number, accuracy: number, score: number) => {
@@ -187,7 +193,12 @@ export function useBattle({
     [],
   );
 
-  // isWinner: we won if there's a winner and it's not our opponent
+  const sendStartGame = useCallback((code: string) => {
+    if (ws.current?.readyState === WebSocket.OPEN) {
+      ws.current.send(JSON.stringify({ type: "START_GAME", code }));
+    }
+  }, []);
+
   const isWinner =
     winner !== null && opponent !== null && winner !== opponent.id;
 
@@ -203,6 +214,7 @@ export function useBattle({
     countdown,
     sendProgress,
     sendFinished,
+    sendStartGame,
   };
 }
 

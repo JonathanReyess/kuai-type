@@ -40,7 +40,7 @@ function startCountdown(code: string) {
   const room = getRoom(code);
   if (!room) return;
   // startsAt is 3 seconds from now — both clients count down to this absolute time
-  const startsAt = Date.now() + 3000;
+  const startsAt = Date.now() + 3500;
   broadcast(code, {
     type: "GAME_START",
     tokens: room.tokens,
@@ -81,6 +81,11 @@ wss.on("connection", (ws: WebSocket) => {
           return;
         }
         roomCode = code;
+
+        // Always update hostId to the current socket's playerId when CREATE_ROOM is called.
+        // upsertPlayer evicts the old modal socket, so this reassigns host to the new BattlePage socket.
+        room.hostId = playerId;
+
         console.log(
           `[WS] CREATE_ROOM: ${playerName} in room ${code} | players: ${room.players.size} | started: ${!!room.startedAt}`,
         );
@@ -89,8 +94,9 @@ wss.on("connection", (ws: WebSocket) => {
         const other = [...room.players.values()].find((p) => p.id !== playerId);
 
         if (room.startedAt && other) {
-          // Game already running — BattlePage reconnecting after modal auto-nav
-          // Resend OPPONENT_JOINED + GAME_START so BattlePage transitions to playing
+          // Game already started — host's BattlePage socket reconnecting after
+          // modal navigated. Resend both OPPONENT_JOINED and GAME_START so
+          // BattlePage transitions straight into countdown/playing.
           ws.send(JSON.stringify({ type: "OPPONENT_JOINED", opponent: other }));
           ws.send(
             JSON.stringify({
@@ -98,14 +104,15 @@ wss.on("connection", (ws: WebSocket) => {
               tokens: room.tokens,
               lessonId: room.lessonId,
               difficulty: room.difficulty,
+              startsAt: room.startedAt + 3500, // same absolute time as original broadcast
             }),
           );
           console.log(
             `[WS] Resent GAME_START to reconnecting host ${playerName}`,
           );
         } else if (other) {
-          // Guest was waiting before host — start now
-          room.startedAt = Date.now();
+          // Guest was waiting before host arrived — notify both sides.
+          // Do NOT auto-start; wait for host to click "Start Game".
           ws.send(
             JSON.stringify({
               type: "OPPONENT_JOINED",
@@ -114,6 +121,7 @@ wss.on("connection", (ws: WebSocket) => {
                 name: other.name,
                 currentIndex: 0,
                 wpm: 0,
+                score: 0,
                 finished: false,
               },
             }),
@@ -125,11 +133,13 @@ wss.on("connection", (ws: WebSocket) => {
               name: playerName,
               currentIndex: 0,
               wpm: 0,
+              score: 0,
               finished: false,
             },
           });
-          startCountdown(code);
-          console.log(`[WS] Starting countdown in room ${code}`);
+          console.log(
+            `[WS] Both players present in ${code} — waiting for host to start`,
+          );
         } else {
           // No guest yet — host waits
           ws.send(
@@ -159,7 +169,7 @@ wss.on("connection", (ws: WebSocket) => {
           return;
         }
 
-        // Block if there are already 2 distinct players (not counting a stale host re-register)
+        // Block if there are already 2 distinct players
         const existingNames = new Set(
           [...room.players.values()].map((p) => p.name),
         );
@@ -173,6 +183,7 @@ wss.on("connection", (ws: WebSocket) => {
           name: playerName,
           currentIndex: 0,
           wpm: 0,
+          score: 0,
           finished: false,
         });
         room.sockets.set(playerId, ws);
@@ -183,7 +194,7 @@ wss.on("connection", (ws: WebSocket) => {
 
         const host = [...room.players.values()].find((p) => p.id !== playerId);
         if (host) {
-          room.startedAt = Date.now();
+          // Notify both that opponent is present — game will start when host clicks "Start"
           ws.send(
             JSON.stringify({
               type: "OPPONENT_JOINED",
@@ -192,6 +203,7 @@ wss.on("connection", (ws: WebSocket) => {
                 name: host.name,
                 currentIndex: 0,
                 wpm: 0,
+                score: 0,
                 finished: false,
               },
             }),
@@ -203,21 +215,66 @@ wss.on("connection", (ws: WebSocket) => {
               name: playerName,
               currentIndex: 0,
               wpm: 0,
+              score: 0,
               finished: false,
             },
           });
-          startCountdown(code);
+          console.log(
+            `[WS] Guest ${playerName} joined ${code} — notified host`,
+          );
         } else {
           ws.send(JSON.stringify({ type: "WAITING" }));
         }
         break;
       }
 
+      // ── START_GAME ───────────────────────────────────────────────────────────
+      // Only the host may trigger this. Sends GAME_START to all players.
+      case "START_GAME": {
+        const { code } = event;
+        const room = getRoom(code);
+        if (!room) {
+          ws.send(
+            JSON.stringify({ type: "ERROR", message: "Room not found." }),
+          );
+          return;
+        }
+        if (room.hostId && room.hostId !== playerId) {
+          ws.send(
+            JSON.stringify({
+              type: "ERROR",
+              message: "Only the host can start the game.",
+            }),
+          );
+          return;
+        }
+        if (room.players.size < 2) {
+          ws.send(
+            JSON.stringify({
+              type: "ERROR",
+              message: "Need 2 players to start.",
+            }),
+          );
+          return;
+        }
+        room.startedAt = Date.now();
+        roomCode = code;
+        console.log(`[WS] Host started game in room ${code}`);
+        startCountdown(code);
+        break;
+      }
+
       // ── PROGRESS ─────────────────────────────────────────────────────────────
       case "PROGRESS": {
         if (!roomCode) return;
-        const { currentIndex, wpm } = event;
-        const player = updateProgress(roomCode, playerId, currentIndex, wpm);
+        const { currentIndex, wpm, score } = event as any;
+        const player = updateProgress(
+          roomCode,
+          playerId,
+          currentIndex,
+          wpm,
+          score,
+        );
         if (!player) return;
         broadcast(
           roomCode,
@@ -241,9 +298,7 @@ wss.on("connection", (ws: WebSocket) => {
         );
         if (allDone) {
           const players = [...room.players.values()];
-          const winner = players.reduce((a, b) =>
-            (a.finishedAt ?? Infinity) < (b.finishedAt ?? Infinity) ? a : b,
-          );
+          const winner = players.reduce((a, b) => (a.score >= b.score ? a : b));
           console.log(`[WS] Game over in ${roomCode}, winner: ${winner.name}`);
           broadcast(roomCode, {
             type: "GAME_OVER",
@@ -257,26 +312,50 @@ wss.on("connection", (ws: WebSocket) => {
   });
 
   ws.on("close", () => {
-    // Only notify opponent of disconnect if game was actively in progress
-    if (roomCode && !gameFinished) {
-      const room = getRoom(roomCode);
-      if (room?.startedAt) {
-        broadcast(
-          roomCode,
-          { type: "ERROR", message: "Opponent disconnected." },
-          playerId,
-        );
-      }
+    // Use a grace period before broadcasting disconnect. This covers the case
+    // where the host's modal socket closes and their BattlePage socket
+    // re-registers within milliseconds — we don't want to falsely tell the
+    // guest their opponent disconnected during that handoff.
+    const disconnectedPlayerId = playerId;
+    const disconnectedRoomCode = roomCode;
+    const wasFinished = gameFinished;
+
+    // Capture the player's name before removing them, so we can check
+    // by name whether they re-registered under a new socket ID
+    const disconnectedName =
+      getRoom(disconnectedRoomCode ?? "")?.players.get(disconnectedPlayerId)
+        ?.name ?? null;
+
+    // Remove immediately so the slot is free for re-registration
+    removePlayer(disconnectedPlayerId);
+    console.log(
+      `[WS] Disconnected: ${disconnectedPlayerId} (${disconnectedName})`,
+    );
+
+    if (disconnectedRoomCode && !wasFinished) {
+      setTimeout(() => {
+        const room = getRoom(disconnectedRoomCode);
+        if (!room?.startedAt) return; // game never started, no need to notify
+        // Check by name — upsertPlayer replaces the UUID but keeps the name
+        const playerReconnected =
+          disconnectedName !== null &&
+          [...room.players.values()].some((p) => p.name === disconnectedName);
+        if (!playerReconnected) {
+          // Genuinely gone — tell the other player
+          broadcast(disconnectedRoomCode, {
+            type: "ERROR",
+            message: "Opponent disconnected.",
+          });
+        }
+      }, 800); // 800ms grace window covers modal→BattlePage socket handoff
     }
-    removePlayer(playerId);
-    console.log(`[WS] Disconnected: ${playerId}`);
   });
 
   ws.on("error", (err) => console.error("[WS] Error:", err));
 });
 
 server.listen(PORT, () => {
-  console.log(`🥋 Scrivo battle server running on port ${PORT}`);
+  console.log(`   Scrivo battle server running on port ${PORT}`);
   console.log(`   WS:   ws://localhost:${PORT}/ws`);
   console.log(`   REST: http://localhost:${PORT}/rooms`);
 });

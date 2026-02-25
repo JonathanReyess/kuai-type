@@ -12,6 +12,7 @@ export interface PlayerState {
   name: string;
   currentIndex: number;
   wpm: number;
+  score: number;
   finished: boolean;
   finishedAt?: number;
 }
@@ -25,6 +26,7 @@ export interface RoomState {
   sockets: Map<string, any>; // playerId -> WebSocket
   createdAt: number;
   startedAt?: number;
+  hostId?: string; // track who is allowed to start the game
 }
 
 // Client -> Server events
@@ -32,6 +34,7 @@ export type ClientEvent =
   | { type: "CREATE_ROOM"; code: string; playerName: string }
   | { type: "JOIN_ROOM"; code: string; playerName: string }
   | { type: "RESYNC"; code: string; playerName: string }
+  | { type: "START_GAME"; code: string } // host-only: kick off countdown
   | { type: "PROGRESS"; currentIndex: number; wpm: number }
   | { type: "FINISHED"; wpm: number; accuracy: number; score: number };
 
