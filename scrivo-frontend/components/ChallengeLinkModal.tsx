@@ -38,7 +38,6 @@ export default function ChallengeLinkModal({
   const [opponentJoined, setOpponentJoined] = useState(false);
   const [opponentName, setOpponentName] = useState("");
   const wsRef = useRef<WebSocket | null>(null);
-  const hostNameRef = useRef<string>("");
   const roomCodeRef = useRef<string>("");
 
   const challengeLink = roomCode
@@ -55,7 +54,6 @@ export default function ChallengeLinkModal({
     const name = nameInput.trim();
     if (!name) return;
     setPhase("creating");
-    hostNameRef.current = name;
 
     const result = await createBattleRoom(lessonId, difficulty, tokens, name);
     if ("error" in result) {
@@ -68,13 +66,11 @@ export default function ChallengeLinkModal({
     roomCodeRef.current = code;
     setRoomCode(code);
 
-    // Persist host config so BattlePage can skip the name screen
     sessionStorage.setItem(
       "scrivo_battle_host",
       JSON.stringify({ code, lessonId, difficulty, tokens, playerName: name }),
     );
 
-    // Connect WebSocket as host so we hear when opponent joins
     const socket = new WebSocket(WS_URL);
     wsRef.current = socket;
 
@@ -89,11 +85,8 @@ export default function ChallengeLinkModal({
       if (event.type === "OPPONENT_JOINED") {
         setOpponentName(event.opponent.name);
         setOpponentJoined(true);
-        // Stay in the modal — host clicks "Start Game" to proceed
       }
       if (event.type === "GAME_START") {
-        // Server confirmed start — navigate now; BattlePage will receive its
-        // own GAME_START on the new socket it opens
         socket.close();
         onClose();
         navigate(`/battle/${roomCodeRef.current}`);
@@ -107,25 +100,21 @@ export default function ChallengeLinkModal({
     setPhase("ready");
   };
 
+  const handleStartGame = () => {
+    const socket = wsRef.current;
+    if (!socket || socket.readyState !== WebSocket.OPEN) {
+      onClose();
+      navigate(`/battle/${roomCode}`);
+      return;
+    }
+    socket.send(JSON.stringify({ type: "START_GAME", code: roomCode }));
+  };
+
   const handleCopy = () => {
     navigator.clipboard.writeText(challengeLink).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
-  };
-
-  const handleStartGame = () => {
-    const socket = wsRef.current;
-    if (!socket || socket.readyState !== WebSocket.OPEN) {
-      // Socket dropped — navigate anyway; BattlePage will handle it
-      onClose();
-      navigate(`/battle/${roomCode}`);
-      return;
-    }
-    // Send START_GAME on the modal socket (still the registered host socket —
-    // BattlePage hasn't mounted yet so it hasn't evicted us)
-    socket.send(JSON.stringify({ type: "START_GAME", code: roomCode }));
-    // Navigation happens in onmessage when GAME_START bounces back
   };
 
   return (
@@ -221,7 +210,6 @@ export default function ChallengeLinkModal({
         {/* ── Phase: ready ── */}
         {phase === "ready" && (
           <>
-            {/* Room code */}
             <div className="text-center mb-5">
               <p className="text-sm font-serif uppercase tracking-widest text-gray-400 mb-4">
                 Room Code
@@ -234,7 +222,6 @@ export default function ChallengeLinkModal({
               </div>
             </div>
 
-            {/* Copy link */}
             <div className="flex gap-2 mb-5">
               <div className="flex-1 border-2 border-gray-200 p-3 font-serif text-sm truncate bg-gray-50 text-gray-400">
                 {challengeLink}
@@ -252,7 +239,6 @@ export default function ChallengeLinkModal({
               </button>
             </div>
 
-            {/* Waiting / opponent joined indicator */}
             <div
               className={`border-2 p-4 text-center mb-5 transition-all duration-300 ${
                 opponentJoined
@@ -282,7 +268,6 @@ export default function ChallengeLinkModal({
               )}
             </div>
 
-            {/* Start Game button — replaces Enter Battle Room once opponent joins */}
             <button
               onClick={opponentJoined ? handleStartGame : undefined}
               disabled={!opponentJoined}
@@ -294,7 +279,7 @@ export default function ChallengeLinkModal({
                 }`}
               style={protestFont}
             >
-              {"Start Game"}
+              Start Game
             </button>
           </>
         )}

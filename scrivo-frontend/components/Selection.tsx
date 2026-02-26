@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate as useNavigateHook } from "react-router-dom";
 import { LESSONS } from "../constants";
 import { Lesson, Difficulty, GameToken } from "../types";
 import { PRE_GENERATED_STORIES } from "../storyData";
@@ -33,6 +34,64 @@ const DIFFICULTY_METADATA = {
   },
 };
 
+// Lightweight modal for joining an existing room by code
+function JoinRoomModal({ onClose }: { onClose: () => void }) {
+  const [code, setCode] = React.useState("");
+  const navigate = useNavigateHook();
+
+  const canJoin = code.trim().length >= 4;
+
+  const handleJoin = () => {
+    if (!canJoin) return;
+    onClose();
+    navigate(`/battle/${code.trim().toUpperCase()}`);
+  };
+
+  const protestFont = { fontFamily: "'Protest Revolution', sans-serif" };
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+      <div className="relative w-full max-w-sm bg-white border-4 border-black p-8 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] rounded-sm">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-2xl font-bold hover:scale-125 transition-transform"
+        >
+          ✕
+        </button>
+        <h3
+          className="text-3xl uppercase tracking-widest mb-6 text-center"
+          style={protestFont}
+        >
+          Join Room
+        </h3>
+        <label className="block font-serif text-sm uppercase tracking-wider text-gray-500 mb-2">
+          Room code
+        </label>
+        <input
+          autoFocus
+          maxLength={6}
+          value={code}
+          onChange={(e) =>
+            setCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""))
+          }
+          onKeyDown={(e) => e.key === "Enter" && handleJoin()}
+          className="w-full border-2 border-black p-3 font-serif text-2xl mb-6 outline-none bg-gray-50 focus:bg-white tracking-[0.4em] text-center uppercase"
+          placeholder="ABCD12"
+          style={protestFont}
+        />
+        <button
+          disabled={!canJoin}
+          onClick={handleJoin}
+          className="w-full py-4 bg-black text-white font-serif uppercase tracking-[0.2em] hover:bg-gray-900 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          style={protestFont}
+        >
+          Join
+        </button>
+      </div>
+    </div>
+  );
+}
+
 const Selection: React.FC<SelectionProps> = ({
   onSelect,
   onBack,
@@ -49,6 +108,7 @@ const Selection: React.FC<SelectionProps> = ({
   const [showPreview, setShowPreview] = useState<boolean>(false);
   const [showSavedWords, setShowSavedWords] = useState(false);
   const [showChallengeModal, setShowChallengeModal] = useState(false);
+  const [showJoinModal, setShowJoinModal] = useState(false);
   const [savedCount, setSavedCount] = useState(0);
 
   useEffect(() => {
@@ -138,6 +198,10 @@ const Selection: React.FC<SelectionProps> = ({
           }
           onClose={() => setShowChallengeModal(false)}
         />
+      )}
+
+      {showJoinModal && (
+        <JoinRoomModal onClose={() => setShowJoinModal(false)} />
       )}
 
       <div
@@ -266,7 +330,7 @@ const Selection: React.FC<SelectionProps> = ({
               )}
             </div>
 
-            {/* THE UNIFIED BOX START */}
+            {/* THE UNIFIED BOX */}
             <div className="flex flex-col flex-grow">
               {/* Top Section: Info Card */}
               <div className="min-h-[180px] sm:min-h-[200px] border-2 border-gray-300 p-4 mt-2 sm:p-6 flex flex-col justify-center rounded-t-sm bg-white/20 backdrop-blur-sm border-b-0">
@@ -316,40 +380,53 @@ const Selection: React.FC<SelectionProps> = ({
 
               {/* Bottom Section: Action Buttons */}
               <div className="flex flex-col gap-3 p-4 sm:p-6 border-2 border-gray-300 rounded-b-sm bg-white/10 border-t-0">
-                <Button
-                  variant="outline"
-                  disabled={!selectedLessonId}
-                  onClick={() => setShowPreview(true)}
-                  className="w-full rounded-sm py-3 sm:py-4 text-sm sm:text-base bg-transparent border-2 border-black text-black hover:bg-black hover:text-white transition-all"
-                >
-                  PREVIEW WORDS
-                </Button>
-
-                {canChallenge && (
-                  <Button
-                    variant="secondary"
-                    onClick={() => setShowChallengeModal(true)}
-                    className="w-full rounded-sm py-3 sm:py-4 text-sm sm:text-base animate-slide-up"
+                {/* Join a Room — visible only before difficulty is selected */}
+                {!difficulty && (
+                  <button
+                    onClick={() => setShowJoinModal(true)}
+                    className="w-full py-3 sm:py-4 border-2 border-black font-serif text-sm sm:text-base uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-all rounded-sm animate-slide-up flex items-center justify-center gap-2"
+                    style={protestFont}
                   >
-                    Challenge a Friend
-                    <span className="text-[10px] px-1.5 py-0.5 border border-current opacity-60 tracking-normal normal-case font-normal rounded-sm ml-2">
-                      Beta
-                    </span>
-                  </Button>
+                    Join a Room
+                  </button>
                 )}
 
-                <div className="flex flex-col xs:flex-row gap-3 sm:gap-4 w-full">
-                  <Button
-                    disabled={!selectedLessonId || !difficulty}
-                    onClick={handleStart}
-                    className="flex-1 rounded-sm py-3 sm:py-4 text-sm sm:text-base"
-                  >
-                    BEGIN
-                  </Button>
-                </div>
+                {/* Normal actions — visible once difficulty is selected */}
+                {difficulty && (
+                  <>
+                    <Button
+                      variant="outline"
+                      disabled={!selectedLessonId}
+                      onClick={() => setShowPreview(true)}
+                      className="w-full rounded-sm py-3 sm:py-4 text-sm sm:text-base bg-transparent border-2 border-black text-black hover:bg-black hover:text-white transition-all"
+                    >
+                      PREVIEW WORDS
+                    </Button>
+
+                    {canChallenge && (
+                      <Button
+                        variant="secondary"
+                        onClick={() => setShowChallengeModal(true)}
+                        className="w-full rounded-sm py-3 sm:py-4 text-sm sm:text-base animate-slide-up"
+                      >
+                        Challenge a Friend
+                        <span className="text-[10px] px-1.5 py-0.5 border border-current opacity-60 tracking-normal normal-case font-normal rounded-sm ml-2">
+                          Beta
+                        </span>
+                      </Button>
+                    )}
+
+                    <Button
+                      disabled={!selectedLessonId || !difficulty}
+                      onClick={handleStart}
+                      className="w-full rounded-sm py-3 sm:py-4 text-sm sm:text-base"
+                    >
+                      BEGIN
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
-            {/* THE UNIFIED BOX END */}
           </div>
         </div>
 
