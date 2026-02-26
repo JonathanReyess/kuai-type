@@ -41,7 +41,7 @@ function startCountdown(code: string) {
   const room = getRoom(code);
   if (!room) return;
   // startsAt is 3 seconds from now — both clients count down to this absolute time
-  const startsAt = Date.now() + 5000;
+  const startsAt = Date.now() + 3500;
   broadcast(code, {
     type: "GAME_START",
     tokens: room.tokens,
@@ -385,7 +385,7 @@ wss.on("connection", (ws: WebSocket) => {
             message: "Opponent disconnected.",
           });
         }
-      }, 2000); // 2s grace window — covers modal→BattlePage socket handoff even on slow connections
+      }, 800); // 800ms grace window covers modal→BattlePage socket handoff
     }
   });
 
