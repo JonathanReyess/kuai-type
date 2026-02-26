@@ -61,7 +61,7 @@ export default function BattlePage() {
     return (
       <div className="relative min-h-screen bg-[#f8f7f4] flex items-center justify-center p-6">
         <Texture />
-        <div className="relative z-10 w-full max-w-sm bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8">
+        <div className="relative z-10 max-w-lg bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8">
           <div className="text-center mb-8">
             <h2
               className="text-4xl uppercase tracking-widest mb-1"
@@ -69,7 +69,7 @@ export default function BattlePage() {
             >
               Battle
             </h2>
-            <p className="font-serif text-gray-500 text-sm">
+            <p className="font-serif text-gray-500 text-md">
               Room · {roomCode}
             </p>
           </div>
