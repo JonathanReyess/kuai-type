@@ -11,6 +11,8 @@ interface SelectionProps {
   onSelect: (lesson: Lesson, difficulty: Difficulty) => void;
   onBack: () => void;
   onPracticeSaved?: (tokens: GameToken[]) => void;
+  initialLessonId?: string;
+  initialDifficulty?: Difficulty;
 }
 
 const DIFFICULTY_METADATA = {
@@ -35,9 +37,15 @@ const Selection: React.FC<SelectionProps> = ({
   onSelect,
   onBack,
   onPracticeSaved,
+  initialLessonId,
+  initialDifficulty,
 }) => {
-  const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
-  const [difficulty, setDifficulty] = useState<Difficulty | null>(null);
+  const [selectedLessonId, setSelectedLessonId] = useState<string | null>(
+    initialLessonId ?? null,
+  );
+  const [difficulty, setDifficulty] = useState<Difficulty | null>(
+    initialDifficulty ?? null,
+  );
   const [showPreview, setShowPreview] = useState<boolean>(false);
   const [showSavedWords, setShowSavedWords] = useState(false);
   const [showChallengeModal, setShowChallengeModal] = useState(false);

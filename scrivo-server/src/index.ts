@@ -10,6 +10,7 @@ import {
   upsertPlayer,
   updateProgress,
   setFinished,
+  resetRoom,
   getRoomForPlayer,
   removePlayer,
   broadcast,
@@ -288,7 +289,13 @@ wss.on("connection", (ws: WebSocket) => {
       case "FINISHED": {
         if (!roomCode) return;
         gameFinished = true;
-        const result = setFinished(roomCode, playerId, event.wpm);
+        // Persist missedTokens from client before marking finished
+        const room0 = getRoom(roomCode);
+        const player0 = room0?.players.get(playerId);
+        if (player0 && event.missedTokens) {
+          player0.missedTokens = event.missedTokens;
+        }
+        const result = setFinished(roomCode, playerId, event.wpm, event.score);
         if (!result) return;
         const { room, player, allDone } = result;
         broadcast(
@@ -305,6 +312,37 @@ wss.on("connection", (ws: WebSocket) => {
             winner: winner.id,
             players,
           });
+        }
+        break;
+      }
+
+      // ── REMATCH ──────────────────────────────────────────────────────────────
+      // Either player can request a rematch. The sender gets REMATCH_WAITING
+      // until the other player also clicks Rematch, at which point the room
+      // resets and a new countdown fires for both.
+      case "REMATCH": {
+        if (!roomCode) return;
+        const room = getRoom(roomCode);
+        if (!room) return;
+        const player = room.players.get(playerId);
+        if (!player) return;
+
+        player.wantsRematch = true;
+        const allWantRematch = [...room.players.values()].every(
+          (p) => p.wantsRematch,
+        );
+
+        if (allWantRematch) {
+          // Both players ready — reset room with new tokens and start
+          const reset = resetRoom(roomCode, event.tokens);
+          if (!reset) return;
+          reset.startedAt = Date.now();
+          gameFinished = false;
+          console.log(`[WS] Rematch starting in room ${roomCode}`);
+          startCountdown(roomCode);
+        } else {
+          // First player to click — only tell them to wait, don't touch opponent's screen
+          ws.send(JSON.stringify({ type: "REMATCH_WAITING" }));
         }
         break;
       }
@@ -355,7 +393,7 @@ wss.on("connection", (ws: WebSocket) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`   Scrivo battle server running on port ${PORT}`);
+  console.log(`🥋 Scrivo battle server running on port ${PORT}`);
   console.log(`   WS:   ws://localhost:${PORT}/ws`);
   console.log(`   REST: http://localhost:${PORT}/rooms`);
 });

@@ -39,7 +39,7 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
       <div className="relative z-10 flex flex-col items-center space-y-6 sm:space-y-8 max-w-2xl text-black w-full">
         {/* Title - responsive sizing */}
         <h1
-          className="text-[72px] xs:text-[90px] sm:text-[120px] md:text-[160px] lg:text-[200px] leading-none select-none relative text-center"
+          className="text-[72px] xs:text-[90px] sm:text-[120px] md:text-[180px] lg:text-[200px] leading-none select-none relative text-center"
           style={{
             fontFamily: "'Protest Revolution', sans-serif",
             letterSpacing: "0.02em",

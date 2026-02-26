@@ -2,6 +2,7 @@
 // src/hooks/useBattle.ts
 import { useEffect, useRef, useState, useCallback } from "react";
 import { GameToken } from "../types";
+import { PRE_GENERATED_STORIES } from "../storyData";
 
 const WS_URL =
   (import.meta as any).env?.VITE_BATTLE_WS_URL ?? "ws://localhost:3001/ws";
@@ -17,6 +18,14 @@ export interface OpponentState {
   finished: boolean;
 }
 
+export interface FinalPlayerStats {
+  id: string;
+  name: string;
+  score: number;
+  wpm: number;
+  missedTokens: GameToken[]; // always present after normalization
+}
+
 export type BattlePhase =
   | "idle"
   | "connecting"
@@ -25,6 +34,7 @@ export type BattlePhase =
   | "countdown" // 3-2-1 before game begins
   | "playing"
   | "finished"
+  | "rematch_waiting" // this player clicked Rematch, waiting for opponent
   | "error";
 
 interface UseBattleOptions {
@@ -44,8 +54,24 @@ interface UseBattleReturn {
   isWinner: boolean;
   countdown: number | null;
   sendProgress: (currentIndex: number, wpm: number, score: number) => void;
-  sendFinished: (wpm: number, accuracy: number, score: number) => void;
+  sendFinished: (
+    wpm: number,
+    accuracy: number,
+    finalScore: number,
+    missedTokens: GameToken[],
+  ) => void;
   sendStartGame: (roomCode: string) => void;
+  sendRematch: () => void;
+  finalStats: FinalPlayerStats[] | null;
+}
+
+// Pick a random passage from the story data for the given lesson/difficulty
+function pickNewTokens(lessonId: string, difficulty: string): GameToken[] {
+  const lessonData = (PRE_GENERATED_STORIES as any)[lessonId];
+  if (!lessonData) return [];
+  const stories: GameToken[][] = lessonData[difficulty.toLowerCase()] ?? [];
+  if (stories.length === 0) return [];
+  return stories[Math.floor(Math.random() * stories.length)];
 }
 
 export function useBattle({
@@ -63,6 +89,11 @@ export function useBattle({
   const [errorMessage, setErrorMessage] = useState("");
   const [countdown, setCountdown] = useState<number | null>(null);
   const [winner, setWinner] = useState<string | null>(null);
+  const [finalStats, setFinalStats] = useState<FinalPlayerStats[] | null>(null);
+
+  // Keep lessonId/difficulty in refs so sendRematch can access latest values
+  const lessonIdRef = useRef("");
+  const difficultyRef = useRef("");
 
   const opponentRef = useRef<OpponentState | null>(null);
 
@@ -93,26 +124,31 @@ export function useBattle({
           setTokens(event.tokens);
           setLessonId(event.lessonId);
           setDifficulty(event.difficulty);
+          lessonIdRef.current = event.lessonId;
+          difficultyRef.current = event.difficulty;
           setPhase("waiting");
           break;
 
         case "WAITING":
-          // Guest arrived before host — show waiting screen until host connects
           setPhase("waiting");
           break;
 
         case "OPPONENT_JOINED":
-          // Both players are present — move to lobby to wait for host's "Start Game"
           opponentRef.current = event.opponent;
           setOpponent(event.opponent);
           setPhase("lobby");
           break;
 
         case "GAME_START": {
-          // Host has clicked Start Game — begin countdown for everyone
+          // Works for both initial start and rematch
           setTokens(event.tokens);
           setLessonId(event.lessonId);
           setDifficulty(event.difficulty);
+          lessonIdRef.current = event.lessonId;
+          difficultyRef.current = event.difficulty;
+          // Reset winner/stats so finished screen doesn't linger
+          setWinner(null);
+          setFinalStats(null);
           setPhase("countdown");
 
           const startsAt: number = event.startsAt;
@@ -142,7 +178,22 @@ export function useBattle({
 
         case "GAME_OVER":
           setWinner(event.winner);
+          // Normalize: ensure missedTokens is always an array
+          setFinalStats(
+            (event.players ?? []).map((p: any) => ({
+              id: p.id,
+              name: p.name,
+              score: p.score,
+              wpm: p.wpm,
+              missedTokens: p.missedTokens ?? [],
+            })),
+          );
           setPhase("finished");
+          break;
+
+        case "REMATCH_WAITING":
+          // Either we requested rematch (confirmation) or opponent did (prompt)
+          setPhase("rematch_waiting");
           break;
 
         case "ERROR":
@@ -183,10 +234,21 @@ export function useBattle({
   );
 
   const sendFinished = useCallback(
-    (wpm: number, accuracy: number, score: number) => {
+    (
+      wpm: number,
+      accuracy: number,
+      finalScore: number,
+      missedTokens: GameToken[],
+    ) => {
       if (ws.current?.readyState === WebSocket.OPEN) {
         ws.current.send(
-          JSON.stringify({ type: "FINISHED", wpm, accuracy, score }),
+          JSON.stringify({
+            type: "FINISHED",
+            wpm,
+            accuracy,
+            score: finalScore,
+            missedTokens,
+          }),
         );
       }
     },
@@ -198,6 +260,16 @@ export function useBattle({
       ws.current.send(JSON.stringify({ type: "START_GAME", code }));
     }
   }, []);
+
+  const sendRematch = useCallback(() => {
+    if (ws.current?.readyState !== WebSocket.OPEN) return;
+    // Pick a new random passage client-side and send it with the request.
+    // The server uses whichever player's tokens arrive when both have voted.
+    const newTokens = pickNewTokens(lessonIdRef.current, difficultyRef.current);
+    ws.current.send(
+      JSON.stringify({ type: "REMATCH", code: roomCode, tokens: newTokens }),
+    );
+  }, [roomCode]);
 
   const isWinner =
     winner !== null && opponent !== null && winner !== opponent.id;
@@ -215,6 +287,8 @@ export function useBattle({
     sendProgress,
     sendFinished,
     sendStartGame,
+    sendRematch,
+    finalStats,
   };
 }
 

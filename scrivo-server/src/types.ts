@@ -15,6 +15,8 @@ export interface PlayerState {
   score: number;
   finished: boolean;
   finishedAt?: number;
+  wantsRematch?: boolean;
+  missedTokens?: GameToken[];
 }
 
 export interface RoomState {
@@ -22,11 +24,11 @@ export interface RoomState {
   lessonId: string;
   difficulty: Difficulty;
   tokens: GameToken[];
-  players: Map<string, PlayerState>; // playerId -> state
-  sockets: Map<string, any>; // playerId -> WebSocket
+  players: Map<string, PlayerState>;
+  sockets: Map<string, any>;
   createdAt: number;
   startedAt?: number;
-  hostId?: string; // track who is allowed to start the game
+  hostId?: string;
 }
 
 // Client -> Server events
@@ -34,9 +36,16 @@ export type ClientEvent =
   | { type: "CREATE_ROOM"; code: string; playerName: string }
   | { type: "JOIN_ROOM"; code: string; playerName: string }
   | { type: "RESYNC"; code: string; playerName: string }
-  | { type: "START_GAME"; code: string } // host-only: kick off countdown
+  | { type: "START_GAME"; code: string }
+  | { type: "REMATCH"; code: string; tokens: GameToken[] }
   | { type: "PROGRESS"; currentIndex: number; wpm: number }
-  | { type: "FINISHED"; wpm: number; accuracy: number; score: number };
+  | {
+      type: "FINISHED";
+      wpm: number;
+      accuracy: number;
+      score: number;
+      missedTokens?: GameToken[];
+    };
 
 // Server -> Client events
 export type ServerEvent =
@@ -60,4 +69,5 @@ export type ServerEvent =
   | { type: "OPPONENT_PROGRESS"; opponent: PlayerState }
   | { type: "OPPONENT_FINISHED"; opponent: PlayerState }
   | { type: "GAME_OVER"; winner: string; players: PlayerState[] }
+  | { type: "REMATCH_WAITING" }
   | { type: "ERROR"; message: string };

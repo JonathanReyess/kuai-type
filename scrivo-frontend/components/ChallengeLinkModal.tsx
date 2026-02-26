@@ -244,7 +244,7 @@ export default function ChallengeLinkModal({
                 className={`px-4 py-2 border-2 font-serif text-sm uppercase tracking-wider transition-all whitespace-nowrap
                   ${
                     copied
-                      ? "bg-green-500 text-white border-green-500"
+                      ? "bg-[#7E9E73] text-white border-[#7E9E73]"
                       : "bg-black text-white border-black hover:bg-gray-800"
                   }`}
               >
@@ -257,7 +257,7 @@ export default function ChallengeLinkModal({
               className={`border-2 p-4 text-center mb-5 transition-all duration-300 ${
                 opponentJoined
                   ? "border-black bg-black text-white"
-                  : "border-dashed border-gray-200"
+                  : "border-dashed border-gray-300"
               }`}
             >
               {opponentJoined ? (
@@ -289,12 +289,12 @@ export default function ChallengeLinkModal({
               className={`w-full py-4 font-serif uppercase tracking-[0.2em] transition-all
                 ${
                   opponentJoined
-                    ? "bg-black text-white hover:bg-gray-900 cursor-pointer"
+                    ? "bg-[#7E9E73] text-white hover:bg-[#698360] cursor-pointer"
                     : "bg-gray-100 text-gray-400 cursor-not-allowed border-2 border-gray-200"
                 }`}
               style={protestFont}
             >
-              {"⚔ Start Game"}
+              {"Start Game"}
             </button>
           </>
         )}

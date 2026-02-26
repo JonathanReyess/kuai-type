@@ -9,7 +9,12 @@ interface BattleGameProps {
   playerName: string;
   opponent: OpponentState | null;
   onProgress: (currentIndex: number, wpm: number, score: number) => void;
-  onFinished: (wpm: number, accuracy: number, score: number) => void;
+  onFinished: (
+    wpm: number,
+    accuracy: number,
+    finalScore: number,
+    missedTokens: GameToken[],
+  ) => void;
   onExit: () => void;
 }
 
@@ -38,6 +43,16 @@ const gameStyles = `
   }
 `;
 
+// Speed bonus: 300pts at 0s, decays by 2pts per second.
+// At 60s → +180, at 75s → +150 (diff = 30pts).
+// This ensures a 15/15 player (+150 base over 14/15) only loses to a
+// faster 14/15 player if that player finishes more than 7.5s quicker.
+// A 14/15 player (135 base) at 60s = 315. A 15/15 (150 base) at 75s = 300.
+// But 15/15 at 76s = 298 < 315, so accuracy only beats ~15s of speed.
+function calcSpeedBonus(elapsedSeconds: number): number {
+  return Math.max(0, 300 - elapsedSeconds * 2);
+}
+
 const BattleGame: React.FC<BattleGameProps> = ({
   tokens,
   playerName,
@@ -55,8 +70,13 @@ const BattleGame: React.FC<BattleGameProps> = ({
   const [mistakes, setMistakes] = useState(0);
   const [missedIndices, setMissedIndices] = useState<Set<number>>(new Set());
   const [shake, setShake] = useState(false);
+  const [done, setDone] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Track score in a ref so the finish effect always has the latest value
+  const scoreRef = useRef(0);
+  const missedIndicesRef = useRef<Set<number>>(new Set());
 
   const myPct =
     tokens.length > 0 ? Math.round((currentIndex / tokens.length) * 100) : 0;
@@ -74,6 +94,17 @@ const BattleGame: React.FC<BattleGameProps> = ({
       startIndex++;
     }
     setCurrentIndex(startIndex);
+    // Reset all state for rematch
+    hasFinished.current = false;
+    setDone(false);
+    setScore(0);
+    scoreRef.current = 0;
+    setMistakes(0);
+    setMissedIndices(new Set());
+    missedIndicesRef.current = new Set();
+    setStartTime(null);
+    setElapsedTime(0);
+    setInput("");
     setTimeout(() => inputRef.current?.focus(), 100);
   }, [tokens]);
 
@@ -101,24 +132,40 @@ const BattleGame: React.FC<BattleGameProps> = ({
   }, [startTime, isPaused, currentIndex, tokens.length]);
 
   const lastReport = useRef(0);
+  const hasFinished = useRef(false);
   useEffect(() => {
     const now = Date.now();
     if (now - lastReport.current > 500) {
       const mins = startTime ? (now - startTime) / 60000 : 0;
       const wpm = mins > 0.01 ? Math.round(tokens.length / 5 / mins) : 0;
-      onProgress(currentIndex, wpm, score);
+      onProgress(currentIndex, wpm, scoreRef.current);
       lastReport.current = now;
     }
   }, [currentIndex, score]);
 
   useEffect(() => {
-    if (tokens.length > 0 && currentIndex >= tokens.length) {
+    if (
+      tokens.length > 0 &&
+      currentIndex >= tokens.length &&
+      !hasFinished.current
+    ) {
+      hasFinished.current = true;
+      setDone(true);
       const endTime = Date.now();
-      const durationMinutes = (endTime - (startTime || endTime)) / 60000;
+      const elapsedSeconds = startTime ? (endTime - startTime) / 1000 : 0;
+      const durationMinutes = elapsedSeconds / 60;
       const safeDuration = durationMinutes > 0 ? durationMinutes : 1 / 60;
       const wpm = Math.round(tokens.length / 5 / safeDuration);
       const accuracy = Math.max(0, 100 - (mistakes / tokens.length) * 100);
-      onFinished(wpm, Math.round(accuracy), score);
+
+      const speedBonus = calcSpeedBonus(elapsedSeconds);
+      const finalScore = Math.round(scoreRef.current + speedBonus);
+
+      const missedTokens = Array.from<number>(missedIndicesRef.current).map(
+        (idx) => tokens[idx],
+      );
+
+      onFinished(wpm, Math.round(accuracy), finalScore, missedTokens);
     }
   }, [currentIndex, tokens]);
 
@@ -139,9 +186,11 @@ const BattleGame: React.FC<BattleGameProps> = ({
   };
 
   const registerMistake = () => {
-    if (!missedIndices.has(currentIndex)) {
+    if (!missedIndicesRef.current.has(currentIndex)) {
       setMistakes((prev) => prev + 1);
-      setMissedIndices((prev) => new Set(prev).add(currentIndex));
+      const next = new Set(missedIndicesRef.current).add(currentIndex);
+      missedIndicesRef.current = next;
+      setMissedIndices(next);
     }
   };
 
@@ -170,7 +219,10 @@ const BattleGame: React.FC<BattleGameProps> = ({
 
     if (e.key === " " || e.code === "Space") {
       e.preventDefault();
-      setScore((prev) => Math.max(0, prev - 5));
+      // Skipping deducts 5 pts — score CAN go negative
+      const next = scoreRef.current - 5;
+      scoreRef.current = next;
+      setScore(next);
       registerMistake();
       triggerShake();
       advanceToken();
@@ -207,7 +259,9 @@ const BattleGame: React.FC<BattleGameProps> = ({
       if (target.endsWith("0")) validTargets.push(target.slice(0, -1) + "4");
 
       if (validTargets.includes(valLower)) {
-        setScore((prev) => prev + 10);
+        const next = scoreRef.current + 10;
+        scoreRef.current = next;
+        setScore(next);
         advanceToken();
       } else {
         triggerShake();
@@ -229,6 +283,24 @@ const BattleGame: React.FC<BattleGameProps> = ({
       ? Math.round(tokens.length / 5 / ((Date.now() - startTime) / 60000))
       : 0;
 
+  // Show waiting screen after submitting results, before GAME_OVER arrives
+  if (done) {
+    return (
+      <div className="relative min-h-screen bg-[#f8f7f4] flex items-center justify-center">
+        <div className="text-center">
+          <div className="flex items-center gap-3 justify-center mb-4">
+            <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:0ms]" />
+            <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:150ms]" />
+            <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:300ms]" />
+          </div>
+          <p className="font-serif text-gray-500 uppercase tracking-widest text-sm">
+            Waiting for results…
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-[#f8f7f4]">
       <style>{gameStyles}</style>
@@ -245,41 +317,61 @@ const BattleGame: React.FC<BattleGameProps> = ({
       />
 
       {/* ── Battle progress bar ── */}
-      <div className="fixed top-0 left-0 right-0 z-30 pointer-events-none">
-        <div className="mx-auto max-w-2xl w-full px-4 py-3 flex flex-col gap-2 pointer-events-auto">
-          {/* Opponent */}
-          <div>
-            <div className="flex justify-between items-center mb-1 font-serif text-sm">
-              <span className="text-[#722F37] uppercase tracking-wider">
+      <div className="fixed top-0 left-0 right-0 z-30 pointer-events-none mt-6">
+        {/* Perspective Container */}
+        <div className="mx-auto max-w-4xl w-full px-6 py-4 flex flex-col gap-6 pointer-events-auto [perspective:1000px]">
+          {/* Opponent: Pushed back in Z-space, slightly faded and blurred */}
+          <div
+            role="progressbar"
+            aria-valuenow={oppPct}
+            className="transform-gpu transition-all duration-500 scale-95 opacity-60 blur-[0.4px] [transform:translateZ(-100px)_rotateX(5deg)]"
+            style={{ transformOrigin: "bottom" }}
+          >
+            <div className="flex justify-between items-end mb-1 font-serif">
+              <span className="text-[#722F37] text-xs font-bold tracking-widest border-b border-[#722F37]/30 uppercase">
                 {opponent?.name ?? "Opponent"}
               </span>
-              <span className="text-[#722F37] tabular-nums">
-                {opponent?.score ?? 0} pts · {opponent?.wpm ?? 0} wpm · {oppPct}
-                %
+              <span className="text-[#5c262d] text-xs tabular-nums opacity-80">
+                {opponent?.score ?? 0} PTS • {opponent?.wpm ?? 0} WPM
               </span>
             </div>
-            <div className="h-2 bg-black/10 rounded-full overflow-hidden">
+            <div className="h-2 bg-[#f2e6e6]/20 border border-[#722F37]/10 overflow-hidden shadow-sm">
               <div
-                className="h-full bg-[#722F37] transition-all duration-500 rounded-full"
+                className="h-full bg-[#722F37]/70 transition-all duration-1000 ease-out"
                 style={{ width: `${oppPct}%` }}
               />
             </div>
           </div>
-          {/* You */}
-          <div>
-            <div className="flex justify-between items-center mb-1 font-serif text-sm">
-              <span className="text-[#4d5d53] uppercase tracking-wider">
-                {playerName}
+
+          {/* Player: Pulled forward, larger text, and high contrast */}
+          <div
+            role="progressbar"
+            aria-valuenow={myPct}
+            className="transform-gpu transition-all duration-300 [transform:translateZ(20px)]"
+          >
+            <div className="flex justify-between items-end mb-2 font-serif">
+              <span className="text-[#2d3b32] text-3xl font-black tracking-tight drop-shadow-sm">
+                YOU
               </span>
-              <span className="text-[#738276] tabular-nums">
-                {score} pts · {liveWpm} wpm · {myPct}%
-              </span>
+              <div className="flex flex-col items-end">
+                <span className="text-[#3a4d41] text-lg font-bold tabular-nums">
+                  {score}{" "}
+                  <span className="text-xs opacity-50 font-normal">PTS</span>
+                </span>
+                <span className="text-[#3a4d41] text-xs opacity-70 tabular-nums">
+                  {liveWpm} WPM
+                </span>
+              </div>
             </div>
-            <div className="h-2 bg-black/10 rounded-full overflow-hidden">
+
+            {/* Thicker bar with a "glow" effect */}
+            <div className="h-4 bg-[#e8edea]/20 border-2 border-[#2d3b32]/40 overflow-hidden shadow-lg relative">
               <div
-                className="h-full bg-[#738276] transition-all duration-300 rounded-full"
+                className="h-full bg-[#4d5d53] transition-all duration-300 ease-out relative z-10"
                 style={{ width: `${myPct}%` }}
               />
+              {/* Subtle background track depth */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#2d3b32]/5 to-transparent" />
             </div>
           </div>
         </div>
@@ -316,36 +408,6 @@ const BattleGame: React.FC<BattleGameProps> = ({
       <div
         className={`relative z-10 flex flex-col max-w-5xl mx-auto p-3 sm:p-4 md:p-8 min-h-screen pt-28 ${isPaused ? "" : "window-popout"}`}
       >
-        <div className="flex justify-between items-end mb-6 sm:mb-8 md:mb-12 border-b-2 sm:border-b-4 border-black pb-3 sm:pb-4 sticky top-28 backdrop-blur-sm z-20 pt-3 sm:pt-4">
-          <div className="flex flex-col w-20 sm:w-24 md:w-32">
-            <span className="text-xs sm:text-sm font-serif text-gray-600 uppercase tracking-wider">
-              Progress
-            </span>
-            <div
-              className="text-xl sm:text-2xl md:text-3xl font-bold"
-              style={protestFont}
-            >
-              {Math.round(progressPercentage)}%
-            </div>
-          </div>
-          <div className="flex flex-col items-center flex-1 mx-2">
-            <div className="text-base sm:text-lg md:text-xl font-serif font-bold tracking-widest tabular-nums">
-              {formatTime(elapsedTime)}
-            </div>
-          </div>
-          <div className="flex flex-col items-end w-20 sm:w-24 md:w-32">
-            <span className="text-xs sm:text-sm font-serif text-gray-600 uppercase tracking-wider">
-              Score
-            </span>
-            <div
-              className="text-xl sm:text-2xl md:text-3xl font-bold"
-              style={protestFont}
-            >
-              {score}
-            </div>
-          </div>
-        </div>
-
         <div className="flex-grow flex flex-col justify-center relative">
           <div
             ref={containerRef}

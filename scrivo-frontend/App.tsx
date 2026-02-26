@@ -5,14 +5,37 @@ import Selection from "./components/Selection";
 import Game from "./components/Game";
 import Results from "./components/Results";
 import BattlePage from "./pages/BattlePage";
-import { useLandingAssets } from "./useLandingAssets";
 import { AppState, Lesson, Difficulty, GameStats, GameToken } from "./types";
+import { LESSONS } from "./constants";
+
+// Read rematch state passed via React Router navigate("/", { state: {...} })
+// window.history.state.usr is where React Router stores navigate() state
+function getRematchState(): {
+  lessonId?: string;
+  difficulty?: Difficulty;
+} | null {
+  try {
+    const usr = window.history.state?.usr;
+    if (usr?.lessonId) return usr;
+  } catch {}
+  return null;
+}
 
 const App: React.FC = () => {
   const assetsReady = true;
-  const [screen, setScreen] = useState<AppState>("landing");
-  const [lesson, setLesson] = useState<Lesson | null>(null);
-  const [difficulty, setDifficulty] = useState<Difficulty>("medium");
+
+  const rematch = getRematchState();
+  const rematchLesson = rematch?.lessonId
+    ? (LESSONS.find((l) => l.id === rematch.lessonId) ?? null)
+    : null;
+
+  const [screen, setScreen] = useState<AppState>(() =>
+    rematchLesson ? "selection" : "landing",
+  );
+  const [lesson, setLesson] = useState<Lesson | null>(rematchLesson);
+  const [difficulty, setDifficulty] = useState<Difficulty>(
+    rematch?.difficulty ?? "medium",
+  );
   const [stats, setStats] = useState<GameStats | null>(null);
   const [reviewTokens, setReviewTokens] = useState<GameToken[]>([]);
   const [hasSeenTutorial, setHasSeenTutorial] = useState(false);
@@ -53,7 +76,7 @@ const App: React.FC = () => {
     setReviewTokens([]);
   };
 
-  // The main single-page app — same as before, unchanged
+  // The main single-page app
   const MainApp = (
     <div
       className={`ink-stroke-bg min-h-screen text-black antialiased
@@ -64,11 +87,14 @@ const App: React.FC = () => {
       {assetsReady && (
         <>
           {screen === "landing" && <Landing onStart={handleStartSelection} />}
-
           {screen === "selection" && (
-            <Selection onSelect={handleLessonSelected} onBack={handleHome} />
+            <Selection
+              onSelect={handleLessonSelected}
+              onBack={handleHome}
+              initialLessonId={rematch?.lessonId}
+              initialDifficulty={rematch?.difficulty}
+            />
           )}
-
           {screen === "loading" && (
             <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-[#f8f7f4]">
               <div
@@ -83,7 +109,6 @@ const App: React.FC = () => {
               </div>
             </div>
           )}
-
           {screen === "game" && lesson && (
             <Game
               key={`${lesson.id}-${difficulty}-${reviewTokens.length}`}
@@ -96,7 +121,6 @@ const App: React.FC = () => {
               onTutorialComplete={() => setHasSeenTutorial(true)}
             />
           )}
-
           {screen === "result" && stats && (
             <Results
               stats={stats}
@@ -116,7 +140,6 @@ const App: React.FC = () => {
       <Routes>
         {/* All existing screens live at "/" */}
         <Route path="/" element={MainApp} />
-
         {/* Battle route — completely separate, no shared state needed */}
         <Route path="/battle/:roomCode" element={<BattlePage />} />
       </Routes>

@@ -52,8 +52,6 @@ export function getRoomForPlayer(playerId: string): RoomState | undefined {
   }
 }
 
-// Evict any existing player with this name and re-register with new id+socket.
-// Used so the host can reconnect (modal socket → BattlePage socket) without "room full".
 export function upsertPlayer(
   code: string,
   playerId: string,
@@ -62,7 +60,6 @@ export function upsertPlayer(
 ): RoomState | null {
   const room = rooms.get(code);
   if (!room) return null;
-  // Remove stale entry with same name
   for (const [id, p] of room.players.entries()) {
     if (p.name === playerName && id !== playerId) {
       room.players.delete(id);
@@ -110,6 +107,7 @@ export function setFinished(
   code: string,
   playerId: string,
   wpm: number,
+  finalScore?: number,
 ): { room: RoomState; player: PlayerState; allDone: boolean } | null {
   const room = rooms.get(code);
   if (!room) return null;
@@ -118,8 +116,29 @@ export function setFinished(
   player.finished = true;
   player.wpm = wpm;
   player.finishedAt = Date.now();
+  if (finalScore !== undefined) player.score = finalScore;
   const allDone = [...room.players.values()].every((p) => p.finished);
   return { room, player, allDone };
+}
+
+// Reset room for a rematch — new tokens, all player progress cleared
+export function resetRoom(
+  code: string,
+  newTokens: GameToken[],
+): RoomState | null {
+  const room = rooms.get(code);
+  if (!room) return null;
+  room.tokens = newTokens;
+  room.startedAt = undefined;
+  for (const player of room.players.values()) {
+    player.currentIndex = 0;
+    player.wpm = 0;
+    player.score = 0;
+    player.finished = false;
+    player.finishedAt = undefined;
+    player.wantsRematch = false;
+  }
+  return room;
 }
 
 export function broadcast(
