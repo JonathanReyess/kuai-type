@@ -333,7 +333,7 @@ const Selection: React.FC<SelectionProps> = ({
             {/* THE UNIFIED BOX */}
             <div className="flex flex-col flex-grow">
               {/* Top Section: Info Card */}
-              <div className="min-h-[180px] sm:min-h-[200px] border-2 border-gray-300 p-4 mt-2 sm:p-6 flex flex-col justify-center rounded-t-sm bg-white/20 backdrop-blur-sm border-b-0">
+              <div className="min-h-[180px] sm:min-h-[200px] border-2 border-gray-300 p-4 mt-0 sm:p-6 flex flex-col justify-center rounded-t-sm bg-white/20 backdrop-blur-sm border-b-0">
                 {difficulty ? (
                   <div className="animate-slide-up space-y-4">
                     <div className="grid grid-cols-2 gap-4">
@@ -380,6 +380,17 @@ const Selection: React.FC<SelectionProps> = ({
 
               {/* Bottom Section: Action Buttons */}
               <div className="flex flex-col gap-3 p-4 sm:p-6 border-2 border-gray-300 rounded-b-sm bg-white/10 border-t-0">
+                {/* Preview Words — visible whenever a lesson is selected */}
+                {selectedLessonId && (
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowPreview(true)}
+                    className="w-full rounded-sm py-3 sm:py-4 text-sm sm:text-base bg-transparent border-2 border-black text-black hover:bg-black hover:text-white transition-all"
+                  >
+                    PREVIEW WORDS
+                  </Button>
+                )}
+
                 {/* Join a Room — visible only before difficulty is selected */}
                 {!difficulty && (
                   <button
@@ -391,18 +402,9 @@ const Selection: React.FC<SelectionProps> = ({
                   </button>
                 )}
 
-                {/* Normal actions — visible once difficulty is selected */}
+                {/* Difficulty-dependent actions */}
                 {difficulty && (
                   <>
-                    <Button
-                      variant="outline"
-                      disabled={!selectedLessonId}
-                      onClick={() => setShowPreview(true)}
-                      className="w-full rounded-sm py-3 sm:py-4 text-sm sm:text-base bg-transparent border-2 border-black text-black hover:bg-black hover:text-white transition-all"
-                    >
-                      PREVIEW WORDS
-                    </Button>
-
                     {canChallenge && (
                       <Button
                         variant="secondary"
@@ -417,7 +419,7 @@ const Selection: React.FC<SelectionProps> = ({
                     )}
 
                     <Button
-                      disabled={!selectedLessonId || !difficulty}
+                      disabled={!selectedLessonId}
                       onClick={handleStart}
                       className="w-full rounded-sm py-3 sm:py-4 text-sm sm:text-base"
                     >
