@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { GameStats, GameToken } from "../types";
 import Button from "./Button";
 import ChallengeLinkModal from "./ChallengeLinkModal";
+import { PRE_GENERATED_STORIES } from "../storyData";
 
 interface ResultsProps {
   stats: GameStats;
@@ -59,6 +60,10 @@ const Results: React.FC<ResultsProps> = ({
   onMenu,
   onLanding,
   onReviewMistakes,
+  lessonId,
+  lessonTitle,
+  difficulty,
+  tokens,
 }) => {
   const [showComingSoon, setShowComingSoon] = useState(false);
   const [showChallengeModal, setShowChallengeModal] = useState(false);
@@ -109,6 +114,22 @@ const Results: React.FC<ResultsProps> = ({
     setAllSaved(true);
   };
 
+  // Resolve tokens for ChallengeLinkModal.
+  // Prefer passed tokens, otherwise grab the first story for this lesson/difficulty
+  // from PRE_GENERATED_STORIES so the modal always has something to work with.
+  const challengeTokens: GameToken[] = (() => {
+    if (tokens && tokens.length > 0) return tokens;
+    if (lessonId && difficulty) {
+      const lessonData = (PRE_GENERATED_STORIES as any)[lessonId];
+      const stories: GameToken[][] =
+        lessonData?.[difficulty.toLowerCase()] ?? [];
+      if (stories.length > 0) return stories[0];
+    }
+    return [];
+  })();
+
+  const canChallenge = !!(lessonId && difficulty && challengeTokens.length > 0);
+
   const resultStyles = `
     @keyframes windowPop {
       0% { opacity: 0; transform: scale(0.95); }
@@ -137,13 +158,14 @@ const Results: React.FC<ResultsProps> = ({
       {showComingSoon && (
         <ComingSoonModal onClose={() => setShowComingSoon(false)} />
       )}
-      {showChallengeModal && (
+
+      {showChallengeModal && canChallenge && (
         <ChallengeLinkModal
           onClose={() => setShowChallengeModal(false)}
-          lessonId={""}
-          lessonTitle={""}
-          difficulty={""}
-          tokens={[]}
+          lessonId={lessonId!}
+          lessonTitle={lessonTitle ?? lessonId!}
+          difficulty={difficulty! as any}
+          tokens={challengeTokens}
         />
       )}
 
@@ -210,7 +232,7 @@ const Results: React.FC<ResultsProps> = ({
                   className={`flex items-center gap-2 px-4 py-2 border-2 font-serif text-sm uppercase tracking-wider transition-all rounded-sm
                     ${
                       allSaved
-                        ? "border-green-500 text-green-600 bg-green-50 cursor-default"
+                        ? "border-[#7E9E73]/90 text-white bg-[#7E9E73]/90 cursor-default"
                         : "border-black hover:bg-black hover:text-white"
                     }`}
                 >
@@ -252,9 +274,8 @@ const Results: React.FC<ResultsProps> = ({
                     <div
                       key={idx}
                       className={`relative flex flex-col items-center p-3 border-2 rounded-sm transition-all text-center
-                        ${isSaved ? "border-green-300 bg-green-50" : "border-gray-100 hover:border-gray-300 bg-white"}`}
+                        ${isSaved ? "border-bg-[#7E9E73] bg-[#7E9E73]/25" : "border-gray-100 hover:border-gray-300 bg-white"}`}
                     >
-                      {/* Bookmark icon — top right of card */}
                       <button
                         onClick={() => handleSaveWord(idx, token)}
                         disabled={isSaved}
@@ -266,7 +287,7 @@ const Results: React.FC<ResultsProps> = ({
                             width="14"
                             height="14"
                             viewBox="0 0 24 24"
-                            fill="#22c55e"
+                            fill="#7E9E73"
                             stroke="none"
                           >
                             <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
@@ -315,7 +336,11 @@ const Results: React.FC<ResultsProps> = ({
         {/* FOOTER */}
         <div className="shrink-0 flex flex-col gap-3 py-5 px-8 border-t border-gray-200 bg-white rounded-b-sm">
           <button
-            onClick={() => setShowChallengeModal(true)}
+            onClick={() =>
+              canChallenge
+                ? setShowChallengeModal(true)
+                : setShowComingSoon(true)
+            }
             className="w-fit mx-auto px-8 py-3 border-2 border-black font-serif text-sm uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-all flex items-center justify-center gap-3 group rounded-sm"
           >
             <span>Challenge a Friend</span>

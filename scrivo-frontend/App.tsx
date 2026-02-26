@@ -121,13 +121,17 @@ const App: React.FC = () => {
               onTutorialComplete={() => setHasSeenTutorial(true)}
             />
           )}
-          {screen === "result" && stats && (
+          {screen === "result" && stats && lesson && (
             <Results
               stats={stats}
               onRestart={handlePlayAgain}
               onMenu={() => setScreen("selection")}
               onLanding={handleHome}
               onReviewMistakes={handleReviewMistakes}
+              lessonId={lesson.id}
+              lessonTitle={lesson.title}
+              difficulty={difficulty}
+              tokens={reviewTokens.length > 0 ? reviewTokens : undefined}
             />
           )}
         </>
