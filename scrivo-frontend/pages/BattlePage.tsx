@@ -64,7 +64,7 @@ export default function BattlePage() {
         <div className="relative z-10 max-w-lg bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8">
           <div className="text-center mb-8">
             <h2
-              className="text-4xl uppercase tracking-widest mb-1"
+              className="text-4xl uppercase tracking-widest mb-2"
               style={protestFont}
             >
               Battle
@@ -88,7 +88,7 @@ export default function BattlePage() {
           <button
             disabled={!nameInput.trim()}
             onClick={handleSubmitName}
-            className="w-full py-4 bg-black text-white font-serif uppercase tracking-[0.2em] hover:bg-gray-900 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            className="w-full py-4 bg-black text-white font-serif uppercase tracking-[0.2em] hover:bg-zinc-800 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {role === "host" ? "Open Room" : "Join Battle"}
           </button>
@@ -151,39 +151,48 @@ function BattleInner({
   if (phase === "connecting" || phase === "waiting") {
     return (
       <StatusScreen
-        title="Waiting"
+        title={<span className="text-5xl">Waiting</span>}
         subtitle="Share the code with your opponent"
       >
-        <div
-          className="text-7xl font-bold tracking-[0.3em] mb-6"
-          style={protestFont}
-        >
+        <div className="text-7xl tracking-[0.3em]" style={protestFont}>
           {roomCode}
         </div>
-        <p className="font-serif text-sm text-gray-500 uppercase tracking-wider">
+        <p className="font-serif text-xs text-gray-400 uppercase tracking-wider">
           Room expires in 10 minutes
         </p>
       </StatusScreen>
     );
   }
 
-  // ── Lobby: both players present, waiting for host to start ──────────────────
-  // Guest waits here. Host should rarely see this — they arrive post-GAME_START
-  // from the modal and go straight to countdown. This is a safety fallback.
   if (phase === "lobby") {
     return (
       <StatusScreen
-        title="Ready!"
-        subtitle={role === "guest" ? "Waiting for host to start…" : "Starting…"}
+        title={<span className="text-5xl">Ready!</span>}
+        subtitle={role === "guest" ? "Waiting for host to start" : "Starting…"}
       >
-        <div className="flex items-center gap-3 justify-center mb-6">
+        <div className="flex items-center gap-3 justify-center">
           <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:0ms]" />
           <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:150ms]" />
           <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:300ms]" />
         </div>
-        <p className="font-serif text-gray-400 text-sm uppercase tracking-wider">
+        <p className="font-serif text-gray-600 uppercase tracking-wider">
           vs {opponent?.name ?? "opponent"}
         </p>
+      </StatusScreen>
+    );
+  }
+
+  if (phase === "rematch_waiting") {
+    return (
+      <StatusScreen
+        title={<span className="text-5xl">Rematch</span>}
+        subtitle="Waiting for opponent…"
+      >
+        <div className="flex items-center gap-3 justify-center">
+          <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:0ms]" />
+          <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:150ms]" />
+          <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:300ms]" />
+        </div>
       </StatusScreen>
     );
   }
@@ -191,19 +200,26 @@ function BattleInner({
   if (phase === "countdown") {
     return (
       <StatusScreen
-        title={String(countdown ?? "")}
         subtitle={`vs ${opponent?.name ?? "opponent"}`}
-      />
-    );
-  }
-
-  if (phase === "rematch_waiting") {
-    return (
-      <StatusScreen title="Rematch" subtitle="Waiting for opponent…">
-        <div className="flex items-center gap-3 justify-center mb-6">
-          <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:0ms]" />
-          <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:150ms]" />
-          <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:300ms]" />
+        title={undefined}
+      >
+        <style>{`
+        @keyframes countdownPop {
+          0% { opacity: 0; transform: scale(0.4); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+      `}</style>
+        <div
+          key={countdown}
+          style={{
+            fontFamily: "'Protest Revolution', sans-serif",
+            fontSize: "clamp(120px, 25vw, 240px)",
+            lineHeight: 1,
+            animation:
+              "countdownPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+          }}
+        >
+          {countdown}
         </div>
       </StatusScreen>
     );
@@ -421,21 +437,25 @@ function StatusScreen({
   subtitle,
   children,
 }: {
-  title: string;
-  subtitle: string;
+  title: React.ReactNode;
+  subtitle?: string;
   children?: React.ReactNode;
 }) {
   return (
     <div className="relative min-h-screen bg-[#f8f7f4] flex items-center justify-center p-6">
       <Texture />
-      <div className="relative z-10 text-center">
-        <h2
-          className="text-5xl uppercase tracking-widest mb-3"
+      <div className="relative z-10 text-center flex flex-col items-center gap-6">
+        <div
+          className="uppercase tracking-widest"
           style={{ fontFamily: "'Protest Revolution', sans-serif" }}
         >
           {title}
-        </h2>
-        <p className="font-serif text-gray-500 text-lg mb-8">{subtitle}</p>
+        </div>
+        {subtitle && (
+          <p className="font-serif text-gray-800 text-lg uppercase tracking-[0.2em]">
+            {subtitle}
+          </p>
+        )}
         {children}
       </div>
     </div>

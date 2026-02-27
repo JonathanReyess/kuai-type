@@ -196,7 +196,7 @@ const Results: React.FC<ResultsProps> = ({
 
         <div className="flex-col flex-grow overflow-y-auto px-8 custom-scrollbar min-h-0">
           {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 shrink-0">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-5 mt-2 shrink-0">
             {[
               { label: "Score", value: stats.score, size: "text-4xl" },
               { label: "WPM", value: stats.wpm, size: "text-4xl" },
@@ -209,22 +209,25 @@ const Results: React.FC<ResultsProps> = ({
             ].map(({ label, value, size }) => (
               <div
                 key={label}
-                className="text-center p-4 bg-gray-50 rounded-sm border border-gray-100 text-black"
+                className="text-center flex flex-col items-center justify-center"
               >
-                <div className="text-xs font-serif text-gray-500 uppercase tracking-widest mb-1">
+                <div className="text-[10px] sm:text-xs font-serif text-black/50 uppercase tracking-[0.2em] mb-2">
                   {label}
                 </div>
-                <div className={`${size} font-bold font-serif`}>{value}</div>
+                <div className={`${size} font-serif text-black leading-none`}>
+                  {value}
+                </div>
+                {/* Optional: A very thin minimal underline for emphasis */}
+                <div className="w-8 h-px bg-black/10 mt-3" />
               </div>
             ))}
           </div>
-
           {uniqueMissed.length > 0 ? (
             <div className="border-t-2 border-gray-100 pt-8 pb-4">
               {/* Header row: title + save all */}
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-8">
                 <h3 className="text-3xl tracking-wide" style={protestFont}>
-                  Words to Review
+                  WORDS TO REVIEW
                 </h3>
                 <button
                   onClick={handleSaveAll}
@@ -232,7 +235,7 @@ const Results: React.FC<ResultsProps> = ({
                   className={`flex items-center gap-2 px-4 py-2 border-2 font-serif text-sm uppercase tracking-wider transition-all rounded-sm
                     ${
                       allSaved
-                        ? "border-[#7E9E73]/90 text-white bg-[#7E9E73]/90 cursor-default"
+                        ? "border-[#7E9E73]/70 text-white bg-[#7E9E73]/80 cursor-default"
                         : "border-black hover:bg-black hover:text-white"
                     }`}
                 >
@@ -308,7 +311,7 @@ const Results: React.FC<ResultsProps> = ({
                       </button>
 
                       <div
-                        className="text-4xl mb-1 text-red-600"
+                        className="text-4xl mb-1 text-[#bc2f32]"
                         style={calliFont}
                       >
                         {token.char}
@@ -341,7 +344,7 @@ const Results: React.FC<ResultsProps> = ({
                 ? setShowChallengeModal(true)
                 : setShowComingSoon(true)
             }
-            className="w-fit mx-auto px-8 py-3 border-2 border-black font-serif text-sm uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-all flex items-center justify-center gap-3 group rounded-sm"
+            className="w-fit mx-auto px-8 py-3 border-2 border-black font-serif text-sm uppercase tracking-[0.2em] hover:bg-zinc-800 hover:text-white transition-all flex items-center justify-center gap-3 group rounded-sm"
           >
             <span>Challenge a Friend</span>
             <span className="text-[10px] px-1.5 py-0.5 border border-current opacity-60 tracking-normal normal-case font-normal">

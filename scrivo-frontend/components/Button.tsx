@@ -15,9 +15,9 @@ const Button: React.FC<ButtonProps> = ({
   const baseStyles =
     "relative font-serif transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group overflow-hidden";
 
+  // Inside Button.tsx
   const variants = {
-    primary:
-      "bg-black text-white border-2 border-black hover:bg-white hover:text-black",
+    primary: "bg-black text-white border-2 border-black hover:bg-zinc-800", // Removed hover:text-black
     secondary:
       "bg-white text-black border-2 border-black hover:bg-black hover:text-white",
     outline:

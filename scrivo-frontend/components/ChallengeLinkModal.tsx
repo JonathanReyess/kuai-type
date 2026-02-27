@@ -178,7 +178,7 @@ export default function ChallengeLinkModal({
             <button
               disabled={!nameInput.trim()}
               onClick={handleCreateRoom}
-              className="w-full py-4 bg-black text-white font-serif uppercase tracking-[0.2em] hover:bg-gray-900 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              className="w-full py-4 bg-black text-white font-serif uppercase tracking-[0.2em] hover:bg-zinc-800 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Create Room
             </button>
@@ -211,7 +211,7 @@ export default function ChallengeLinkModal({
         {phase === "ready" && (
           <>
             <div className="text-center mb-5">
-              <p className="text-sm font-serif uppercase tracking-widest text-gray-400 mb-4">
+              <p className="text-sm font-serif uppercase tracking-widest text-gray-500 mb-2">
                 Room Code
               </p>
               <div
@@ -274,10 +274,9 @@ export default function ChallengeLinkModal({
               className={`w-full py-4 font-serif uppercase tracking-[0.2em] transition-all
                 ${
                   opponentJoined
-                    ? "bg-[#7E9E73] text-white hover:bg-[#698360] cursor-pointer"
+                    ? "bg-[#698360] text-white hover:bg-[#698360]/90 cursor-pointer"
                     : "bg-gray-100 text-gray-400 cursor-not-allowed border-2 border-gray-200"
                 }`}
-              style={protestFont}
             >
               Start Game
             </button>

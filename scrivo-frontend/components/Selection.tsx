@@ -219,15 +219,32 @@ const Selection: React.FC<SelectionProps> = ({
         <header className="mb-6 sm:mb-8 lg:mb-12 flex justify-between items-center border-b-2 border-black pb-3 sm:pb-4">
           <button
             onClick={onBack}
-            className="font-serif hover:underline text-base sm:text-lg"
-          >
-            ← Back
-          </button>
-          <h2
-            className="text-2xl sm:text-3xl lg:text-4xl tracking-widest uppercase"
+            className="group flex items-center gap-2 hover:opacity-70 transition-opacity text-base sm:text-xl"
             style={protestFont}
           >
-            Preparation
+            <svg
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:-translate-x-1"
+            >
+              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <path d="m4.431 12.822 13 9A1 1 0 0 0 19 21V3a1 1 0 0 0-1.569-.823l-13 9a1.003 1.003 0 0 0 0 1.645z"></path>
+              </g>
+            </svg>
+            <span>BACK</span>
+          </button>
+          <h2
+            className="text-3xl sm:text-4xl lg:text-5xl tracking-widest uppercase"
+            style={protestFont}
+          >
+            kuai
           </h2>
           <div className="w-[80px] sm:w-[120px]"></div>
         </header>
@@ -239,7 +256,7 @@ const Selection: React.FC<SelectionProps> = ({
               className="text-2xl sm:text-3xl mb-4 sm:mb-6 tracking-wide"
               style={protestFont}
             >
-              Select a Lesson
+              SELECT A LESSON
             </h3>
             <div className="space-y-3 sm:space-y-4 mb-8">
               {LESSONS.map((lesson) => (
@@ -262,7 +279,11 @@ const Selection: React.FC<SelectionProps> = ({
                         {lesson.title}
                       </h4>
                       <p
-                        className={`text-xs sm:text-sm font-serif line-clamp-2 ${selectedLessonId === lesson.id ? "text-gray-300" : "text-gray-500"}`}
+                        className={`text-xs sm:text-sm font-serif truncate whitespace-nowrap ${
+                          selectedLessonId === lesson.id
+                            ? "text-gray-300"
+                            : "text-gray-500"
+                        }`}
                       >
                         {lesson.description}
                       </p>
@@ -277,10 +298,10 @@ const Selection: React.FC<SelectionProps> = ({
               ))}
             </div>
 
-            <div className="mt-0">
+            <div className="mt-2">
               <button
                 onClick={() => setShowSavedWords(true)}
-                className="relative w-full flex items-center justify-center gap-3 px-6 py-4 border-2 border-black font-serif text-sm sm:text-base uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] bg-transparent"
+                className="relative w-full flex items-center justify-center gap-3 px-6 py-4 border-2 border-black font-serif text-sm sm:text-base tracking-[0.2em] hover:bg-zinc-800 hover:text-white transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] bg-transparent"
               >
                 <svg
                   width="18"
@@ -308,7 +329,7 @@ const Selection: React.FC<SelectionProps> = ({
               className="text-2xl sm:text-3xl mb-4 sm:mb-6 tracking-wide"
               style={protestFont}
             >
-              Difficulty
+              DIFFICULTY
             </h3>
 
             <div className="flex flex-col xs:flex-row gap-2 xs:gap-3 sm:gap-4 mb-6 sm:mb-8">
@@ -387,7 +408,7 @@ const Selection: React.FC<SelectionProps> = ({
                     onClick={() => setShowPreview(true)}
                     className="w-full rounded-sm py-3 sm:py-4 text-sm sm:text-base bg-transparent border-2 border-black text-black hover:bg-black hover:text-white transition-all"
                   >
-                    PREVIEW WORDS
+                    Preview Words
                   </Button>
                 )}
 
@@ -395,8 +416,7 @@ const Selection: React.FC<SelectionProps> = ({
                 {!difficulty && (
                   <button
                     onClick={() => setShowJoinModal(true)}
-                    className="w-full py-3 sm:py-4 border-2 border-black font-serif text-sm sm:text-base uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-all rounded-sm animate-slide-up flex items-center justify-center gap-2"
-                    style={protestFont}
+                    className="w-full py-3 sm:py-4 border-2 border-black font-serif text-sm sm:text-base hover:bg-zinc-800 tracking-[0.2em] hover:bg-black hover:text-white transition-all rounded-sm animate-slide-up flex items-center justify-center gap-2"
                   >
                     Join a Room
                   </button>
@@ -409,7 +429,7 @@ const Selection: React.FC<SelectionProps> = ({
                       <Button
                         variant="secondary"
                         onClick={() => setShowChallengeModal(true)}
-                        className="w-full rounded-sm py-3 sm:py-4 text-sm sm:text-base animate-slide-up"
+                        className="w-full rounded-sm py-3 sm:py-4 text-sm hover:bg-zinc-800 sm:text-base animate-slide-up"
                       >
                         Challenge a Friend
                         <span className="text-[10px] px-1.5 py-0.5 border border-current opacity-60 tracking-normal normal-case font-normal rounded-sm ml-2">
@@ -421,9 +441,9 @@ const Selection: React.FC<SelectionProps> = ({
                     <Button
                       disabled={!selectedLessonId}
                       onClick={handleStart}
-                      className="w-full rounded-sm py-3 sm:py-4 text-sm sm:text-base"
+                      className="w-full rounded-sm py-3 sm:py-4 text-sm sm:text-base bg-black hover:bg-zinc-800 text-white transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      BEGIN
+                      Begin
                     </Button>
                   </>
                 )}

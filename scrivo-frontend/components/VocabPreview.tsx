@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { VocabItem } from "../types";
 import { XMarkIcon } from "./Icons";
 
@@ -12,6 +12,23 @@ export const VocabPreview: React.FC<VocabPreviewProps> = ({
   onClose,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
+
+  // --- ADD THIS BLOCK ---
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    // Add listener
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Clean up listener on unmount
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClose]);
 
   // Helper function to strip tone marks/diacritics
   const stripTones = (text: string) => {

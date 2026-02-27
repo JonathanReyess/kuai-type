@@ -570,7 +570,7 @@ const Game: React.FC<GameProps> = ({
                   key={idx}
                   data-active={isCurrent}
                   className={`relative transition-all duration-300 px-1 sm:px-2 py-0.5 sm:py-1 rounded-md
-                                        ${isCompleted ? (wasMissed ? "text-red-400/80" : "text-black/20") : "text-black"}
+                                        ${isCompleted ? (wasMissed ? "text-[#bc2f32]/60" : "text-black/20") : "text-black"}
                                         ${isCurrent ? "bg-black text-white transform scale-110 sm:scale-125 shadow-xl sm:shadow-2xl z-10" : ""}
                                         ${isCurrent && shake ? "animate-shake bg-red-900" : ""}
                                     `}
