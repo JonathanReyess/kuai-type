@@ -76,6 +76,7 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
                 onMouseEnter={(e) => {
                   const el = e.currentTarget;
                   el.style.animation = "none";
+                  el.style.opacity = "1"; // Add this line to ensure visibility
                   el.style.textShadow =
                     "0 20px 60px rgba(0,0,0,0.25), 0 8px 20px rgba(0,0,0,0.15)";
                   void el.offsetHeight;
@@ -84,6 +85,7 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
                 onMouseLeave={(e) => {
                   const el = e.currentTarget;
                   el.style.animation = "none";
+                  el.style.opacity = "1"; // Add this line too
                   el.style.textShadow = "none";
                   void el.offsetHeight;
                   el.style.transform = "scale(1) translateY(0)";
