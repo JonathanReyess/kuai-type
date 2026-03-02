@@ -235,14 +235,21 @@ const Game: React.FC<GameProps> = ({
       const endTime = Date.now();
       const durationMinutes = (endTime - (startTime || endTime)) / 60000;
       const safeDuration = durationMinutes > 0 ? durationMinutes : 1 / 60;
-      const wpm = Math.round(tokens.length / 5 / safeDuration);
-      const accuracy = Math.max(0, 100 - (mistakes / tokens.length) * 100);
+      // Count only non-punctuation tokens for accuracy calculation
+      const typableTokens = tokens.filter(
+        (t) => !/[，。？！""：；]/.test(t.char),
+      ).length;
+      const wpm = Math.round(typableTokens / 5 / safeDuration);
+      const accuracy =
+        typableTokens > 0
+          ? Math.max(0, 100 - (mistakes / typableTokens) * 100)
+          : 0;
 
       onEndGame({
         wpm,
         accuracy: Math.round(accuracy),
         score,
-        totalChars: tokens.length,
+        totalChars: typableTokens,
         mistakes,
         missedTokens: Array.from(missedIndices).map((idx) => tokens[idx]),
       });
