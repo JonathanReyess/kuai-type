@@ -74,12 +74,34 @@ function pickNewTokens(lessonId: string, difficulty: string): GameToken[] {
   return stories[Math.floor(Math.random() * stories.length)];
 }
 
+// Fetch server time and calculate offset (serverTime - clientTime)
+// Positive offset means server clock is ahead of client
+async function getServerTimeOffset(): Promise<number> {
+  try {
+    const beforeRequest = Date.now();
+    const res = await fetch(`${API_URL}/time`);
+    const afterRequest = Date.now();
+    const { serverTime } = await res.json();
+
+    // Estimate the server time at the moment we received the response
+    // by accounting for half the round-trip time
+    const roundTrip = afterRequest - beforeRequest;
+    const estimatedServerNow = serverTime + roundTrip / 2;
+
+    return estimatedServerNow - afterRequest;
+  } catch {
+    console.warn("Could not sync time with server, using local clock");
+    return 0;
+  }
+}
+
 export function useBattle({
   roomCode,
   playerName,
   role,
 }: UseBattleOptions): UseBattleReturn {
   const ws = useRef<WebSocket | null>(null);
+  const serverTimeOffset = useRef<number>(0); // serverTime - clientTime
 
   const [phase, setPhase] = useState<BattlePhase>("connecting");
   const [tokens, setTokens] = useState<GameToken[]>([]);
@@ -100,137 +122,154 @@ export function useBattle({
   useEffect(() => {
     if (!roomCode || !playerName) return;
 
-    const socket = new WebSocket(WS_URL);
-    ws.current = socket;
+    let socket: WebSocket;
+    let mounted = true;
 
-    socket.onopen = () => {
-      if (role === "host") {
-        socket.send(
-          JSON.stringify({ type: "CREATE_ROOM", code: roomCode, playerName }),
-        );
-      } else {
-        socket.send(
-          JSON.stringify({ type: "JOIN_ROOM", code: roomCode, playerName }),
-        );
-      }
-    };
+    // Helper to get "server time" using local clock + offset
+    const getServerNow = () => Date.now() + serverTimeOffset.current;
 
-    socket.onmessage = (e) => {
-      const event = JSON.parse(e.data);
-      console.log("[WS received]", event.type, event);
+    // Sync time first, then connect WebSocket
+    getServerTimeOffset().then((offset) => {
+      if (!mounted) return;
 
-      switch (event.type) {
-        case "ROOM_CREATED":
-          setTokens(event.tokens);
-          setLessonId(event.lessonId);
-          setDifficulty(event.difficulty);
-          lessonIdRef.current = event.lessonId;
-          difficultyRef.current = event.difficulty;
-          setPhase("waiting");
-          break;
+      serverTimeOffset.current = offset;
+      console.log(`[Time Sync] Server offset: ${offset}ms`);
 
-        case "WAITING":
-          setPhase("waiting");
-          break;
+      socket = new WebSocket(WS_URL);
+      ws.current = socket;
 
-        case "OPPONENT_JOINED":
-          opponentRef.current = event.opponent;
-          setOpponent(event.opponent);
-          setPhase("lobby");
-          break;
-
-        case "GAME_START": {
-          setTokens(event.tokens);
-          setLessonId(event.lessonId);
-          setDifficulty(event.difficulty);
-          lessonIdRef.current = event.lessonId;
-          difficultyRef.current = event.difficulty;
-          setWinner(null);
-          setFinalStats(null);
-          setPhase("countdown");
-
-          const startsAt: number = event.startsAt;
-
-          const tick = () => {
-            const remainingMs = startsAt - Date.now();
-            const remainingSec = Math.ceil(remainingMs / 1000);
-
-            if (remainingMs <= 0) {
-              setCountdown(null);
-              setPhase("playing");
-              return;
-            }
-
-            setCountdown(remainingSec);
-
-            // Schedule next tick to align with the next whole second boundary
-            // This ensures both clients update their countdown at the same absolute moment
-            const msUntilNextSecond = remainingMs % 1000 || 1000;
-            setTimeout(tick, msUntilNextSecond);
-          };
-
-          // Start the first tick aligned to the next second boundary
-          const initialRemainingMs = startsAt - Date.now();
-          const msUntilFirstTick = initialRemainingMs % 1000 || 1000;
-          setTimeout(tick, msUntilFirstTick);
-
-          // Show initial countdown immediately
-          setCountdown(Math.ceil(initialRemainingMs / 1000));
-          break;
-        }
-
-        case "OPPONENT_PROGRESS":
-          opponentRef.current = event.opponent;
-          setOpponent({ ...event.opponent });
-          break;
-
-        case "OPPONENT_FINISHED":
-          opponentRef.current = event.opponent;
-          setOpponent({ ...event.opponent });
-          break;
-
-        case "GAME_OVER":
-          setWinner(event.winner);
-          // Normalize: ensure missedTokens is always an array
-          setFinalStats(
-            (event.players ?? []).map((p: any) => ({
-              id: p.id,
-              name: p.name,
-              score: p.score,
-              wpm: p.wpm,
-              missedTokens: p.missedTokens ?? [],
-            })),
+      socket.onopen = () => {
+        if (role === "host") {
+          socket.send(
+            JSON.stringify({ type: "CREATE_ROOM", code: roomCode, playerName }),
           );
-          setPhase("finished");
-          break;
+        } else {
+          socket.send(
+            JSON.stringify({ type: "JOIN_ROOM", code: roomCode, playerName }),
+          );
+        }
+      };
 
-        case "REMATCH_WAITING":
-          // Either we requested rematch (confirmation) or opponent did (prompt)
-          setPhase("rematch_waiting");
-          break;
+      socket.onmessage = (e) => {
+        const event = JSON.parse(e.data);
+        console.log("[WS received]", event.type, event);
 
-        case "ERROR":
-          setErrorMessage(event.message);
-          setPhase("error");
-          break;
-      }
-    };
+        switch (event.type) {
+          case "ROOM_CREATED":
+            setTokens(event.tokens);
+            setLessonId(event.lessonId);
+            setDifficulty(event.difficulty);
+            lessonIdRef.current = event.lessonId;
+            difficultyRef.current = event.difficulty;
+            setPhase("waiting");
+            break;
 
-    socket.onclose = () => {
-      setPhase((current) => {
-        if (current === "finished" || current === "error") return current;
-        setErrorMessage("Connection lost.");
-        return "error";
-      });
-    };
+          case "WAITING":
+            setPhase("waiting");
+            break;
 
-    socket.onerror = () => {
-      setErrorMessage("Could not connect to battle server. Is it running?");
-      setPhase("error");
-    };
+          case "OPPONENT_JOINED":
+            opponentRef.current = event.opponent;
+            setOpponent(event.opponent);
+            setPhase("lobby");
+            break;
+
+          case "GAME_START": {
+            // Works for both initial start and rematch
+            setTokens(event.tokens);
+            setLessonId(event.lessonId);
+            setDifficulty(event.difficulty);
+            lessonIdRef.current = event.lessonId;
+            difficultyRef.current = event.difficulty;
+            // Reset winner/stats so finished screen doesn't linger
+            setWinner(null);
+            setFinalStats(null);
+            setPhase("countdown");
+
+            const startsAt: number = event.startsAt;
+
+            const tick = () => {
+              const remainingMs = startsAt - getServerNow();
+              const remainingSec = Math.ceil(remainingMs / 1000);
+
+              if (remainingMs <= 0) {
+                setCountdown(null);
+                setPhase("playing");
+                return;
+              }
+
+              setCountdown(remainingSec);
+
+              // Align ticks to whole-second boundaries in server time
+              // This ensures both clients update their countdown at the same absolute moment
+              const msUntilNextSecond = remainingMs % 1000 || 1000;
+              setTimeout(tick, msUntilNextSecond);
+            };
+
+            // Start countdown aligned to server time
+            const initialRemainingMs = startsAt - getServerNow();
+            setCountdown(Math.ceil(initialRemainingMs / 1000));
+            const msUntilFirstTick = initialRemainingMs % 1000 || 1000;
+            setTimeout(tick, msUntilFirstTick);
+            break;
+          }
+
+          case "OPPONENT_PROGRESS":
+            opponentRef.current = event.opponent;
+            setOpponent({ ...event.opponent });
+            break;
+
+          case "OPPONENT_FINISHED":
+            opponentRef.current = event.opponent;
+            setOpponent({ ...event.opponent });
+            break;
+
+          case "GAME_OVER":
+            setWinner(event.winner);
+            // Normalize: ensure missedTokens is always an array
+            setFinalStats(
+              (event.players ?? []).map((p: any) => ({
+                id: p.id,
+                name: p.name,
+                score: p.score,
+                wpm: p.wpm,
+                missedTokens: p.missedTokens ?? [],
+              })),
+            );
+            setPhase("finished");
+            break;
+
+          case "REMATCH_WAITING":
+            // Either we requested rematch (confirmation) or opponent did (prompt)
+            setPhase("rematch_waiting");
+            break;
+
+          case "ERROR":
+            setErrorMessage(event.message);
+            setPhase("error");
+            break;
+        }
+      };
+
+      socket.onclose = () => {
+        setPhase((current) => {
+          if (current === "finished" || current === "error") return current;
+          setErrorMessage("Connection lost.");
+          return "error";
+        });
+      };
+
+      socket.onerror = () => {
+        setErrorMessage("Could not connect to battle server. Is it running?");
+        setPhase("error");
+      };
+    });
 
     return () => {
-      socket.close();
+      mounted = false;
+      if (ws.current) {
+        ws.current.close();
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
