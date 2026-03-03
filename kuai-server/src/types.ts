@@ -33,12 +33,13 @@ export interface RoomState {
 
 // Client -> Server events
 export type ClientEvent =
+  | { type: "PING"; clientTime: number } // <-- Added PING
   | { type: "CREATE_ROOM"; code: string; playerName: string }
   | { type: "JOIN_ROOM"; code: string; playerName: string }
   | { type: "RESYNC"; code: string; playerName: string }
   | { type: "START_GAME"; code: string }
   | { type: "REMATCH"; code: string; tokens: GameToken[] }
-  | { type: "PROGRESS"; currentIndex: number; wpm: number }
+  | { type: "PROGRESS"; currentIndex: number; wpm: number; score: number } // <-- Added missing score
   | {
       type: "FINISHED";
       wpm: number;
@@ -49,6 +50,7 @@ export type ClientEvent =
 
 // Server -> Client events
 export type ServerEvent =
+  | { type: "PONG"; clientTime: number; serverTime: number } // <-- Added PONG
   | { type: "COUNTDOWN"; count: number }
   | {
       type: "ROOM_CREATED";

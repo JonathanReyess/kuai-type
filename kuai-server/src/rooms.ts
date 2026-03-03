@@ -60,20 +60,31 @@ export function upsertPlayer(
 ): RoomState | null {
   const room = rooms.get(code);
   if (!room) return null;
+
+  // Preserve existing state if this is a reconnect/handoff
+  let existingState: Partial<PlayerState> = {};
+
   for (const [id, p] of room.players.entries()) {
     if (p.name === playerName && id !== playerId) {
+      existingState = p;
       room.players.delete(id);
       room.sockets.delete(id);
     }
   }
+
   room.players.set(playerId, {
     id: playerId,
     name: playerName,
-    currentIndex: 0,
-    wpm: 0,
-    score: 0,
-    finished: false,
+    // Safely fallback to 0 if this is a genuinely new player
+    currentIndex: existingState.currentIndex ?? 0,
+    wpm: existingState.wpm ?? 0,
+    score: existingState.score ?? 0,
+    finished: existingState.finished ?? false,
+    missedTokens: existingState.missedTokens,
+    wantsRematch: existingState.wantsRematch,
+    finishedAt: existingState.finishedAt,
   });
+
   room.sockets.set(playerId, socket);
   return room;
 }
@@ -137,6 +148,7 @@ export function resetRoom(
     player.finished = false;
     player.finishedAt = undefined;
     player.wantsRematch = false;
+    player.missedTokens = []; // Purge missed tokens from the previous game
   }
   return room;
 }

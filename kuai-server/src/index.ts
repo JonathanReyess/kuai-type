@@ -22,7 +22,13 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 app.use(cors({ origin: process.env.FRONTEND_URL || "*" }));
 app.use(express.json());
+
 app.get("/health", (_req, res) => res.json({ ok: true }));
+
+// Time sync endpoint - clients use this to calculate clock offset
+app.get("/time", (_req, res) => {
+  res.json({ serverTime: Date.now() });
+});
 
 app.post("/rooms", (req, res) => {
   const { lessonId, difficulty, tokens, playerName } = req.body;
@@ -40,7 +46,7 @@ const wss = new WebSocketServer({ server, path: "/ws" });
 function startCountdown(code: string) {
   const room = getRoom(code);
   if (!room) return;
-  // startsAt is 3 seconds from now — both clients count down to this absolute time
+  // startsAt is 3.5 seconds from now — both clients count down to this absolute time
   const startsAt = Date.now() + 3500;
   broadcast(code, {
     type: "GAME_START",
@@ -64,11 +70,18 @@ wss.on("connection", (ws: WebSocket) => {
       ws.send(JSON.stringify({ type: "ERROR", message: "Invalid JSON" }));
       return;
     }
-
     switch (event.type) {
-      // ── CREATE_ROOM ──────────────────────────────────────────────────────────
-      // Called by the host both from the modal AND from BattlePage.
-      // upsertPlayer evicts the stale modal socket by name before adding the new one.
+      // ── PING (Time Sync) ─────────────────────────────────────────────────────
+      case "PING": {
+        ws.send(
+          JSON.stringify({
+            type: "PONG",
+            clientTime: (event as any).clientTime,
+            serverTime: Date.now(),
+          }),
+        );
+        break;
+      }
       case "CREATE_ROOM": {
         const { code, playerName } = event;
         const room = upsertPlayer(code, playerId, playerName, ws);
@@ -396,4 +409,5 @@ server.listen(PORT, () => {
   console.log(`🥋 Scrivo battle server running on port ${PORT}`);
   console.log(`   WS:   ws://localhost:${PORT}/ws`);
   console.log(`   REST: http://localhost:${PORT}/rooms`);
+  console.log(`   Time: http://localhost:${PORT}/time`);
 });

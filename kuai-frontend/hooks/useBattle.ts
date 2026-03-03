@@ -74,39 +74,6 @@ function pickNewTokens(lessonId: string, difficulty: string): GameToken[] {
   return stories[Math.floor(Math.random() * stories.length)];
 }
 
-// Fetch server time and calculate offset (serverTime - clientTime)
-// Positive offset means server clock is ahead of client
-// Fetch server time multiple times and use the fastest ping to calculate offset
-async function getServerTimeOffset(): Promise<number> {
-  let bestOffset = 0;
-  let lowestRoundTrip = Infinity;
-
-  // Ping 3 times to bypass cold-start, DNS, and TLS handshake latencies
-  for (let i = 0; i < 3; i++) {
-    try {
-      const beforeRequest = Date.now();
-      const res = await fetch(`${API_URL}/time`, { cache: "no-store" });
-      const { serverTime } = await res.json();
-      const afterRequest = Date.now();
-
-      const roundTrip = afterRequest - beforeRequest;
-
-      // We only trust the ping with the fastest round trip
-      if (roundTrip < lowestRoundTrip) {
-        lowestRoundTrip = roundTrip;
-        const estimatedServerNow = serverTime + roundTrip / 2;
-        bestOffset = estimatedServerNow - afterRequest;
-      }
-    } catch (e) {
-      console.warn(
-        `Time sync ping ${i + 1} failed, using local clock or previous best`,
-      );
-    }
-  }
-
-  return bestOffset;
-}
-
 export function useBattle({
   roomCode,
   playerName,
@@ -134,148 +101,176 @@ export function useBattle({
   useEffect(() => {
     if (!roomCode || !playerName) return;
 
-    let socket: WebSocket;
     let mounted = true;
+    let lowestRoundTrip = Infinity;
 
     // Helper to get "server time" using local clock + offset
     const getServerNow = () => Date.now() + serverTimeOffset.current;
 
-    // Sync time first, then connect WebSocket
-    getServerTimeOffset().then((offset) => {
+    const socket = new WebSocket(WS_URL);
+    ws.current = socket;
+
+    socket.onopen = () => {
       if (!mounted) return;
 
-      serverTimeOffset.current = offset;
-      console.log(`[Time Sync] Server offset: ${offset}ms`);
+      // 1. Send connection events immediately
+      if (role === "host") {
+        socket.send(
+          JSON.stringify({ type: "CREATE_ROOM", code: roomCode, playerName }),
+        );
+      } else {
+        socket.send(
+          JSON.stringify({ type: "JOIN_ROOM", code: roomCode, playerName }),
+        );
+      }
 
-      socket = new WebSocket(WS_URL);
-      ws.current = socket;
+      // 2. Fire 3 PINGs over the open WebSocket to perfectly sync clocks
+      let pings = 0;
+      const pingInterval = setInterval(() => {
+        if (pings >= 3 || socket.readyState !== WebSocket.OPEN) {
+          clearInterval(pingInterval);
+          return;
+        }
+        socket.send(JSON.stringify({ type: "PING", clientTime: Date.now() }));
+        pings++;
+      }, 300); // Space out pings to avoid burst-batching
+    };
 
-      socket.onopen = () => {
-        if (role === "host") {
-          socket.send(
-            JSON.stringify({ type: "CREATE_ROOM", code: roomCode, playerName }),
-          );
-        } else {
-          socket.send(
-            JSON.stringify({ type: "JOIN_ROOM", code: roomCode, playerName }),
+    socket.onmessage = (e) => {
+      if (!mounted) return;
+
+      const event = JSON.parse(e.data);
+
+      // Intercept PONG messages silently for time synchronization
+      if (event.type === "PONG") {
+        const now = Date.now();
+        const roundTrip = now - event.clientTime;
+
+        if (roundTrip < lowestRoundTrip) {
+          lowestRoundTrip = roundTrip;
+          const estimatedServerNow = event.serverTime + roundTrip / 2;
+          serverTimeOffset.current = estimatedServerNow - now;
+          console.log(
+            `[Time Sync] New best offset: ${serverTimeOffset.current}ms (Ping: ${roundTrip}ms)`,
           );
         }
-      };
+        return;
+      }
 
-      socket.onmessage = (e) => {
-        const event = JSON.parse(e.data);
-        console.log("[WS received]", event.type, event);
+      console.log("[WS received]", event.type, event);
 
-        switch (event.type) {
-          case "ROOM_CREATED":
-            setTokens(event.tokens);
-            setLessonId(event.lessonId);
-            setDifficulty(event.difficulty);
-            lessonIdRef.current = event.lessonId;
-            difficultyRef.current = event.difficulty;
-            setPhase("waiting");
-            break;
+      switch (event.type) {
+        case "ROOM_CREATED":
+          setTokens(event.tokens);
+          setLessonId(event.lessonId);
+          setDifficulty(event.difficulty);
+          lessonIdRef.current = event.lessonId;
+          difficultyRef.current = event.difficulty;
+          setPhase("waiting");
+          break;
 
-          case "WAITING":
-            setPhase("waiting");
-            break;
+        case "WAITING":
+          setPhase("waiting");
+          break;
 
-          case "OPPONENT_JOINED":
-            opponentRef.current = event.opponent;
-            setOpponent(event.opponent);
-            setPhase("lobby");
-            break;
+        case "OPPONENT_JOINED":
+          opponentRef.current = event.opponent;
+          setOpponent(event.opponent);
+          setPhase("lobby");
+          break;
 
-          case "GAME_START": {
-            // Works for both initial start and rematch
-            setTokens(event.tokens);
-            setLessonId(event.lessonId);
-            setDifficulty(event.difficulty);
-            lessonIdRef.current = event.lessonId;
-            difficultyRef.current = event.difficulty;
-            // Reset winner/stats so finished screen doesn't linger
-            setWinner(null);
-            setFinalStats(null);
-            setPhase("countdown");
+        case "GAME_START": {
+          setTokens(event.tokens);
+          setLessonId(event.lessonId);
+          setDifficulty(event.difficulty);
+          lessonIdRef.current = event.lessonId;
+          difficultyRef.current = event.difficulty;
+          // Reset winner/stats so finished screen doesn't linger
+          setWinner(null);
+          setFinalStats(null);
+          setPhase("countdown");
 
-            const startsAt: number = event.startsAt;
+          const startsAt: number = event.startsAt;
 
-            const tick = () => {
-              const remainingMs = startsAt - getServerNow();
-              const remainingSec = Math.ceil(remainingMs / 1000);
+          const tick = () => {
+            if (!mounted) return;
+            const remainingMs = startsAt - getServerNow();
 
-              if (remainingMs <= 0) {
-                setCountdown(null);
-                setPhase("playing");
-                return;
-              }
+            if (remainingMs <= 0) {
+              setCountdown(null);
+              setPhase("playing");
+              return;
+            }
 
-              setCountdown(Math.min(3, remainingSec));
+            const remainingSec = Math.ceil(remainingMs / 1000);
+            // Cap the visual countdown so it never shows "4"
+            setCountdown(Math.min(3, remainingSec));
 
-              // Align ticks to whole-second boundaries in server time
-              // This ensures both clients update their countdown at the same absolute moment
-              const msUntilNextSecond = remainingMs % 1000 || 1000;
-              setTimeout(tick, msUntilNextSecond);
-            };
+            let msUntilNextSecond = remainingMs % 1000;
+            if (msUntilNextSecond <= 0) msUntilNextSecond = 1000;
 
-            // Start countdown aligned to server time
-            const initialRemainingMs = startsAt - getServerNow();
-            setCountdown(Math.ceil(initialRemainingMs / 1000));
-            const msUntilFirstTick = initialRemainingMs % 1000 || 1000;
-            setTimeout(tick, msUntilFirstTick);
-            break;
-          }
+            setTimeout(tick, msUntilNextSecond);
+          };
 
-          case "OPPONENT_PROGRESS":
-            opponentRef.current = event.opponent;
-            setOpponent({ ...event.opponent });
-            break;
+          const initialRemainingMs = startsAt - getServerNow();
+          setCountdown(Math.min(3, Math.ceil(initialRemainingMs / 1000)));
 
-          case "OPPONENT_FINISHED":
-            opponentRef.current = event.opponent;
-            setOpponent({ ...event.opponent });
-            break;
-
-          case "GAME_OVER":
-            setWinner(event.winner);
-            // Normalize: ensure missedTokens is always an array
-            setFinalStats(
-              (event.players ?? []).map((p: any) => ({
-                id: p.id,
-                name: p.name,
-                score: p.score,
-                wpm: p.wpm,
-                missedTokens: p.missedTokens ?? [],
-              })),
-            );
-            setPhase("finished");
-            break;
-
-          case "REMATCH_WAITING":
-            // Either we requested rematch (confirmation) or opponent did (prompt)
-            setPhase("rematch_waiting");
-            break;
-
-          case "ERROR":
-            setErrorMessage(event.message);
-            setPhase("error");
-            break;
+          let msUntilFirstTick = initialRemainingMs % 1000;
+          if (msUntilFirstTick <= 0) msUntilFirstTick = 1000;
+          setTimeout(tick, msUntilFirstTick);
+          break;
         }
-      };
 
-      socket.onclose = () => {
-        setPhase((current) => {
-          if (current === "finished" || current === "error") return current;
-          setErrorMessage("Connection lost.");
-          return "error";
-        });
-      };
+        case "OPPONENT_PROGRESS":
+          opponentRef.current = event.opponent;
+          setOpponent({ ...event.opponent });
+          break;
 
-      socket.onerror = () => {
-        setErrorMessage("Could not connect to battle server. Is it running?");
-        setPhase("error");
-      };
-    });
+        case "OPPONENT_FINISHED":
+          opponentRef.current = event.opponent;
+          setOpponent({ ...event.opponent });
+          break;
+
+        case "GAME_OVER":
+          setWinner(event.winner);
+          // Normalize: ensure missedTokens is always an array
+          setFinalStats(
+            (event.players ?? []).map((p: any) => ({
+              id: p.id,
+              name: p.name,
+              score: p.score,
+              wpm: p.wpm,
+              missedTokens: p.missedTokens ?? [],
+            })),
+          );
+          setPhase("finished");
+          break;
+
+        case "REMATCH_WAITING":
+          setPhase("rematch_waiting");
+          break;
+
+        case "ERROR":
+          setErrorMessage(event.message);
+          setPhase("error");
+          break;
+      }
+    };
+
+    socket.onclose = () => {
+      if (!mounted) return;
+      setPhase((current) => {
+        if (current === "finished" || current === "error") return current;
+        setErrorMessage("Connection lost.");
+        return "error";
+      });
+    };
+
+    socket.onerror = () => {
+      if (!mounted) return;
+      setErrorMessage("Could not connect to battle server. Is it running?");
+      setPhase("error");
+    };
 
     return () => {
       mounted = false;
@@ -284,7 +279,7 @@ export function useBattle({
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [roomCode, playerName, role]);
 
   const sendProgress = useCallback(
     (currentIndex: number, wpm: number, score: number) => {
@@ -327,8 +322,6 @@ export function useBattle({
 
   const sendRematch = useCallback(() => {
     if (ws.current?.readyState !== WebSocket.OPEN) return;
-    // Pick a new random passage client-side and send it with the request.
-    // The server uses whichever player's tokens arrive when both have voted.
     const newTokens = pickNewTokens(lessonIdRef.current, difficultyRef.current);
     ws.current.send(
       JSON.stringify({ type: "REMATCH", code: roomCode, tokens: newTokens }),
