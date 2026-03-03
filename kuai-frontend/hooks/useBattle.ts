@@ -76,23 +76,35 @@ function pickNewTokens(lessonId: string, difficulty: string): GameToken[] {
 
 // Fetch server time and calculate offset (serverTime - clientTime)
 // Positive offset means server clock is ahead of client
+// Fetch server time multiple times and use the fastest ping to calculate offset
 async function getServerTimeOffset(): Promise<number> {
-  try {
-    const beforeRequest = Date.now();
-    const res = await fetch(`${API_URL}/time`);
-    const afterRequest = Date.now();
-    const { serverTime } = await res.json();
+  let bestOffset = 0;
+  let lowestRoundTrip = Infinity;
 
-    // Estimate the server time at the moment we received the response
-    // by accounting for half the round-trip time
-    const roundTrip = afterRequest - beforeRequest;
-    const estimatedServerNow = serverTime + roundTrip / 2;
+  // Ping 3 times to bypass cold-start, DNS, and TLS handshake latencies
+  for (let i = 0; i < 3; i++) {
+    try {
+      const beforeRequest = Date.now();
+      const res = await fetch(`${API_URL}/time`);
+      const { serverTime } = await res.json();
+      const afterRequest = Date.now();
 
-    return estimatedServerNow - afterRequest;
-  } catch {
-    console.warn("Could not sync time with server, using local clock");
-    return 0;
+      const roundTrip = afterRequest - beforeRequest;
+
+      // We only trust the ping with the fastest round trip
+      if (roundTrip < lowestRoundTrip) {
+        lowestRoundTrip = roundTrip;
+        const estimatedServerNow = serverTime + roundTrip / 2;
+        bestOffset = estimatedServerNow - afterRequest;
+      }
+    } catch (e) {
+      console.warn(
+        `Time sync ping ${i + 1} failed, using local clock or previous best`,
+      );
+    }
   }
+
+  return bestOffset;
 }
 
 export function useBattle({
