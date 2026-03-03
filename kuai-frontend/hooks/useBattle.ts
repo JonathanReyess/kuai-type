@@ -140,29 +140,42 @@ export function useBattle({
           break;
 
         case "GAME_START": {
-          // Works for both initial start and rematch
           setTokens(event.tokens);
           setLessonId(event.lessonId);
           setDifficulty(event.difficulty);
           lessonIdRef.current = event.lessonId;
           difficultyRef.current = event.difficulty;
-          // Reset winner/stats so finished screen doesn't linger
           setWinner(null);
           setFinalStats(null);
           setPhase("countdown");
 
           const startsAt: number = event.startsAt;
+
           const tick = () => {
-            const remaining = Math.ceil((startsAt - Date.now()) / 1000);
-            if (remaining > 0) {
-              setCountdown(remaining);
-              setTimeout(tick, 200);
-            } else {
+            const remainingMs = startsAt - Date.now();
+            const remainingSec = Math.ceil(remainingMs / 1000);
+
+            if (remainingMs <= 0) {
               setCountdown(null);
               setPhase("playing");
+              return;
             }
+
+            setCountdown(remainingSec);
+
+            // Schedule next tick to align with the next whole second boundary
+            // This ensures both clients update their countdown at the same absolute moment
+            const msUntilNextSecond = remainingMs % 1000 || 1000;
+            setTimeout(tick, msUntilNextSecond);
           };
-          tick();
+
+          // Start the first tick aligned to the next second boundary
+          const initialRemainingMs = startsAt - Date.now();
+          const msUntilFirstTick = initialRemainingMs % 1000 || 1000;
+          setTimeout(tick, msUntilFirstTick);
+
+          // Show initial countdown immediately
+          setCountdown(Math.ceil(initialRemainingMs / 1000));
           break;
         }
 
