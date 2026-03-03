@@ -85,7 +85,7 @@ async function getServerTimeOffset(): Promise<number> {
   for (let i = 0; i < 3; i++) {
     try {
       const beforeRequest = Date.now();
-      const res = await fetch(`${API_URL}/time`);
+      const res = await fetch(`${API_URL}/time`, { cache: "no-store" });
       const { serverTime } = await res.json();
       const afterRequest = Date.now();
 
@@ -210,7 +210,7 @@ export function useBattle({
                 return;
               }
 
-              setCountdown(remainingSec);
+              setCountdown(Math.min(3, remainingSec));
 
               // Align ticks to whole-second boundaries in server time
               // This ensures both clients update their countdown at the same absolute moment
