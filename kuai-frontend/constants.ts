@@ -484,6 +484,530 @@ export const vocabGender = [
   { simplified: "西班牙", pinyin: "Xībānyá", definition: "Spain" },
 ];
 
+export const vocabEnvironment = [
+  {
+    simplified: "保护",
+    pinyin: "bǎohù",
+    definition: "to protect, to safeguard",
+  },
+  {
+    simplified: "节约",
+    pinyin: "jiéyuē",
+    definition: "to economize, to save",
+  },
+  {
+    simplified: "能源",
+    pinyin: "néngyuán",
+    definition: "energy, energy source",
+  },
+  {
+    simplified: "爬山",
+    pinyin: "pá shān",
+    definition: "to hike in the mountains, to climb a mountain",
+  },
+  {
+    simplified: "有益",
+    pinyin: "yǒuyì",
+    definition: "beneficial, useful",
+  },
+  {
+    simplified: "于",
+    pinyin: "yú",
+    definition: "towards, in",
+  },
+  {
+    simplified: "段",
+    pinyin: "duàn",
+    definition: "measure word for section, segment",
+  },
+  {
+    simplified: "推",
+    pinyin: "tuī",
+    definition: "to push, to shove",
+  },
+  {
+    simplified: "空气",
+    pinyin: "kōngqì",
+    definition: "air, atmosphere",
+  },
+  {
+    simplified: "雾霾",
+    pinyin: "wùmái",
+    definition: "smog",
+  },
+  {
+    simplified: "回收",
+    pinyin: "huíshōu",
+    definition: "to recycle",
+  },
+  {
+    simplified: "筒",
+    pinyin: "tǒng",
+    definition: "thick tube-shaped container",
+  },
+  {
+    simplified: "扔",
+    pinyin: "rēng",
+    definition: "to throw, to toss",
+  },
+  {
+    simplified: "瓶装水",
+    pinyin: "píngzhuāng shuǐ",
+    definition: "bottled water",
+  },
+  {
+    simplified: "地球",
+    pinyin: "dìqiú",
+    definition: "the earth, the globe",
+  },
+  {
+    simplified: "亮",
+    pinyin: "liàng",
+    definition: "bright, light",
+  },
+  {
+    simplified: "太阳",
+    pinyin: "tàiyáng",
+    definition: "sun",
+  },
+  {
+    simplified: "太阳能",
+    pinyin: "tàiyángnéng",
+    definition: "solar energy, solar power",
+  },
+  {
+    simplified: "板",
+    pinyin: "bǎn",
+    definition: "board, plank",
+  },
+  {
+    simplified: "发电",
+    pinyin: "fā diàn",
+    definition: "to generate electricity",
+  },
+  {
+    simplified: "国家",
+    pinyin: "guójiā",
+    definition: "country, nation",
+  },
+  {
+    simplified: "危机",
+    pinyin: "wēijī",
+    definition: "crisis",
+  },
+  {
+    simplified: "风",
+    pinyin: "fēng",
+    definition: "wind",
+  },
+  {
+    simplified: "石油",
+    pinyin: "shíyóu",
+    definition: "petroleum, oil",
+  },
+  {
+    simplified: "煤",
+    pinyin: "méi",
+    definition: "coal",
+  },
+  {
+    simplified: "规定",
+    pinyin: "guīdìng",
+    definition: "to regulate, to specify",
+  },
+  {
+    simplified: "公共场所",
+    pinyin: "gōnggòng chǎngsuǒ",
+    definition: "public place or space",
+  },
+  {
+    simplified: "暖气",
+    pinyin: "nuǎnqì",
+    definition: "heating",
+  },
+  {
+    simplified: "温度",
+    pinyin: "wēndù",
+    definition: "temperature",
+  },
+  {
+    simplified: "度",
+    pinyin: "dù",
+    definition: "measure word for degrees of temperature, heat",
+  },
+  {
+    simplified: "赞成",
+    pinyin: "zànchéng",
+    definition: "to approve, to support",
+  },
+  {
+    simplified: "出汗",
+    pinyin: "chū hàn",
+    definition: "to sweat",
+  },
+  {
+    simplified: "餐具",
+    pinyin: "cānjù",
+    definition: "eating utensil, tableware",
+  },
+  {
+    simplified: "一次性",
+    pinyin: "yícìxìng",
+    definition: "one-time",
+  },
+  {
+    simplified: "砍",
+    pinyin: "kǎn",
+    definition: "to cut, to chop",
+  },
+  {
+    simplified: "超市",
+    pinyin: "chāoshì",
+    definition: "supermarket",
+  },
+  {
+    simplified: "塑料袋",
+    pinyin: "sùliào dài",
+    definition: "plastic bag",
+  },
+  {
+    simplified: "减少",
+    pinyin: "jiǎnshǎo",
+    definition: "to reduce, to decrease",
+  },
+  {
+    simplified: "污染",
+    pinyin: "wūrǎn",
+    definition: "to pollute, to contaminate",
+  },
+  {
+    simplified: "造成",
+    pinyin: "zào chéng",
+    definition: "to cause, to give rise to",
+  },
+  {
+    simplified: "比如",
+    pinyin: "bǐrú",
+    definition: "for example",
+  },
+  {
+    simplified: "随手",
+    pinyin: "suíshǒu",
+    definition: "without extra effort or motion, conveniently",
+  },
+  {
+    simplified: "加油",
+    pinyin: "jiā yóu",
+    definition: "to make an extra effort, to work harder",
+  },
+  {
+    simplified: "马克",
+    pinyin: "Mǎkè",
+    definition: "Mark",
+  },
+  {
+    simplified: "摄氏",
+    pinyin: "Shèshì",
+    definition: "Celsius, centigrade",
+  },
+];
+
+export const vocabFinance = [
+  { simplified: "节俭", pinyin: "jiéjiǎn", definition: "thrifty, frugal" },
+  {
+    simplified: "存款",
+    pinyin: "cúnkuǎn",
+    definition: "bank savings, to deposit money",
+  },
+  {
+    simplified: "投资",
+    pinyin: "tóu zī",
+    definition: "to invest capital, investment",
+  },
+  { simplified: "理财", pinyin: "lǐcái", definition: "to manage wealth" },
+  { simplified: "涨", pinyin: "zhǎng", definition: "to rise, to surge" },
+  { simplified: "炒股", pinyin: "chǎo gǔ", definition: "to flip stocks" },
+  {
+    simplified: "引起",
+    pinyin: "yǐnqǐ",
+    definition: "to give rise to, to lead to",
+  },
+  {
+    simplified: "思考",
+    pinyin: "sīkǎo",
+    definition: "to think deeply, to ponder over",
+  },
+  { simplified: "姑妈", pinyin: "gūmā", definition: "aunt (father’s sister)" },
+  {
+    simplified: "矛盾",
+    pinyin: "máodùn",
+    definition: "contradiction, conflict",
+  },
+  { simplified: "郁闷", pinyin: "yùmèn", definition: "gloomy, depressed" },
+  {
+    simplified: "省吃俭用",
+    pinyin: "shěng chī jiǎn yòng",
+    definition: "to be frugal",
+  },
+  {
+    simplified: "笔",
+    pinyin: "bǐ",
+    definition: "measure word for sums of money",
+  },
+  { simplified: "孙子", pinyin: "sūnzi", definition: "grandson (son’s son)" },
+  {
+    simplified: "孙女",
+    pinyin: "sūnnü",
+    definition: "granddaughter (son’s daughter)",
+  },
+  { simplified: "未婚妻", pinyin: "wèihūnqī", definition: "fiancée" },
+  {
+    simplified: "算",
+    pinyin: "suàn",
+    definition: "to count as, to be considered as",
+  },
+  { simplified: "合", pinyin: "hé", definition: "to combine, to join" },
+  { simplified: "劝", pinyin: "quàn", definition: "to persuade, to advise" },
+  { simplified: "辛苦", pinyin: "xīnkǔ", definition: "hard, strenuous" },
+  {
+    simplified: "享受",
+    pinyin: "xiǎngshòu",
+    definition: "to enjoy, enjoyment",
+  },
+  { simplified: "老太太", pinyin: "lǎotàitai", definition: "elderly lady" },
+  {
+    simplified: "利息",
+    pinyin: "lìxī",
+    definition: "interest (on invested funds)",
+  },
+  { simplified: "增加", pinyin: "zēngjiā", definition: "to increase, to add" },
+  { simplified: "老年", pinyin: "lǎonián", definition: "old age" },
+  {
+    simplified: "说服",
+    pinyin: "shuōfú",
+    definition: "to persuade, to convince",
+  },
+  { simplified: "签", pinyin: "qiān", definition: "to sign, to autograph" },
+  { simplified: "合同", pinyin: "hétong", definition: "agreement, contract" },
+  { simplified: "想法", pinyin: "xiǎngfǎ", definition: "idea, opinion" },
+  { simplified: "突然", pinyin: "tūrán", definition: "suddenly, unexpectedly" },
+  {
+    simplified: "义工",
+    pinyin: "yìgōng",
+    definition: "volunteer work, volunteer",
+  },
+  { simplified: "麻将", pinyin: "máijàng", definition: "mahjong" },
+  { simplified: "赚钱", pinyin: "zhuànqián", definition: "to make a profit" },
+  { simplified: "股市", pinyin: "gǔshì", definition: "stock market" },
+  { simplified: "风险", pinyin: "fēngxiǎn", definition: "risk, danger" },
+  { simplified: "抵押", pinyin: "dǐyā", definition: "to mortgage" },
+  { simplified: "股票", pinyin: "gǔpiào", definition: "stock, share" },
+  { simplified: "跌", pinyin: "diē", definition: "to fall" },
+  {
+    simplified: "赔",
+    pinyin: "péi",
+    definition: "to lose (money, etc.), to suffer a loss",
+  },
+];
+
+export const vocabvocabFinance = [
+  {
+    simplified: "节俭",
+    pinyin: "jiéjiǎn",
+    definition: "thrifty, frugal",
+  },
+  {
+    simplified: "存款",
+    pinyin: "cúnkuǎn",
+    definition: "bank savings, to deposit money at a bank",
+  },
+  {
+    simplified: "投资",
+    pinyin: "tóu zī",
+    definition: "to invest capital, investment",
+  },
+  {
+    simplified: "理财",
+    pinyin: "lǐcái",
+    definition: "to manage wealth",
+  },
+  {
+    simplified: "涨",
+    pinyin: "zhǎng",
+    definition: "to rise, to surge",
+  },
+  {
+    simplified: "炒股",
+    pinyin: "chǎo gǔ",
+    definition: "to flip stocks",
+  },
+  {
+    simplified: "引起",
+    pinyin: "yǐnqǐ",
+    definition: "to give rise to, to lead to",
+  },
+  {
+    simplified: "思考",
+    pinyin: "sīkǎo",
+    definition: "to think deeply, to ponder over",
+  },
+  {
+    simplified: "姑妈",
+    pinyin: "gūmā",
+    definition: "aunt (father’s sister)",
+  },
+  {
+    simplified: "矛盾",
+    pinyin: "máodùn",
+    definition: "contradiction, conflict",
+  },
+  {
+    simplified: "郁闷",
+    pinyin: "yùmèn",
+    definition: "gloomy, depressed",
+  },
+  {
+    simplified: "省吃俭用",
+    pinyin: "shěng chī jiǎn yòng",
+    definition: "to be frugal",
+  },
+  {
+    simplified: "笔",
+    pinyin: "bǐ",
+    definition: "measure word for sums of money",
+  },
+  {
+    simplified: "孙子",
+    pinyin: "sūnzi",
+    definition: "grandson (son’s son)",
+  },
+  {
+    simplified: "孙女",
+    pinyin: "sūnnü",
+    definition: "granddaughter (son’s daughter)",
+  },
+  {
+    simplified: "未婚妻",
+    pinyin: "wèihūnqī",
+    definition: "fiancée",
+  },
+  {
+    simplified: "算",
+    pinyin: "suàn",
+    definition: "to count as, to be considered as",
+  },
+  {
+    simplified: "合",
+    pinyin: "hé",
+    definition: "to combine, to join",
+  },
+  {
+    simplified: "劝",
+    pinyin: "quàn",
+    definition: "to persuade, to advise",
+  },
+  {
+    simplified: "辛苦",
+    pinyin: "xīnkǔ",
+    definition: "hard, strenuous",
+  },
+  {
+    simplified: "享受",
+    pinyin: "xiǎngshòu",
+    definition: "to enjoy, enjoyment",
+  },
+  {
+    simplified: "老太太",
+    pinyin: "lǎotàitai",
+    definition: "elderly lady",
+  },
+  {
+    simplified: "利息",
+    pinyin: "lìxī",
+    definition: "interest (on invested funds)",
+  },
+  {
+    simplified: "增加",
+    pinyin: "zēngjiā",
+    definition: "to increase, to add",
+  },
+  {
+    simplified: "老年",
+    pinyin: "lǎonián",
+    definition: "old age",
+  },
+  {
+    simplified: "说服",
+    pinyin: "shuōfú",
+    definition: "to persuade, to convince",
+  },
+  {
+    simplified: "签",
+    pinyin: "qiān",
+    definition: "to sign, to autograph",
+  },
+  {
+    simplified: "合同",
+    pinyin: "hétong",
+    definition: "agreement, contract",
+  },
+  {
+    simplified: "想法",
+    pinyin: "xiǎngfǎ",
+    definition: "idea, opinion",
+  },
+  {
+    simplified: "突然",
+    pinyin: "tūrán",
+    definition: "suddenly, unexpectedly",
+  },
+  {
+    simplified: "义工",
+    pinyin: "yìgōng",
+    definition: "volunteer work, volunteer",
+  },
+  {
+    simplified: "麻将",
+    pinyin: "májiàng",
+    definition: "mahjong",
+  },
+  {
+    simplified: "赚钱",
+    pinyin: "zhuànqián",
+    definition: "to make a profit",
+  },
+  {
+    simplified: "股市",
+    pinyin: "gǔshì",
+    definition: "stock market",
+  },
+  {
+    simplified: "风险",
+    pinyin: "fēngxiǎn",
+    definition: "risk, danger",
+  },
+  {
+    simplified: "抵押",
+    pinyin: "dǐyā",
+    definition: "to mortgage",
+  },
+  {
+    simplified: "股票",
+    pinyin: "gǔpiào",
+    definition: "stock, share",
+  },
+  {
+    simplified: "跌",
+    pinyin: "diē",
+    definition: "to fall",
+  },
+  {
+    simplified: "赔",
+    pinyin: "péi",
+    definition: "to lose (money, etc.), to suffer a loss",
+  },
+];
+
 export const LESSONS: Lesson[] = [
   {
     id: "festival",
@@ -514,5 +1038,18 @@ export const LESSONS: Lesson[] = [
     title: "男女平等",
     description: "Learn about gender equality in China.",
     vocabulary: vocabGender,
+  },
+  {
+    id: "environment",
+    title: "环境保护与节约能源",
+    description:
+      "Learn about environmental protection and energy conservation.",
+    vocabulary: vocabEnvironment,
+  },
+  {
+    id: "finance",
+    title: "理财与投资",
+    description: "Learn about financial concepts and practices.",
+    vocabulary: vocabFinance,
   },
 ];

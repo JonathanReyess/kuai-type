@@ -258,7 +258,15 @@ const Selection: React.FC<SelectionProps> = ({
             >
               SELECT A LESSON
             </h3>
-            <div className="space-y-3 sm:space-y-4 mb-8">
+
+            {/* Scrollable lesson container — max 5 visible */}
+            <div
+              className={`space-y-3 sm:space-y-4 ${
+                LESSONS.length > 5
+                  ? "overflow-y-auto max-h-[670px] pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
+                  : ""
+              }`}
+            >
               {LESSONS.map((lesson) => (
                 <button
                   key={lesson.id}
@@ -298,7 +306,8 @@ const Selection: React.FC<SelectionProps> = ({
               ))}
             </div>
 
-            <div className="mt-2">
+            {/* Review List button — always below the lesson container */}
+            <div className="mt-4">
               <button
                 onClick={() => setShowSavedWords(true)}
                 className="relative w-full flex items-center justify-center gap-3 px-6 py-4 border-2 border-black font-serif text-sm sm:text-base tracking-[0.2em] hover:bg-zinc-800 hover:text-white transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] bg-transparent"
@@ -323,7 +332,7 @@ const Selection: React.FC<SelectionProps> = ({
             </div>
           </div>
 
-          {/* Right: Difficulty & Unified Info/Actions Box */}
+          {/* Right Column: Difficulty & Unified Info/Actions Box */}
           <div className="flex flex-col">
             <h3
               className="text-2xl sm:text-3xl mb-4 sm:mb-6 tracking-wide"

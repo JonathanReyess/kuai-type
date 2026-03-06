@@ -118,6 +118,7 @@ function BattleInner({
     countdown,
     sendProgress,
     sendFinished,
+    sendStartGame, // <-- 1. Extract this from the hook!
     sendRematch,
     finalStats,
   } = useBattle({ roomCode, playerName, role });
@@ -151,18 +152,30 @@ function BattleInner({
     );
   }
 
+  // 2. Update the lobby phase to give the Host the launch button
   if (phase === "lobby") {
     return (
       <StatusScreen
         title={<span className="text-5xl">Ready!</span>}
-        subtitle={role === "guest" ? "Waiting for host to start" : "Starting…"}
+        subtitle={
+          role === "guest" ? "Waiting for host to start" : "Opponent joined!"
+        }
       >
-        <div className="flex items-center gap-3 justify-center">
-          <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:0ms]" />
-          <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:150ms]" />
-          <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:300ms]" />
-        </div>
-        <p className="font-serif text-gray-600 uppercase tracking-wider">
+        {role === "host" ? (
+          <button
+            onClick={() => sendStartGame(roomCode)}
+            className="px-8 py-3 bg-black text-white font-serif uppercase tracking-[0.2em] hover:bg-gray-800 transition-colors"
+          >
+            Start Battle
+          </button>
+        ) : (
+          <div className="flex items-center gap-3 justify-center">
+            <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:0ms]" />
+            <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:150ms]" />
+            <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:300ms]" />
+          </div>
+        )}
+        <p className="font-serif text-gray-600 uppercase tracking-wider mt-6">
           vs {opponent?.name ?? "opponent"}
         </p>
       </StatusScreen>
