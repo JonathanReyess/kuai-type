@@ -7,6 +7,8 @@ import Button from "./Button";
 interface GameProps {
   lesson: Lesson;
   difficulty: Difficulty;
+  useCalliFont: boolean;
+  onToggleFont: () => void;
   reviewTokens?: GameToken[];
   onEndGame: (stats: GameStats) => void;
   showTutorialOnStart: boolean;
@@ -95,11 +97,13 @@ const TypingDemo = () => {
 const Game: React.FC<GameProps> = ({
   lesson,
   difficulty,
+  useCalliFont,
+  onToggleFont,
   reviewTokens = [],
   onEndGame,
   showTutorialOnStart,
   onTutorialComplete,
-  onExit, // <--- Add this line
+  onExit,
 }) => {
   const [tokens, setTokens] = useState<GameToken[]>([]);
   const [loading, setLoading] = useState(true);
@@ -107,7 +111,6 @@ const Game: React.FC<GameProps> = ({
   // Initialize state based on the Prop from App.tsx
   const [showTutorial, setShowTutorial] = useState(showTutorialOnStart);
   const [isExitingTutorial, setIsExitingTutorial] = useState(false);
-  const [useCalliFont, setUseCalliFont] = useState(true);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [input, setInput] = useState("");
@@ -504,7 +507,7 @@ const Game: React.FC<GameProps> = ({
               <div className="flex flex-col gap-3 sm:gap-4">
                 {/* Font Toggle */}
                 <button
-                  onClick={() => setUseCalliFont((prev) => !prev)}
+                  onClick={onToggleFont}
                   className="w-full flex items-center justify-between px-4 py-3 border-2 border-black rounded-sm bg-white hover:bg-gray-50 transition-colors"
                 >
                   <span className="font-serif text-sm sm:text-base font-bold uppercase tracking-wider">

@@ -39,6 +39,8 @@ const App: React.FC = () => {
   const [stats, setStats] = useState<GameStats | null>(null);
   const [reviewTokens, setReviewTokens] = useState<GameToken[]>([]);
   const [hasSeenTutorial, setHasSeenTutorial] = useState(false);
+  const [useCalliFont, setUseCalliFont] = useState(true);
+  const handleToggleFont = () => setUseCalliFont((prev) => !prev);
 
   const handleStartSelection = () => setScreen("selection");
 
@@ -119,6 +121,8 @@ const App: React.FC = () => {
               showTutorialOnStart={!hasSeenTutorial}
               onExit={() => setScreen("selection")}
               onTutorialComplete={() => setHasSeenTutorial(true)}
+              useCalliFont={useCalliFont}
+              onToggleFont={handleToggleFont}
             />
           )}
           {screen === "result" && stats && lesson && (
