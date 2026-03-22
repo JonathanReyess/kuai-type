@@ -363,7 +363,7 @@ const Selection: React.FC<SelectionProps> = ({
             {/* THE UNIFIED BOX */}
             <div className="flex flex-col flex-grow">
               {/* Top Section: Info Card */}
-              <div className="min-h-[180px] sm:min-h-[200px] border-2 border-gray-300 p-4 mt-0 sm:p-6 flex flex-col justify-center rounded-t-sm bg-white/20 backdrop-blur-sm border-b-0">
+              <div className="min-h-[180px] sm:min-h-[200px] border-2 border-gray-300 p-4 mt-1 sm:p-6 flex flex-col justify-center rounded-t-sm bg-white/20 backdrop-blur-sm border-b-0">
                 {difficulty ? (
                   <div className="animate-slide-up space-y-4">
                     <div className="grid grid-cols-2 gap-4">

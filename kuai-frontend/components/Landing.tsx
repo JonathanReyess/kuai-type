@@ -51,7 +51,7 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
     }
   `}</style>
           <h1
-            className="text-[84px] xs:text-[100px] sm:text-[135px] md:text-[200px] lg:text-[230px] leading-none select-none text-center"
+            className="text-[84px] xs:text-[150px] sm:text-[180px] md:text-[250px] lg:text-[300px] leading-none select-none text-center"
             style={{
               fontFamily: "'Protest Revolution', sans-serif",
               letterSpacing: "-0.02em",

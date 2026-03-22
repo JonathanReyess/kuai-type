@@ -107,6 +107,7 @@ const Game: React.FC<GameProps> = ({
   // Initialize state based on the Prop from App.tsx
   const [showTutorial, setShowTutorial] = useState(showTutorialOnStart);
   const [isExitingTutorial, setIsExitingTutorial] = useState(false);
+  const [useCalliFont, setUseCalliFont] = useState(true);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [input, setInput] = useState("");
@@ -122,6 +123,7 @@ const Game: React.FC<GameProps> = ({
   // Font Styles
   const calliFont = { fontFamily: "'Ma Shan Zheng', cursive" };
   const protestFont = { fontFamily: "'Protest Revolution', sans-serif" };
+  const activeStoryFont = useCalliFont ? calliFont : { fontFamily: "serif" };
 
   // Cleaned up CSS (removed duplicates)
   const gameStyles = `
@@ -500,6 +502,27 @@ const Game: React.FC<GameProps> = ({
               </h2>
 
               <div className="flex flex-col gap-3 sm:gap-4">
+                {/* Font Toggle */}
+                <button
+                  onClick={() => setUseCalliFont((prev) => !prev)}
+                  className="w-full flex items-center justify-between px-4 py-3 border-2 border-black rounded-sm bg-white hover:bg-gray-50 transition-colors"
+                >
+                  <span className="font-serif text-sm sm:text-base font-bold uppercase tracking-wider">
+                    Font
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="text-lg sm:text-xl"
+                      style={useCalliFont ? calliFont : { fontFamily: "serif" }}
+                    >
+                      {useCalliFont ? "书法" : "默认"}
+                    </span>
+                    <span className="text-xs font-serif text-gray-500">
+                      {useCalliFont ? "Calligraphy" : "Default"}
+                    </span>
+                  </div>
+                </button>
+
                 <Button
                   onClick={() => setIsPaused(false)}
                   className="w-full rounded-sm"
@@ -563,7 +586,7 @@ const Game: React.FC<GameProps> = ({
           <div
             ref={containerRef}
             className="flex flex-wrap gap-x-2 sm:gap-x-3 md:gap-x-4 gap-y-8 sm:gap-y-10 md:gap-y-12 text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-relaxed py-8 sm:py-10 md:py-12 px-2 sm:px-4 transition-all"
-            style={calliFont}
+            style={activeStoryFont}
             onClick={() => !showTutorial && inputRef.current?.focus()}
           >
             {tokens.map((token, idx) => {
