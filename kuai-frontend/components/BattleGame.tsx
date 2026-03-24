@@ -43,14 +43,13 @@ const gameStyles = `
   }
 `;
 
-// Speed bonus: 300pts at 0s, decays by 2pts per second.
-// At 60s → +180, at 75s → +150 (diff = 30pts).
-// This ensures a 15/15 player (+150 base over 14/15) only loses to a
-// faster 14/15 player if that player finishes more than 7.5s quicker.
-// A 14/15 player (135 base) at 60s = 315. A 15/15 (150 base) at 75s = 300.
-// But 15/15 at 76s = 298 < 315, so accuracy only beats ~15s of speed.
-function calcSpeedBonus(elapsedSeconds: number): number {
-  return Math.max(0, 300 - elapsedSeconds * 2);
+// Speed bonus: 300pts at 0s, decays by 2pts per second, scaled by accuracy ratio.
+// Scaling by accuracyRatio (correct / total tokens) means skipping tokens reduces
+// the bonus proportionally — skipping everything gives 0 bonus regardless of speed.
+// Example: 14/15 correct at 60s → (300-120) * (14/15) ≈ 168 bonus.
+//          15/15 correct at 75s → (300-150) * 1.0 = 150 bonus.
+function calcSpeedBonus(elapsedSeconds: number, accuracyRatio: number): number {
+  return Math.round(Math.max(0, 300 - elapsedSeconds * 2) * accuracyRatio);
 }
 
 const BattleGame: React.FC<BattleGameProps> = ({
@@ -158,7 +157,9 @@ const BattleGame: React.FC<BattleGameProps> = ({
       const wpm = Math.round(tokens.length / 5 / safeDuration);
       const accuracy = Math.max(0, 100 - (mistakes / tokens.length) * 100);
 
-      const speedBonus = calcSpeedBonus(elapsedSeconds);
+      const missedCount = missedIndicesRef.current.size;
+      const accuracyRatio = Math.max(0, 1 - missedCount / tokens.length);
+      const speedBonus = calcSpeedBonus(elapsedSeconds, accuracyRatio);
       const finalScore = Math.round(scoreRef.current + speedBonus);
 
       const missedTokens = Array.from<number>(missedIndicesRef.current).map(
