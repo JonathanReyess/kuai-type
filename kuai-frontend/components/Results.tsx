@@ -23,7 +23,7 @@ const ComingSoonModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg bg-white border-4 border-black p-10 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] rounded-sm window-popout text-center">
+      <div className="relative w-full max-w-lg bg-[#f8f7f4] border-4 border-black p-10 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] rounded-sm window-popout text-center">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-2xl font-bold hover:scale-125 transition-transform"
@@ -183,7 +183,7 @@ const Results: React.FC<ResultsProps> = ({
 
       {/* RESULTS CARD */}
       <div
-        className={`relative z-10 w-full max-w-2xl max-h-[85vh] bg-white border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] flex flex-col rounded-sm ${exiting ? "window-exit" : "window-popout"}`}
+        className={`relative z-10 w-full max-w-2xl max-h-[85vh] bg-[#f8f7f4] border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] flex flex-col rounded-sm ${exiting ? "window-exit" : "window-popout"}`}
       >
         <div className="text-center p-6 pb-4 shrink-0">
           <h2
@@ -277,7 +277,7 @@ const Results: React.FC<ResultsProps> = ({
                     <div
                       key={idx}
                       className={`relative flex flex-col items-center p-3 border-2 rounded-sm transition-all text-center
-                        ${isSaved ? "border-bg-[#7E9E73] bg-[#7E9E73]/25" : "border-gray-100 hover:border-gray-300 bg-white"}`}
+                        ${isSaved ? "border-bg-[#7E9E73] bg-[#7E9E73]/25" : "border-black/10 hover:border-black/30 bg-[#f8f7f4]"}`}
                     >
                       <button
                         onClick={() => handleSaveWord(idx, token)}
@@ -337,7 +337,7 @@ const Results: React.FC<ResultsProps> = ({
         </div>
 
         {/* FOOTER */}
-        <div className="shrink-0 flex flex-col gap-3 py-5 px-8 border-t border-gray-200 bg-white rounded-b-sm">
+        <div className="shrink-0 flex flex-col gap-3 py-5 px-8 border-t border-black/10 bg-[#f8f7f4] rounded-b-sm">
           <button
             onClick={() =>
               canChallenge

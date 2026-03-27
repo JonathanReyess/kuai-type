@@ -119,7 +119,7 @@ export default function ChallengeLinkModal({
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg bg-white border-4 border-black p-8 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] rounded-sm">
+      <div className="relative w-full max-w-lg bg-[#f8f7f4] border-4 border-black p-8 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] rounded-sm">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-2xl font-bold hover:scale-125 transition-transform"
@@ -150,7 +150,7 @@ export default function ChallengeLinkModal({
         {/* Lesson + difficulty tags */}
         <div className="flex gap-3 justify-center mb-6">
           <span
-            className="px-3 py-1 bg-gray-50 border border-gray-200 font-serif text-sm rounded-sm"
+            className="px-3 py-1 bg-[#f0efe9] border border-black/20 font-serif text-sm rounded-sm"
             style={calliFont}
           >
             {lessonTitle}
@@ -163,7 +163,7 @@ export default function ChallengeLinkModal({
         {/* ── Phase: naming ── */}
         {phase === "naming" && (
           <>
-            <label className="block font-serif text-sm uppercase tracking-wider text-gray-500 mb-2">
+            <label className="block font-serif text-sm uppercase tracking-wider text-black/50 mb-2">
               Your name (shown to opponent)
             </label>
             <input
@@ -172,7 +172,7 @@ export default function ChallengeLinkModal({
               value={nameInput}
               onChange={(e) => setNameInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleCreateRoom()}
-              className="w-full border-2 border-black p-3 font-serif text-lg mb-4 outline-none bg-gray-50"
+              className="w-full border-2 border-black p-3 font-serif text-lg mb-4 outline-none bg-[#f8f7f4] focus:bg-white"
               placeholder="e.g. 小明"
             />
             <button
@@ -188,7 +188,7 @@ export default function ChallengeLinkModal({
         {/* ── Phase: creating ── */}
         {phase === "creating" && (
           <div className="text-center py-8">
-            <div className="font-serif text-gray-400 uppercase tracking-widest animate-pulse text-sm">
+            <div className="font-serif text-black/40 uppercase tracking-widest animate-pulse text-sm">
               Creating room…
             </div>
           </div>
@@ -197,7 +197,7 @@ export default function ChallengeLinkModal({
         {/* ── Phase: error ── */}
         {phase === "error" && (
           <div className="text-center py-4">
-            <p className="font-serif text-red-500 mb-4">{errorMsg}</p>
+            <p className="font-serif text-[#8B2020] mb-4">{errorMsg}</p>
             <button
               onClick={() => setPhase("naming")}
               className="px-6 py-2 border-2 border-black font-serif uppercase text-sm hover:bg-black hover:text-white transition-all"
@@ -211,7 +211,7 @@ export default function ChallengeLinkModal({
         {phase === "ready" && (
           <>
             <div className="text-center mb-5">
-              <p className="text-sm font-serif uppercase tracking-widest text-gray-500 mb-2">
+              <p className="text-sm font-serif uppercase tracking-widest text-black/50 mb-2">
                 Room Code
               </p>
               <div
@@ -223,7 +223,7 @@ export default function ChallengeLinkModal({
             </div>
 
             <div className="flex gap-2 mb-5">
-              <div className="flex-1 border-2 border-gray-200 p-3 font-serif text-sm truncate bg-gray-50 text-gray-400">
+              <div className="flex-1 border-2 border-black/20 p-3 font-serif text-sm truncate bg-[#f0efe9] text-black/40">
                 {challengeLink}
               </div>
               <button
@@ -243,7 +243,7 @@ export default function ChallengeLinkModal({
               className={`border-2 p-4 text-center mb-5 transition-all duration-300 ${
                 opponentJoined
                   ? "border-black bg-black text-white"
-                  : "border-dashed border-gray-300"
+                  : "border-dashed border-black/30"
               }`}
             >
               {opponentJoined ? (
@@ -261,7 +261,7 @@ export default function ChallengeLinkModal({
               ) : (
                 <div className="flex items-center justify-center gap-2">
                   <span className="w-2 h-2 bg-black rounded-full animate-pulse" />
-                  <span className="font-serif text-sm text-gray-600 uppercase tracking-wider">
+                  <span className="font-serif text-sm text-black/60 uppercase tracking-wider">
                     Waiting for opponent…
                   </span>
                 </div>
@@ -275,7 +275,7 @@ export default function ChallengeLinkModal({
                 ${
                   opponentJoined
                     ? "bg-[#698360] text-white hover:bg-[#698360]/90 cursor-pointer"
-                    : "bg-gray-100 text-gray-400 cursor-not-allowed border-2 border-gray-200"
+                    : "bg-[#f0efe9] text-black/40 cursor-not-allowed border-2 border-black/20"
                 }`}
             >
               Start Game

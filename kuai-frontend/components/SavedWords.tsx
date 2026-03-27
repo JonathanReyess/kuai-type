@@ -21,7 +21,7 @@ const ComingSoonPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         onClick={onClose}
       >
         <div
-          className="bg-white border-4 border-black p-8 max-w-xs w-full shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center transform transition-transform animate-in fade-in zoom-in duration-200"
+          className="bg-[#f8f7f4] border-4 border-black p-8 max-w-xs w-full shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center transform transition-transform animate-in fade-in zoom-in duration-200"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="text-5xl mb-4">🚧</div>
@@ -31,7 +31,7 @@ const ComingSoonPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           >
             Coming Soon
           </h3>
-          <p className="font-serif text-sm text-gray-600 mb-6">
+          <p className="font-serif text-sm text-black/60 mb-6">
             We're currently building the custom practice engine. Stay tuned!
           </p>
           <button
@@ -107,30 +107,30 @@ const FlippedCard: React.FC<FlippedCardProps> = ({ token, onClose }) => {
           style={{ width: "280px", height: "320px", perspective: "1000px" }}
         >
           <div className={`flip-inner ${flipped ? "is-flipped" : ""}`}>
-            <div className="flip-front bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rounded-sm flex flex-col items-center justify-center">
-              <div className="text-9xl text-red-600" style={calliFont}>
+            <div className="flip-front bg-[#f8f7f4] border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rounded-sm flex flex-col items-center justify-center">
+              <div className="text-9xl text-[#8B2020]" style={calliFont}>
                 {token.char}
               </div>
-              <div className="mt-4 text-sm font-serif text-gray-400 uppercase tracking-widest">
+              <div className="mt-4 text-sm font-serif text-black/40 uppercase tracking-widest">
                 revealing…
               </div>
             </div>
             <div className="flip-back bg-black text-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,0.4)] rounded-sm flex flex-col">
               <button
                 onClick={onClose}
-                className="absolute top-3 right-3 text-gray-500 hover:text-white transition-colors text-lg z-10"
+                className="absolute top-3 right-3 text-white/50 hover:text-white transition-colors text-lg z-10"
               >
                 ✕
               </button>
               <div className="flex items-center gap-3 p-5 pb-4 border-b border-white/10">
-                <div className="text-5xl text-red-400" style={calliFont}>
+                <div className="text-5xl text-[#8B2020]/70" style={calliFont}>
                   {token.char}
                 </div>
                 <div>
                   <div className="text-2xl font-serif font-bold tracking-wider">
                     {token.pinyin}
                   </div>
-                  <div className="text-xs text-gray-500 uppercase tracking-widest font-serif mt-0.5">
+                  <div className="text-xs text-white/50 uppercase tracking-widest font-serif mt-0.5">
                     Mandarin
                   </div>
                 </div>
@@ -138,7 +138,7 @@ const FlippedCard: React.FC<FlippedCardProps> = ({ token, onClose }) => {
               <div className="flex-1 flex items-center justify-center p-6">
                 {definition ? (
                   <div className="text-center">
-                    <div className="text-xs text-gray-300 uppercase tracking-widest font-serif mb-3">
+                    <div className="text-xs text-white/40 uppercase tracking-widest font-serif mb-3">
                       Definition
                     </div>
                     <div className="text-2xl font-serif text-gray-100 leading-snug capitalize">
@@ -146,7 +146,7 @@ const FlippedCard: React.FC<FlippedCardProps> = ({ token, onClose }) => {
                     </div>
                   </div>
                 ) : (
-                  <div className="text-gray-600 font-serif text-sm italic text-center">
+                  <div className="text-white/60 font-serif text-sm italic text-center">
                     No definition available
                   </div>
                 )}
@@ -267,7 +267,7 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
             >
               Review List
             </h2>
-            <p className="font-serif text-gray-300 text-sm mt-0.5">
+            <p className="font-serif text-white/60 text-sm mt-0.5">
               {words.length} saved words
             </p>
           </div>
@@ -280,20 +280,20 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
         </div>
 
         {words.length > 0 && (
-          <div className="relative z-10 flex items-center gap-2 px-6 py-3 border-b-2 border-black/10 bg-white/60">
+          <div className="relative z-10 flex items-center gap-2 px-6 py-3 border-b-2 border-black/10 bg-[#f8f7f4]/80">
             <button
               onClick={() => {
                 setSelectMode(!selectMode);
                 setSelected(new Set());
               }}
-              className={`text-xs font-serif uppercase tracking-wider px-3 py-1.5 border transition-all ${selectMode ? "bg-black text-white border-black" : "border-gray-400 hover:border-black"}`}
+              className={`text-xs font-serif uppercase tracking-wider px-3 py-1.5 border transition-all ${selectMode ? "bg-black text-white border-black" : "border-black/30 hover:border-black"}`}
             >
               {selectMode ? "Cancel" : "Select"}
             </button>
             {selectMode && selected.size > 0 && (
               <button
                 onClick={handleRemoveSelected}
-                className="text-xs font-serif uppercase tracking-wider px-3 py-1.5 border border-red-400 text-red-600 hover:bg-red-600 hover:text-white transition-all"
+                className="text-xs font-serif uppercase tracking-wider px-3 py-1.5 border border-[#8B2020] text-[#8B2020] hover:bg-[#8B2020] hover:text-white transition-all"
               >
                 Remove ({selected.size})
               </button>
@@ -301,7 +301,7 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
             <div className="flex-1" />
             <button
               onClick={handleClearAll}
-              className="text-xs font-serif text-gray-400 hover:text-red-500 uppercase tracking-wider transition-colors"
+              className="text-xs font-serif text-black/40 hover:text-[#8B2020] uppercase tracking-wider transition-colors"
             >
               Clear All
             </button>
@@ -314,7 +314,7 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
               <div className="text-6xl mb-6" style={calliFont}>
                 空
               </div>
-              <p className="font-serif text-gray-500 text-lg italic mb-2">
+              <p className="font-serif text-black/50 text-lg italic mb-2">
                 No saved words yet
               </p>
             </div>
@@ -325,7 +325,7 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
                   key={idx}
                   onClick={() => handleCardClick(token, idx)}
                   className={`relative flex flex-col items-center p-3 border-2 rounded-sm transition-all cursor-pointer group
-                    ${selectMode ? (selected.has(idx) ? "border-black bg-black text-white" : "border-gray-200 hover:border-black") : "border-gray-200 hover:border-black hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] bg-white"}`}
+                    ${selectMode ? (selected.has(idx) ? "border-black bg-black text-white" : "border-black/20 hover:border-black") : "border-black/20 hover:border-black hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] bg-[#f8f7f4]"}`}
                 >
                   {!selectMode && (
                     <button
@@ -333,14 +333,14 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
                         e.stopPropagation();
                         handleRemove(idx);
                       }}
-                      className="absolute top-1 right-1.5 text-gray-300 hover:text-red-500 transition-colors text-sm opacity-0 group-hover:opacity-100"
+                      className="absolute top-1 right-1.5 text-black/30 hover:text-[#8B2020] transition-colors text-sm opacity-0 group-hover:opacity-100"
                     >
                       ✕
                     </button>
                   )}
                   {selectMode && (
                     <div
-                      className={`absolute top-1.5 right-1.5 w-3.5 h-3.5 border-2 rounded-sm flex items-center justify-center ${selected.has(idx) ? "border-white bg-white" : "border-gray-400"}`}
+                      className={`absolute top-1.5 right-1.5 w-3.5 h-3.5 border-2 rounded-sm flex items-center justify-center ${selected.has(idx) ? "border-white bg-white" : "border-black/40"}`}
                     >
                       {selected.has(idx) && (
                         <span className="text-black text-[8px] font-bold">
@@ -350,13 +350,13 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
                     </div>
                   )}
                   <div
-                    className={`text-4xl mb-1 transition-colors ${selected.has(idx) ? "text-white" : "text-red-600"}`}
+                    className={`text-4xl mb-1 transition-colors ${selected.has(idx) ? "text-white" : "text-[#8B2020]"}`}
                     style={calliFont}
                   >
                     {token.char}
                   </div>
                   <div
-                    className={`text-xs font-serif font-bold ${selected.has(idx) ? "text-gray-300" : "text-gray-700"}`}
+                    className={`text-xs font-serif font-bold ${selected.has(idx) ? "text-white/40" : "text-black/70"}`}
                   >
                     {token.pinyin}
                   </div>
@@ -367,7 +367,7 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
         </div>
 
         {words.length > 0 && (
-          <div className="relative z-10 p-6 border-t-2 border-black bg-white/80">
+          <div className="relative z-10 p-6 border-t-2 border-black bg-[#f8f7f4]/90">
             <button
               onClick={handlePractice}
               className="w-full py-4 bg-black text-white font-serif uppercase tracking-[0.25em] hover:bg-gray-900 transition-all active:translate-y-0.5 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] flex items-center justify-center gap-3"
@@ -378,7 +378,7 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
                   ? `Practice ${selected.size} Selected`
                   : `Practice All ${words.length}`}
               </span>
-              <span className="text-gray-400">→</span>
+              <span className="text-black/40">→</span>
             </button>
           </div>
         )}

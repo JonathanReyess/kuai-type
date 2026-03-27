@@ -294,7 +294,7 @@ const BattleGame: React.FC<BattleGameProps> = ({
             <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:150ms]" />
             <div className="w-3 h-3 bg-black rounded-full animate-bounce [animation-delay:300ms]" />
           </div>
-          <p className="font-serif text-gray-500 uppercase tracking-widest text-sm">
+          <p className="font-serif text-black/50 uppercase tracking-widest text-sm">
             Waiting for results…
           </p>
         </div>
@@ -425,14 +425,14 @@ const BattleGame: React.FC<BattleGameProps> = ({
                   key={idx}
                   data-active={isCurrent}
                   className={`relative transition-all duration-300 px-1 sm:px-2 py-0.5 sm:py-1 rounded-md
-                    ${isCompleted ? (wasMissed ? "text-red-400/80" : "text-black/20") : "text-black"}
+                    ${isCompleted ? (wasMissed ? "text-[#8B2020]/80" : "text-black/20") : "text-black"}
                     ${isCurrent ? "bg-black text-white transform scale-110 sm:scale-125 shadow-xl z-10" : ""}
-                    ${isCurrent && shake ? "animate-shake bg-red-900" : ""}
+                    ${isCurrent && shake ? "animate-shake bg-[#5c1010]" : ""}
                   `}
                 >
                   {token.char}
                   {isCurrent && (
-                    <div className="absolute -top-10 sm:-top-12 md:-top-14 left-1/2 -translate-x-1/2 whitespace-nowrap text-sm sm:text-base md:text-xl font-serif text-black font-bold tracking-wider bg-white px-2 sm:px-3 py-0.5 sm:py-1 border-2 border-black shadow-lg z-20">
+                    <div className="absolute -top-10 sm:-top-12 md:-top-14 left-1/2 -translate-x-1/2 whitespace-nowrap text-sm sm:text-base md:text-xl font-serif text-black font-bold tracking-wider bg-[#f8f7f4] px-2 sm:px-3 py-0.5 sm:py-1 border-2 border-black shadow-lg z-20">
                       {input || (
                         <span className="inline-block w-1.5 sm:w-2 h-4 sm:h-5 bg-black animate-pulse align-middle" />
                       )}

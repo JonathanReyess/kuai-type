@@ -1,1 +1,7 @@
 .vercel
+.agents
+.claude
+.openclaw
+SKILLS.md
+skills-lock.json
+skills/

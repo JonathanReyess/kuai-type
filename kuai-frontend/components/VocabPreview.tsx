@@ -51,7 +51,7 @@ export const VocabPreview: React.FC<VocabPreviewProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-      <div className="bg-white w-full max-w-4xl max-h-[80vh] border-4 border-black p-8 flex flex-col shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-md window-popout">
+      <div className="bg-[#f8f7f4] w-full max-w-4xl max-h-[80vh] border-4 border-black p-8 flex flex-col shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-md window-popout">
         <div className="flex justify-between items-center mb-6 border-b-2 border-black pb-4">
           <div>
             <h2 className="text-3xl font-serif font-bold">Vocabulary List</h2>
@@ -70,13 +70,13 @@ export const VocabPreview: React.FC<VocabPreviewProps> = ({
             placeholder="Search by pinyin (e.g. 'jiu')..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-4 border-2 border-black rounded-sm font-serif outline-none focus:bg-gray-50 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]"
+            className="w-full p-4 border-2 border-black rounded-sm font-serif outline-none focus:bg-white transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]"
             autoFocus
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery("")}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black font-serif text-sm"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-black/40 hover:text-black font-serif text-sm"
             >
               CLEAR
             </button>
@@ -86,7 +86,7 @@ export const VocabPreview: React.FC<VocabPreviewProps> = ({
         <div className="overflow-y-auto pr-4 custom-scrollbar flex-grow">
           {filteredVocab.length > 0 ? (
             <table className="w-full text-left border-collapse">
-              <thead className="sticky top-0 bg-white z-10">
+              <thead className="sticky top-0 bg-[#f8f7f4] z-10">
                 <tr className="font-serif text-lg border-b border-black">
                   <th className="py-2">Simplified</th>
                   <th className="py-2">Pinyin</th>
@@ -97,7 +97,7 @@ export const VocabPreview: React.FC<VocabPreviewProps> = ({
                 {filteredVocab.map((vocab, index) => (
                   <tr
                     key={index}
-                    className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                    className="border-b border-black/10 hover:bg-[#f0efe9] transition-colors"
                   >
                     <td
                       className="py-3 font-bold text-3xl"
@@ -105,10 +105,10 @@ export const VocabPreview: React.FC<VocabPreviewProps> = ({
                     >
                       {vocab.simplified}
                     </td>
-                    <td className="py-3 font-serif text-gray-700">
+                    <td className="py-3 font-serif text-black/70">
                       {vocab.pinyin}
                     </td>
-                    <td className="py-3 font-serif text-gray-600 italic">
+                    <td className="py-3 font-serif text-black/60 italic">
                       {vocab.definition}
                     </td>
                   </tr>
@@ -116,13 +116,13 @@ export const VocabPreview: React.FC<VocabPreviewProps> = ({
               </tbody>
             </table>
           ) : (
-            <div className="h-full flex flex-col items-center justify-center py-12 text-gray-400 font-serif italic">
+            <div className="h-full flex flex-col items-center justify-center py-12 text-black/40 font-serif italic">
               <p>No words match your search.</p>
             </div>
           )}
         </div>
 
-        <div className="mt-6 text-center text-xs font-serif text-gray-400 uppercase tracking-widest">
+        <div className="mt-6 text-center text-xs font-serif text-black/40 uppercase tracking-widest">
           Press ESC or click X to close
         </div>
       </div>

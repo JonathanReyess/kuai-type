@@ -51,7 +51,7 @@ function JoinRoomModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-      <div className="relative w-full max-w-sm bg-white border-4 border-black p-8 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] rounded-sm">
+      <div className="relative w-full max-w-sm bg-[#f8f7f4] border-4 border-black p-8 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] rounded-sm">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-2xl font-bold hover:scale-125 transition-transform"
@@ -64,7 +64,7 @@ function JoinRoomModal({ onClose }: { onClose: () => void }) {
         >
           Join Room
         </h3>
-        <label className="block font-serif text-sm uppercase tracking-wider text-gray-500 mb-2">
+        <label className="block font-serif text-sm uppercase tracking-wider text-black/50 mb-2">
           Room code
         </label>
         <input
@@ -75,7 +75,7 @@ function JoinRoomModal({ onClose }: { onClose: () => void }) {
             setCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""))
           }
           onKeyDown={(e) => e.key === "Enter" && handleJoin()}
-          className="w-full border-2 border-black p-3 font-serif text-2xl mb-6 outline-none bg-gray-50 focus:bg-white tracking-[0.4em] text-center uppercase"
+          className="w-full border-2 border-black p-3 font-serif text-2xl mb-6 outline-none bg-[#f8f7f4] focus:bg-white tracking-[0.4em] text-center uppercase"
           placeholder="ABCD12"
           style={protestFont}
         />
@@ -275,7 +275,7 @@ const Selection: React.FC<SelectionProps> = ({
                     ${
                       selectedLessonId === lesson.id
                         ? "border-black bg-black text-white"
-                        : "border-gray-300 hover:border-black text-black"
+                        : "border-black/20 hover:border-black text-black"
                     }`}
                 >
                   <div className="flex justify-between items-start sm:items-center gap-2">
@@ -289,8 +289,8 @@ const Selection: React.FC<SelectionProps> = ({
                       <p
                         className={`text-xs sm:text-sm font-serif truncate whitespace-nowrap ${
                           selectedLessonId === lesson.id
-                            ? "text-gray-300"
-                            : "text-gray-500"
+                            ? "text-white/60"
+                            : "text-black/50"
                         }`}
                       >
                         {lesson.description}
@@ -351,7 +351,7 @@ const Selection: React.FC<SelectionProps> = ({
                     ${
                       difficulty === diff
                         ? "bg-black text-white border-black"
-                        : "border-gray-300 text-gray-500 hover:border-black hover:text-black"
+                        : "border-black/20 text-black/50 hover:border-black hover:text-black"
                     }`}
                   >
                     {diff}
@@ -363,12 +363,12 @@ const Selection: React.FC<SelectionProps> = ({
             {/* THE UNIFIED BOX */}
             <div className="flex flex-col flex-grow">
               {/* Top Section: Info Card */}
-              <div className="min-h-[180px] sm:min-h-[200px] border-2 border-gray-300 p-4 mt-1 sm:p-6 flex flex-col justify-center rounded-t-sm bg-white/20 backdrop-blur-sm border-b-0">
+              <div className="min-h-[180px] sm:min-h-[200px] border-2 border-black/20 p-4 mt-1 sm:p-6 flex flex-col justify-center rounded-t-sm bg-[#f8f7f4]/20 backdrop-blur-sm border-b-0">
                 {difficulty ? (
                   <div className="animate-slide-up space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="border-l-2 border-black pl-3">
-                        <p className="text-[10px] uppercase text-gray-400 font-bold">
+                        <p className="text-[10px] uppercase text-black/40 font-bold">
                           Length
                         </p>
                         <p className="font-serif text-base sm:text-lg">
@@ -384,7 +384,7 @@ const Selection: React.FC<SelectionProps> = ({
                         </p>
                       </div>
                     </div>
-                    <p className="font-serif text-gray-700 italic border-t border-gray-200 pt-3 text-sm">
+                    <p className="font-serif text-black/70 italic border-t border-black/20 pt-3 text-sm">
                       {DIFFICULTY_METADATA[difficulty].desc}
                     </p>
                     {selectedLessonId && (
@@ -409,7 +409,7 @@ const Selection: React.FC<SelectionProps> = ({
               </div>
 
               {/* Bottom Section: Action Buttons */}
-              <div className="flex flex-col gap-3 p-4 sm:p-6 border-2 border-gray-300 rounded-b-sm bg-white/10 border-t-0">
+              <div className="flex flex-col gap-3 p-4 sm:p-6 border-2 border-black/20 rounded-b-sm bg-[#f8f7f4]/10 border-t-0">
                 {/* Preview Words — visible whenever a lesson is selected */}
                 {selectedLessonId && (
                   <Button

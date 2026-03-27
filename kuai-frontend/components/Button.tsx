@@ -19,7 +19,7 @@ const Button: React.FC<ButtonProps> = ({
   const variants = {
     primary: "bg-black text-white border-2 border-black hover:bg-zinc-800", // Removed hover:text-black
     secondary:
-      "bg-white text-black border-2 border-black hover:bg-black hover:text-white",
+      "bg-[#f8f7f4] text-black border-2 border-black hover:bg-black hover:text-white",
     outline:
       "bg-transparent text-black border-b-2 border-black hover:opacity-70",
   };

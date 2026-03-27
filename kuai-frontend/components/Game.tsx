@@ -60,14 +60,14 @@ const TypingDemo = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center p-4 sm:p-6 bg-gray-50 border-2 border-dashed border-gray-300 rounded-md my-3 sm:my-4">
-      <div className="text-xs sm:text-sm text-gray-500 font-serif mb-2 uppercase tracking-widest">
+    <div className="flex flex-col items-center p-4 sm:p-6 bg-[#f0efe9] border-2 border-dashed border-black/30 rounded-md my-3 sm:my-4">
+      <div className="text-xs sm:text-sm text-black/50 font-serif mb-2 uppercase tracking-widest">
         Example
       </div>
       {/* Character Card */}
       <div
         className={`relative transition-all duration-300 px-2 py-1 rounded-md mb-3 sm:mb-4 border-2
-        ${phase === "success" ? "bg-black text-white border-black scale-110" : "bg-white text-black border-gray-200"}`}
+        ${phase === "success" ? "bg-black text-white border-black scale-110" : "bg-[#f8f7f4] text-black border-black/20"}`}
       >
         <span
           className="text-4xl sm:text-5xl"
@@ -393,7 +393,7 @@ const Game: React.FC<GameProps> = ({
         >
           Loading...
         </div>
-        <div className="relative z-10 text-lg sm:text-xl font-serif text-gray-500 text-center px-4">
+        <div className="relative z-10 text-lg sm:text-xl font-serif text-black/50 text-center px-4">
           {reviewTokens.length > 0
             ? "Generating Custom Level..."
             : "Preparing Lesson..."}
@@ -508,7 +508,7 @@ const Game: React.FC<GameProps> = ({
                 {/* Font Toggle */}
                 <button
                   onClick={onToggleFont}
-                  className="w-full flex items-center justify-between px-4 py-3 border-2 border-black rounded-sm bg-white hover:bg-gray-50 transition-colors"
+                  className="w-full flex items-center justify-between px-4 py-3 border-2 border-black rounded-sm bg-[#f8f7f4] hover:bg-[#f0efe9] transition-colors"
                 >
                   <span className="font-serif text-sm sm:text-base font-bold uppercase tracking-wider">
                     Font
@@ -520,7 +520,7 @@ const Game: React.FC<GameProps> = ({
                     >
                       {useCalliFont ? "书法" : "默认"}
                     </span>
-                    <span className="text-xs font-serif text-gray-500">
+                    <span className="text-xs font-serif text-black/50">
                       {useCalliFont ? "Calligraphy" : "Default"}
                     </span>
                   </div>
@@ -605,13 +605,13 @@ const Game: React.FC<GameProps> = ({
                   className={`relative transition-all duration-300 px-1 sm:px-2 py-0.5 sm:py-1 rounded-md
                                         ${isCompleted ? (wasMissed ? "text-[#bc2f32]/60" : "text-black/20") : "text-black"}
                                         ${isCurrent ? "bg-black text-white transform scale-110 sm:scale-125 shadow-xl sm:shadow-2xl z-10" : ""}
-                                        ${isCurrent && shake ? "animate-shake bg-red-900" : ""}
+                                        ${isCurrent && shake ? "animate-shake bg-[#5c1010]" : ""}
                                     `}
                 >
                   {token.char}
 
                   {isCurrent && (
-                    <div className="absolute -top-10 sm:-top-12 md:-top-14 left-1/2 -translate-x-1/2 whitespace-nowrap text-sm sm:text-base md:text-xl font-serif text-black font-bold tracking-wider bg-white px-2 sm:px-3 py-0.5 sm:py-1 border-2 border-black shadow-lg z-20">
+                    <div className="absolute -top-10 sm:-top-12 md:-top-14 left-1/2 -translate-x-1/2 whitespace-nowrap text-sm sm:text-base md:text-xl font-serif text-black font-bold tracking-wider bg-[#f8f7f4] px-2 sm:px-3 py-0.5 sm:py-1 border-2 border-black shadow-lg z-20">
                       {input || (
                         <span className="inline-block w-1.5 sm:w-2 h-4 sm:h-5 bg-black animate-pulse align-middle"></span>
                       )}
