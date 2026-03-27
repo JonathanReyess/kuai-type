@@ -109,14 +109,6 @@ const Selection: React.FC<SelectionProps> = ({
   const [showSavedWords, setShowSavedWords] = useState(false);
   const [showChallengeModal, setShowChallengeModal] = useState(false);
   const [showJoinModal, setShowJoinModal] = useState(false);
-  const [savedCount, setSavedCount] = useState(0);
-
-  useEffect(() => {
-    const saved = JSON.parse(
-      localStorage.getItem("scrivo_saved_words") || "[]",
-    );
-    setSavedCount(saved.length);
-  }, [showSavedWords]);
 
   const blinkStyles = `
     @keyframes arcade-blink {
@@ -131,14 +123,14 @@ const Selection: React.FC<SelectionProps> = ({
       to { opacity: 1; transform: translateY(0); }
     }
     .animate-slide-up {
-      animation: slideUp 0.3s ease-out forwards;
+      animation: slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
     @keyframes windowPop {
       0% { opacity: 0; transform: scale(0.95); }
       100% { opacity: 1; transform: scale(1); }
     }
     .window-popout {
-      animation: windowPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      animation: windowPop 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
   `;
 
@@ -216,10 +208,10 @@ const Selection: React.FC<SelectionProps> = ({
       />
 
       <div className="relative z-10 p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto flex flex-col min-h-screen">
-        <header className="mb-6 sm:mb-8 lg:mb-12 flex justify-between items-center border-b-2 border-black pb-3 sm:pb-4">
+        <header className="mb-6 sm:mb-8 lg:mb-12 grid grid-cols-3 items-center border-b-2 border-black pb-3 sm:pb-4">
           <button
             onClick={onBack}
-            className="group flex items-center gap-2 hover:opacity-70 transition-opacity text-base sm:text-xl"
+            className="group flex items-center gap-2 hover:opacity-70 transition-opacity text-base sm:text-xl justify-self-start"
             style={protestFont}
           >
             <svg
@@ -227,26 +219,18 @@ const Selection: React.FC<SelectionProps> = ({
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
               className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:-translate-x-1"
+              aria-hidden="true"
             >
-              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-              <g
-                id="SVGRepo_tracerCarrier"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              ></g>
-              <g id="SVGRepo_iconCarrier">
-                <path d="m4.431 12.822 13 9A1 1 0 0 0 19 21V3a1 1 0 0 0-1.569-.823l-13 9a1.003 1.003 0 0 0 0 1.645z"></path>
-              </g>
+              <path d="m4.431 12.822 13 9A1 1 0 0 0 19 21V3a1 1 0 0 0-1.569-.823l-13 9a1.003 1.003 0 0 0 0 1.645z" />
             </svg>
             <span>BACK</span>
           </button>
           <h2
-            className="text-3xl sm:text-4xl lg:text-5xl tracking-widest uppercase"
+            className="text-3xl sm:text-4xl lg:text-5xl tracking-widest uppercase text-center"
             style={protestFont}
           >
             kuai
           </h2>
-          <div className="w-[80px] sm:w-[120px]"></div>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 flex-grow">
@@ -260,18 +244,12 @@ const Selection: React.FC<SelectionProps> = ({
             </h3>
 
             {/* Scrollable lesson container — max 5 visible */}
-            <div
-              className={`space-y-3 sm:space-y-4 ${
-                LESSONS.length > 5
-                  ? "overflow-y-auto max-h-[670px] pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
-                  : ""
-              }`}
-            >
+            <div className="space-y-3 sm:space-y-4 overflow-y-auto h-[740px] pr-2 scrollbar-thin scrollbar-thumb-black/30 scrollbar-track-transparent">
               {LESSONS.map((lesson) => (
                 <button
                   key={lesson.id}
                   onClick={() => setSelectedLessonId(lesson.id)}
-                  className={`w-full text-left p-4 sm:p-5 lg:p-6 border-2 transition-all duration-300 rounded-sm
+                  className={`w-full text-left p-3 sm:p-4 lg:p-[21px] border-2 transition-all duration-300 rounded-sm
                     ${
                       selectedLessonId === lesson.id
                         ? "border-black bg-black text-white"
@@ -305,31 +283,6 @@ const Selection: React.FC<SelectionProps> = ({
                 </button>
               ))}
             </div>
-
-            {/* Review List button — always below the lesson container */}
-            <div className="mt-4">
-              <button
-                onClick={() => setShowSavedWords(true)}
-                className="relative w-full flex items-center justify-center gap-3 px-6 py-4 border-2 border-black font-serif text-sm sm:text-base tracking-[0.2em] hover:bg-zinc-800 hover:text-white transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] bg-transparent"
-              >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-                </svg>
-                <span>Review List</span>
-                {savedCount > 0 && (
-                  <span className="bg-black/5 text-black text-[12px] px-3 py-0.6 border border-black/20 rounded-full font-serif lowercase italic tracking-wider">
-                    {savedCount} saved
-                  </span>
-                )}
-              </button>
-            </div>
           </div>
 
           {/* Right Column: Difficulty & Unified Info/Actions Box */}
@@ -361,7 +314,7 @@ const Selection: React.FC<SelectionProps> = ({
             </div>
 
             {/* THE UNIFIED BOX */}
-            <div className="flex flex-col flex-grow">
+            <div className="flex flex-col">
               {/* Top Section: Info Card */}
               <div className="min-h-[180px] sm:min-h-[200px] border-2 border-black/20 p-4 mt-1 sm:p-6 flex flex-col justify-center rounded-t-sm bg-[#f8f7f4]/20 backdrop-blur-sm border-b-0">
                 {difficulty ? (
@@ -376,7 +329,7 @@ const Selection: React.FC<SelectionProps> = ({
                         </p>
                       </div>
                       <div className="border-l-2 border-black pl-3">
-                        <p className="text-[10px] uppercase text-gray-500 font-bold">
+                        <p className="text-[10px] uppercase text-black/50 font-bold">
                           Focus
                         </p>
                         <p className="font-serif text-base sm:text-lg">
@@ -389,7 +342,7 @@ const Selection: React.FC<SelectionProps> = ({
                     </p>
                     {selectedLessonId && (
                       <div className="bg-black/5 p-3 sm:p-4 rounded-sm border border-black/10">
-                        <p className="text-[10px] uppercase text-gray mb-1">
+                        <p className="text-[10px] uppercase text-black/40 mb-1">
                           Passage Preview
                         </p>
                         <p
@@ -402,7 +355,7 @@ const Selection: React.FC<SelectionProps> = ({
                     )}
                   </div>
                 ) : (
-                  <div className="text-center text-gray-500 font-serif italic text-base sm:text-lg px-2">
+                  <div className="text-center text-black/50 font-serif italic text-base sm:text-lg px-2">
                     Select a difficulty to preview level info
                   </div>
                 )}
@@ -419,16 +372,6 @@ const Selection: React.FC<SelectionProps> = ({
                   >
                     Preview Words
                   </Button>
-                )}
-
-                {/* Join a Room — visible only before difficulty is selected */}
-                {!difficulty && (
-                  <button
-                    onClick={() => setShowJoinModal(true)}
-                    className="w-full py-3 sm:py-4 border-2 border-black font-serif text-sm sm:text-base hover:bg-zinc-800 tracking-[0.2em] hover:bg-black hover:text-white transition-all rounded-sm animate-slide-up flex items-center justify-center gap-2"
-                  >
-                    Join a Room
-                  </button>
                 )}
 
                 {/* Difficulty-dependent actions */}
@@ -450,14 +393,50 @@ const Selection: React.FC<SelectionProps> = ({
                     <Button
                       disabled={!selectedLessonId}
                       onClick={handleStart}
+                      title={
+                        !selectedLessonId
+                          ? "Select a lesson to begin"
+                          : undefined
+                      }
                       className="w-full rounded-sm py-3 sm:py-4 text-sm sm:text-base bg-black hover:bg-zinc-800 text-white transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Begin
                     </Button>
+                    {!selectedLessonId && (
+                      <p className="text-center text-[11px] text-black/40 font-serif italic tracking-wide">
+                        Select a lesson on the left to begin
+                      </p>
+                    )}
                   </>
                 )}
               </div>
             </div>
+
+            {/* Join a Room — always visible, below the unified box */}
+            <button
+              onClick={() => setShowJoinModal(true)}
+              className="mt-3 w-full py-3 sm:py-4 border-2 border-black/20 font-serif text-sm sm:text-base tracking-[0.2em] hover:border-black hover:bg-black hover:text-white transition-all rounded-sm flex items-center justify-center gap-2"
+            >
+              Join a Room
+            </button>
+
+            {/* Review List — below Join a Room */}
+            <button
+              onClick={() => setShowSavedWords(true)}
+              className="mt-3 w-full flex items-center justify-center gap-3 px-6 py-3 sm:py-4 border-2 border-black/20 font-serif text-sm sm:text-base tracking-[0.2em] hover:border-black hover:bg-black hover:text-white transition-all bg-transparent rounded-sm"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+              </svg>
+              <span>Review List</span>
+            </button>
           </div>
         </div>
 

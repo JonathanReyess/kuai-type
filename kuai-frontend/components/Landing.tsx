@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 interface LandingProps {
   onStart: () => void;
 }
 
 const Landing: React.FC<LandingProps> = ({ onStart }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const reducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        onStart();
+      }
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [onStart]);
+
+  useEffect(() => {
+    if (reducedMotion && videoRef.current) {
+      videoRef.current.pause();
+    }
+  }, [reducedMotion]);
+
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen w-full overflow-hidden bg-[#f8f7f4] px-4 sm:px-6">
       {/* 1. TEXTURE LAYER */}
@@ -21,12 +43,12 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
 
       {/* 2. INK DROPLETS VIDEO LAYER */}
       <video
-        poster="/ink-poster.jpg"
+        ref={videoRef}
         autoPlay
         muted
         loop
         playsInline
-        className="absolute inset-0 w-full h-full object-cover z-5 pointer-events-none"
+        className="absolute inset-0 w-full h-full object-cover z-[5] pointer-events-none"
         style={{
           mixBlendMode: "multiply",
           opacity: 0.15,
@@ -49,6 +71,13 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
       50% { transform: scale(1.2) translateY(-10px); text-shadow: 0 20px 60px rgba(0,0,0,0.25); }
       100% { transform: scale(1) translateY(0); }
     }
+    @media (prefers-reduced-motion: reduce) {
+      .kuai-letter {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
   `}</style>
           <h1
             className="text-[84px] xs:text-[150px] sm:text-[180px] md:text-[250px] lg:text-[300px] leading-none select-none text-center"
@@ -60,32 +89,34 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
             {["k", "u", "a", "i"].map((letter, i) => (
               <span
                 key={i}
+                className="kuai-letter"
                 style={{
                   display: "inline-block",
                   cursor: "default",
-                  animation: `letterPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards`,
+                  animation: `letterPop 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards`,
                   animationDelay: `${i * 0.12}s`,
                   opacity: 0,
                 }}
-                onAnimationEnd={(e) => {
-                  // Lock the final state so hover can safely reset the animation
+                onAnimationEnd={(e: React.AnimationEvent<HTMLSpanElement>) => {
                   const el = e.currentTarget;
                   el.style.opacity = "1";
                   el.style.transform = "scale(1) translateY(0)";
                 }}
-                onMouseEnter={(e) => {
+                onMouseEnter={(e: React.MouseEvent<HTMLSpanElement>) => {
+                  if (reducedMotion) return;
                   const el = e.currentTarget;
                   el.style.animation = "none";
-                  el.style.opacity = "1"; // Add this line to ensure visibility
+                  el.style.opacity = "1";
                   el.style.textShadow =
                     "0 20px 60px rgba(0,0,0,0.25), 0 8px 20px rgba(0,0,0,0.15)";
                   void el.offsetHeight;
-                  el.style.animation = `letterHover 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards`;
+                  el.style.animation = `letterHover 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards`;
                 }}
-                onMouseLeave={(e) => {
+                onMouseLeave={(e: React.MouseEvent<HTMLSpanElement>) => {
+                  if (reducedMotion) return;
                   const el = e.currentTarget;
                   el.style.animation = "none";
-                  el.style.opacity = "1"; // Add this line too
+                  el.style.opacity = "1";
                   el.style.textShadow = "none";
                   void el.offsetHeight;
                   el.style.transform = "scale(1) translateY(0)";
@@ -97,52 +128,49 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
           </h1>
         </div>
 
-        <div className="text-center space-y-2">
-          <p className="font-serif text-sm sm:text-base md:text-lg tracking-[0.2em] sm:tracking-[0.3em] uppercase pt-2 sm:pt-5">
-            The Art of Typing
-          </p>
-        </div>
+        <p className="font-serif text-sm sm:text-base md:text-lg tracking-[0.2em] sm:tracking-[0.3em] uppercase pt-2 sm:pt-5 text-center">
+          The Art of Typing
+        </p>
 
-        <div className="w-48 sm:w-64 h-px bg-black/20"></div>
+        <div className="w-48 sm:w-64 h-px bg-black/20" />
 
         <p className="text-center text-base sm:text-lg md:text-xl lg:text-2xl max-w-xs sm:max-w-md md:max-w-lg leading-relaxed border-l-4 border-black italic px-4 py-2">
           Type Pinyin with tones and master Mandarin through stories.
         </p>
 
-        <div className="mt-4 sm:mt-8">
-          <button
-            onClick={onStart}
-            className="relative flex items-center justify-center group 
+        <button
+          onClick={onStart}
+          aria-label="Begin — press Enter or Space to start"
+          className="relative flex items-center justify-center group mt-4 sm:mt-8
              outline-none focus:outline-none focus:ring-0"
+          style={{
+            width: "clamp(220px, 70vw, 300px)",
+            height: "clamp(70px, 20vw, 100px)",
+            border: "none",
+            background: "transparent",
+          }}
+        >
+          {/* THE CROPPER (Ink Brush Stroke) */}
+          <div
+            className="absolute inset-0 z-0 pointer-events-none transition-all duration-300 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]
+               group-hover:scale-110 group-active:scale-95"
             style={{
-              width: "clamp(220px, 70vw, 300px)",
-              height: "clamp(70px, 20vw, 100px)",
-              border: "none",
-              background: "transparent",
+              backgroundImage: "url('/brush-stroke.svg')",
+              backgroundSize: "300% 300%",
+              backgroundPosition: "51% 6%",
+              backgroundRepeat: "no-repeat",
             }}
-          >
-            {/* THE CROPPER (Ink Brush Stroke) */}
-            <div
-              className="absolute inset-0 z-0 pointer-events-none transition-all duration-300 ease-out 
-                 group-hover:scale-110 group-active:scale-95"
-              style={{
-                backgroundImage: "url('/brush-stroke.svg')",
-                backgroundSize: "300% 300%",
-                backgroundPosition: "51% 6%",
-                backgroundRepeat: "no-repeat",
-              }}
-            />
+          />
 
-            {/* BUTTON TEXT */}
-            <span
-              className="relative z-10 text-white text-xl sm:text-2xl tracking-[0.15em] sm:tracking-[0.2em] pt-1 select-none 
-                 transition-transform duration-300 group-hover:scale-105"
-              style={{ fontFamily: "'Protest Revolution', sans-serif" }}
-            >
-              BEGIN
-            </span>
-          </button>
-        </div>
+          {/* BUTTON TEXT */}
+          <span
+            className="relative z-10 text-white text-xl sm:text-2xl tracking-[0.15em] sm:tracking-[0.2em] pt-1 select-none
+               transition-transform duration-300 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
+            style={{ fontFamily: "'Protest Revolution', sans-serif" }}
+          >
+            BEGIN
+          </span>
+        </button>
       </div>
     </div>
   );

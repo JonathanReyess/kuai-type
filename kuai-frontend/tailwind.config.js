@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./index.tsx", "./components/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      screens: {
+        xs: "475px",
+      },
       colors: {
         paper: "#f8f7f4",
         "paper-dark": "#f0efe9",
