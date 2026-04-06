@@ -18,6 +18,20 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
-      }
+      },
+      build: {
+        rollupOptions: {
+          output: {
+            manualChunks: {
+              // React + router in their own chunk, cached aggressively
+              vendor: ['react', 'react-dom', 'react-router-dom'],
+              // Gemini SDK only loaded when AI generation is triggered
+              gemini: ['@google/genai'],
+              // storyData is already dynamic-imported, Rollup will split it
+              // automatically — no manual entry needed here
+            },
+          },
+        },
+      },
     };
 });

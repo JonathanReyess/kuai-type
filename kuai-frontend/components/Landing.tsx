@@ -6,6 +6,7 @@ interface LandingProps {
 
 const Landing: React.FC<LandingProps> = ({ onStart }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const reducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -25,6 +26,137 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
     if (reducedMotion && videoRef.current) {
       videoRef.current.pause();
     }
+  }, [reducedMotion]);
+
+  useEffect(() => {
+    if (reducedMotion) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    const MAX_WIDTH = 40;
+    const MIN_WIDTH = 4;
+    const SPEED_SCALE = 0.10;
+
+    // Small perpendicular offsets (≤1.2px) so join gaps stay sub-pixel
+    // and are fully covered by shadowBlur at direction changes
+    const HAIRS = [
+      { t: -1.2, a: 0.28, w: 0.38 },
+      { t: -0.4, a: 0.68, w: 0.72 },
+      { t:  0.1, a: 1.00, w: 1.00 },
+      { t:  0.6, a: 0.62, w: 0.68 },
+      { t:  1.3, a: 0.22, w: 0.35 },
+    ];
+
+    type BakedPoint = { x: number; y: number; speed: number; jx: number; jy: number };
+    let prev: BakedPoint | null = null;
+    // carry: the exact midpoint where the last segment ended.
+    // Starting the next segment here closes the gap that caused dotting.
+    let carryX = 0, carryY = 0, hasCarry = false;
+    let lastMoveTime = 0;
+    let rafId: number;
+
+    const paintSegment = (p0: BakedPoint, p1: BakedPoint) => {
+      const midX = (p0.x + p1.x) / 2;
+      const midY = (p0.y + p1.y) / 2;
+
+      // Start from the carry midpoint, not p0, to eliminate the half-segment gap
+      const startX = hasCarry ? carryX : p0.x;
+      const startY = hasCarry ? carryY : p0.y;
+
+      const segDx = midX - startX;
+      const segDy = midY - startY;
+      const segLen = Math.sqrt(segDx * segDx + segDy * segDy) || 1;
+      const nx = -segDy / segLen;
+      const ny =  segDx / segLen;
+
+      const baseWidth = MIN_WIDTH + (MAX_WIDTH - MIN_WIDTH) * Math.exp(-p1.speed * SPEED_SCALE);
+      const width = Math.max(MIN_WIDTH * 0.5, baseWidth);
+
+      ctx.save();
+      ctx.shadowColor = "rgba(18, 12, 6, 0.4)";
+      ctx.shadowBlur = 3;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+
+      for (const hair of HAIRS) {
+        ctx.beginPath();
+        // Endpoints are pure midpoints + hair offset (no jitter) — guarantees seamless joins
+        ctx.moveTo(startX + hair.t * nx, startY + hair.t * ny);
+        ctx.quadraticCurveTo(
+          // Control point gets jitter — shapes the curve without breaking continuity
+          p0.x + hair.t * nx + p0.jx,
+          p0.y + hair.t * ny + p0.jy,
+          midX + hair.t * nx,
+          midY + hair.t * ny
+        );
+        ctx.globalAlpha = hair.a;
+        ctx.strokeStyle = "rgba(18, 12, 6, 0.55)";
+        ctx.lineWidth = Math.max(0.3, width * hair.w);
+        ctx.stroke();
+      }
+
+      ctx.restore();
+
+      carryX = midX;
+      carryY = midY;
+      hasCarry = true;
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      const x = e.clientX;
+      const y = e.clientY;
+      const dx = prev ? x - prev.x : 0;
+      const dy = prev ? y - prev.y : 0;
+      const curr: BakedPoint = {
+        x, y,
+        speed: Math.sqrt(dx * dx + dy * dy),
+        jx: (Math.random() - 0.5) * 0.6,
+        jy: (Math.random() - 0.5) * 0.6,
+      };
+      if (prev) paintSegment(prev, curr);
+      prev = curr;
+      lastMoveTime = Date.now();
+    };
+
+    window.addEventListener("mousemove", onMouseMove);
+
+    // destination-out fades alpha at 0.94× per frame (~1.2s to reach ~1% at 60fps).
+    // After 2.5s idle, hard-clear to eliminate floating-point residue that never
+    // quite reaches zero through multiplicative decay alone.
+    const FADE_ALPHA = 0.06;
+    const IDLE_CLEAR_MS = 2500;
+
+    const fade = () => {
+      if (lastMoveTime > 0 && Date.now() - lastMoveTime > IDLE_CLEAR_MS) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        prev = null;
+        hasCarry = false;
+        lastMoveTime = 0; // prevent repeated clearRect
+      } else {
+        ctx.globalCompositeOperation = "destination-out";
+        ctx.fillStyle = `rgba(0, 0, 0, ${FADE_ALPHA})`;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.globalCompositeOperation = "source-over";
+      }
+      rafId = requestAnimationFrame(fade);
+    };
+    rafId = requestAnimationFrame(fade);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("resize", resize);
+    };
   }, [reducedMotion]);
 
   return (
@@ -57,7 +189,14 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
         <source src="/ink-splatter.mp4" type="video/mp4" />
       </video>
 
-      {/* 3. CONTENT LAYER */}
+      {/* 3. INK TRAIL CANVAS */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 pointer-events-none"
+        style={{ zIndex: 6, mixBlendMode: "multiply" }}
+      />
+
+      {/* 4. CONTENT LAYER */}
       <div className="relative z-10 flex flex-col items-center space-y-6 sm:space-y-8 max-w-2xl text-black w-full">
         {/* Title with optional 'Seal' effect */}
         <div className="relative">

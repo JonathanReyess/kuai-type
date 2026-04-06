@@ -1,6 +1,5 @@
 import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { GameToken, Lesson, Difficulty } from "../types";
-import { PRE_GENERATED_STORIES } from "../storyData"; // Import your new data
 
 export const generateGameContent = async (
   lesson: Lesson,
@@ -11,7 +10,9 @@ export const generateGameContent = async (
   // SCENARIO 1: STANDARD PLAY (Use Pre-generated Data)
   // ---------------------------------------------------------
   if (reviewTokens.length === 0) {
-    console.log("Fetching pre-generated story...");
+    // Dynamically import storyData so it's excluded from the initial bundle
+    // (~400 KB deferred until the user actually starts a game)
+    const { PRE_GENERATED_STORIES } = await import("../storyData");
 
     // Convert "Easy" -> "easy" to match your storyData.ts keys
     const diffKey = difficulty.toLowerCase() as Lowercase<Difficulty>;

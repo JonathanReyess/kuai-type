@@ -16,6 +16,37 @@ interface GameProps {
   onExit: () => void; // <--- Add this line
 }
 
+// Module-level constants — defined once, never recreated on re-render
+const CALLI_FONT = { fontFamily: "'Ma Shan Zheng', cursive" };
+const SERIF_FONT = { fontFamily: "serif" };
+const PROTEST_FONT = { fontFamily: "'Protest Revolution', sans-serif" };
+
+const GAME_STYLES = `
+  @keyframes arcade-blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+  .blink-text {
+    animation: arcade-blink 1.25s step-end infinite;
+  }
+  @keyframes windowPop {
+    0% { opacity: 0; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  .window-popout {
+    animation: windowPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+  @keyframes slideUpFade {
+    0% { transform: translate(-50%, 100%); opacity: 0; }
+    100% { transform: translate(-50%, 0); opacity: 1; }
+  }
+  .footer-enter {
+    animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 0.2s;
+    opacity: 0;
+  }
+`;
+
 // --- SUB-COMPONENT: Typing Demo Animation ---
 const TypingDemo = () => {
   const [text, setText] = useState("");
@@ -123,38 +154,7 @@ const Game: React.FC<GameProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Font Styles
-  const calliFont = { fontFamily: "'Ma Shan Zheng', cursive" };
-  const protestFont = { fontFamily: "'Protest Revolution', sans-serif" };
-  const activeStoryFont = useCalliFont ? calliFont : { fontFamily: "serif" };
-
-  // Cleaned up CSS (removed duplicates)
-  const gameStyles = `
-    @keyframes arcade-blink {
-      0%, 49% { opacity: 1; }
-      50%, 100% { opacity: 0; }
-    }
-    .blink-text {
-      animation: arcade-blink 1.25s step-end infinite;
-    }
-    @keyframes windowPop {
-      0% { opacity: 0; transform: scale(0.95); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-    .window-popout {
-      animation: windowPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    }
-    /* Slide up animation for the footer */
-    @keyframes slideUpFade {
-        0% { transform: translate(-50%, 100%); opacity: 0; }
-        100% { transform: translate(-50%, 0); opacity: 1; }
-    }
-    .footer-enter {
-        animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        animation-delay: 0.2s; /* Wait for modal to disappear */
-        opacity: 0; /* Start hidden */
-    }
-  `;
+  const activeStoryFont = useCalliFont ? CALLI_FONT : SERIF_FONT;
 
   useEffect(() => {
     const loadContent = async () => {
@@ -379,7 +379,7 @@ const Game: React.FC<GameProps> = ({
   if (loading) {
     return (
       <div className="relative min-h-screen w-full overflow-hidden bg-[#f8f7f4] flex flex-col items-center justify-center">
-        <style>{gameStyles}</style>
+        <style>{GAME_STYLES}</style>
         <div
           className="absolute inset-0 z-0 opacity-60 mix-blend-multiply"
           style={{
@@ -389,7 +389,7 @@ const Game: React.FC<GameProps> = ({
         />
         <div
           className="relative z-10 text-3xl sm:text-4xl mb-4 blink-text"
-          style={calliFont}
+          style={CALLI_FONT}
         >
           Loading...
         </div>
@@ -406,7 +406,7 @@ const Game: React.FC<GameProps> = ({
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-[#f8f7f4]">
-      <style>{gameStyles}</style>
+      <style>{GAME_STYLES}</style>
 
       {/* TEXTURE LAYER */}
       <div
@@ -438,7 +438,7 @@ const Game: React.FC<GameProps> = ({
             <div className="relative z-10 flex flex-col items-center text-center">
               <h2
                 className="text-2xl sm:text-3xl mb-4 sm:mb-6 tracking-wide"
-                style={protestFont}
+                style={PROTEST_FONT}
               >
                 How to Play
               </h2>
@@ -499,7 +499,7 @@ const Game: React.FC<GameProps> = ({
             <div className="text-center">
               <h2
                 className="text-3xl sm:text-4xl mb-6 sm:mb-8 tracking-widest uppercase"
-                style={protestFont}
+                style={PROTEST_FONT}
               >
                 Paused
               </h2>
@@ -516,7 +516,7 @@ const Game: React.FC<GameProps> = ({
                   <div className="flex items-center gap-2">
                     <span
                       className="text-lg sm:text-xl"
-                      style={useCalliFont ? calliFont : { fontFamily: "serif" }}
+                      style={useCalliFont ? CALLI_FONT : SERIF_FONT}
                     >
                       {useCalliFont ? "书法" : "默认"}
                     </span>
@@ -553,7 +553,7 @@ const Game: React.FC<GameProps> = ({
             </span>
             <div
               className="text-xl sm:text-2xl md:text-3xl font-bold"
-              style={protestFont}
+              style={PROTEST_FONT}
             >
               {Math.round(progressPercentage)}%
             </div>
@@ -562,7 +562,7 @@ const Game: React.FC<GameProps> = ({
           <div className="flex flex-col items-center flex-1 mx-2">
             <div
               className="text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3 md:mb-5 text-center hidden sm:block line-clamp-1"
-              style={calliFont}
+              style={CALLI_FONT}
             >
               {lesson.title}
             </div>
@@ -577,7 +577,7 @@ const Game: React.FC<GameProps> = ({
             </span>
             <div
               className="text-xl sm:text-2xl md:text-3xl font-bold"
-              style={protestFont}
+              style={PROTEST_FONT}
             >
               {score}
             </div>

@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./components/Landing";
-import Selection from "./components/Selection";
-import Game from "./components/Game";
-import Results from "./components/Results";
-import BattlePage from "./pages/BattlePage";
+
+// Lazy-loaded: deferred until the user navigates past the landing screen
+const Selection = lazy(() => import("./components/Selection"));
+const Game = lazy(() => import("./components/Game"));
+const Results = lazy(() => import("./components/Results"));
+const BattlePage = lazy(() => import("./pages/BattlePage"));
 import { AppState, Lesson, Difficulty, GameStats, GameToken } from "./types";
 import { LESSONS } from "./constants";
 
@@ -87,7 +89,7 @@ const App: React.FC = () => {
       `}
     >
       {assetsReady && (
-        <>
+        <Suspense fallback={null}>
           {screen === "landing" && <Landing onStart={handleStartSelection} />}
           {screen === "selection" && (
             <Selection
@@ -138,7 +140,7 @@ const App: React.FC = () => {
               tokens={reviewTokens.length > 0 ? reviewTokens : undefined}
             />
           )}
-        </>
+        </Suspense>
       )}
     </div>
   );
@@ -149,7 +151,7 @@ const App: React.FC = () => {
         {/* All existing screens live at "/" */}
         <Route path="/" element={MainApp} />
         {/* Battle route — completely separate, no shared state needed */}
-        <Route path="/battle/:roomCode" element={<BattlePage />} />
+        <Route path="/battle/:roomCode" element={<Suspense fallback={null}><BattlePage /></Suspense>} />
       </Routes>
     </BrowserRouter>
   );
