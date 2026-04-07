@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate as useNavigateHook } from "react-router-dom";
 import { LESSONS } from "../constants";
 import { Lesson, Difficulty, GameToken } from "../types";
@@ -7,6 +7,10 @@ import Button from "./Button";
 import { VocabPreview } from "./VocabPreview";
 import SavedWords from "./SavedWords";
 import ChallengeLinkModal from "./ChallengeLinkModal";
+
+// Defined outside component — stable references, no new object on every render
+const protestFont = { fontFamily: "'Protest Revolution', sans-serif" };
+const calligraphyFont = { fontFamily: "'Ma Shan Zheng', cursive" };
 
 interface SelectionProps {
   onSelect: (lesson: Lesson, difficulty: Difficulty) => void;
@@ -137,7 +141,7 @@ const Selection: React.FC<SelectionProps> = ({
   const selectedLesson = LESSONS.find((l) => l.id === selectedLessonId);
   const canChallenge = !!selectedLesson && !!difficulty;
 
-  const getStorySnippet = (): string => {
+  const storySnippet = useMemo((): string => {
     if (!selectedLessonId || !difficulty) return "";
     const diffKey = difficulty.toLowerCase() as Lowercase<Difficulty>;
     const lessonData = PRE_GENERATED_STORIES[selectedLessonId];
@@ -151,7 +155,7 @@ const Selection: React.FC<SelectionProps> = ({
     const endsWithPeriod =
       previewText.endsWith("。") || previewText.endsWith(".");
     return endsWithPeriod ? previewText : `${previewText} ...`;
-  };
+  }, [selectedLessonId, difficulty]);
 
   const handleStart = () => {
     if (selectedLesson && difficulty) {
@@ -163,9 +167,6 @@ const Selection: React.FC<SelectionProps> = ({
     setShowSavedWords(false);
     onPracticeSaved?.(tokens);
   };
-
-  const protestFont = { fontFamily: "'Protest Revolution', sans-serif" };
-  const calligraphyFont = { fontFamily: "'Ma Shan Zheng', cursive" };
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-[#f8f7f4]">
@@ -349,7 +350,7 @@ const Selection: React.FC<SelectionProps> = ({
                           className="text-xl sm:text-2xl tracking-tight leading-relaxed"
                           style={calligraphyFont}
                         >
-                          {getStorySnippet()}
+                          {storySnippet}
                         </p>
                       </div>
                     )}

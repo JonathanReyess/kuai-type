@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes screenFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.screen-fade-in {
+  animation: screenFadeIn 0.15s ease-out forwards;
+}
+
+/* Ensure the root element never flashes white during React transitions */
+#root {
+  background-color: #f8f7f4;
+  min-height: 100vh;
+}
+
 @layer base {
   /* Prevent browser-default blue focus rings throughout */
   *:focus {

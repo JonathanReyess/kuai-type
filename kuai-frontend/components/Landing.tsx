@@ -46,9 +46,12 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
     const MAX_WIDTH = 40;
     const MIN_WIDTH = 4;
     const SPEED_SCALE = 0.10;
+    // Pre-computed — avoids a template-string allocation every RAF frame
+    const FADE_FILL = "rgba(0, 0, 0, 0.06)";
+    const IDLE_CLEAR_MS = 2500;
+    // ~60fps paint throttle: skip mouse events that arrive faster than one frame
+    const PAINT_THROTTLE_MS = 16;
 
-    // Small perpendicular offsets (≤1.2px) so join gaps stay sub-pixel
-    // and are fully covered by shadowBlur at direction changes
     const HAIRS = [
       { t: -1.2, a: 0.28, w: 0.38 },
       { t: -0.4, a: 0.68, w: 0.72 },
@@ -59,17 +62,15 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
 
     type BakedPoint = { x: number; y: number; speed: number; jx: number; jy: number };
     let prev: BakedPoint | null = null;
-    // carry: the exact midpoint where the last segment ended.
-    // Starting the next segment here closes the gap that caused dotting.
     let carryX = 0, carryY = 0, hasCarry = false;
     let lastMoveTime = 0;
-    let rafId: number;
+    let lastPaintMs = 0;
+    let rafId = 0;
 
     const paintSegment = (p0: BakedPoint, p1: BakedPoint) => {
       const midX = (p0.x + p1.x) / 2;
       const midY = (p0.y + p1.y) / 2;
 
-      // Start from the carry midpoint, not p0, to eliminate the half-segment gap
       const startX = hasCarry ? carryX : p0.x;
       const startY = hasCarry ? carryY : p0.y;
 
@@ -90,10 +91,8 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
 
       for (const hair of HAIRS) {
         ctx.beginPath();
-        // Endpoints are pure midpoints + hair offset (no jitter) — guarantees seamless joins
         ctx.moveTo(startX + hair.t * nx, startY + hair.t * ny);
         ctx.quadraticCurveTo(
-          // Control point gets jitter — shapes the curve without breaking continuity
           p0.x + hair.t * nx + p0.jx,
           p0.y + hair.t * ny + p0.jy,
           midX + hair.t * nx,
@@ -112,7 +111,37 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
       hasCarry = true;
     };
 
+    // Fade loop — only runs while there is ink on canvas.
+    // Stops itself when the canvas is cleared, restarted by onMouseMove.
+    const fade = () => {
+      if (lastMoveTime === 0) {
+        rafId = 0;
+        return;
+      }
+      if (Date.now() - lastMoveTime > IDLE_CLEAR_MS) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        prev = null;
+        hasCarry = false;
+        lastMoveTime = 0;
+        rafId = 0;
+        return;
+      }
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.fillStyle = FADE_FILL;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.globalCompositeOperation = "source-over";
+      rafId = requestAnimationFrame(fade);
+    };
+
     const onMouseMove = (e: MouseEvent) => {
+      const now = Date.now();
+      // Throttle paint to ~60fps — still update idle timer on skipped frames
+      if (now - lastPaintMs < PAINT_THROTTLE_MS) {
+        lastMoveTime = now;
+        return;
+      }
+      lastPaintMs = now;
+
       const x = e.clientX;
       const y = e.clientY;
       const dx = prev ? x - prev.x : 0;
@@ -125,35 +154,16 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
       };
       if (prev) paintSegment(prev, curr);
       prev = curr;
-      lastMoveTime = Date.now();
+      lastMoveTime = now;
+
+      // Restart fade loop if it stopped while canvas was idle
+      if (!rafId) rafId = requestAnimationFrame(fade);
     };
 
     window.addEventListener("mousemove", onMouseMove);
 
-    // destination-out fades alpha at 0.94× per frame (~1.2s to reach ~1% at 60fps).
-    // After 2.5s idle, hard-clear to eliminate floating-point residue that never
-    // quite reaches zero through multiplicative decay alone.
-    const FADE_ALPHA = 0.06;
-    const IDLE_CLEAR_MS = 2500;
-
-    const fade = () => {
-      if (lastMoveTime > 0 && Date.now() - lastMoveTime > IDLE_CLEAR_MS) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        prev = null;
-        hasCarry = false;
-        lastMoveTime = 0; // prevent repeated clearRect
-      } else {
-        ctx.globalCompositeOperation = "destination-out";
-        ctx.fillStyle = `rgba(0, 0, 0, ${FADE_ALPHA})`;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.globalCompositeOperation = "source-over";
-      }
-      rafId = requestAnimationFrame(fade);
-    };
-    rafId = requestAnimationFrame(fade);
-
     return () => {
-      cancelAnimationFrame(rafId);
+      if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("resize", resize);
     };
@@ -180,6 +190,7 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
         muted
         loop
         playsInline
+        preload="none"
         className="absolute inset-0 w-full h-full object-cover z-[5] pointer-events-none"
         style={{
           mixBlendMode: "multiply",
@@ -198,7 +209,6 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
 
       {/* 4. CONTENT LAYER */}
       <div className="relative z-10 flex flex-col items-center space-y-6 sm:space-y-8 max-w-2xl text-black w-full">
-        {/* Title with optional 'Seal' effect */}
         <div className="relative">
           <style>{`
     @keyframes letterPop {
@@ -248,8 +258,10 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
                   el.style.opacity = "1";
                   el.style.textShadow =
                     "0 20px 60px rgba(0,0,0,0.25), 0 8px 20px rgba(0,0,0,0.15)";
-                  void el.offsetHeight;
-                  el.style.animation = `letterHover 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards`;
+                  // Defer to next frame instead of forcing a synchronous reflow
+                  requestAnimationFrame(() => {
+                    el.style.animation = `letterHover 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards`;
+                  });
                 }}
                 onMouseLeave={(e: React.MouseEvent<HTMLSpanElement>) => {
                   if (reducedMotion) return;
@@ -257,8 +269,9 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
                   el.style.animation = "none";
                   el.style.opacity = "1";
                   el.style.textShadow = "none";
-                  void el.offsetHeight;
-                  el.style.transform = "scale(1) translateY(0)";
+                  requestAnimationFrame(() => {
+                    el.style.transform = "scale(1) translateY(0)";
+                  });
                 }}
               >
                 {letter}
@@ -289,7 +302,7 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
             background: "transparent",
           }}
         >
-          {/* THE CROPPER (Ink Brush Stroke) */}
+          {/* Brush stroke button background — PNG (634KB) replaces 18MB SVG */}
           <div
             className="absolute inset-0 z-0 pointer-events-none transition-all duration-300 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]
                group-hover:scale-110 group-active:scale-95"
