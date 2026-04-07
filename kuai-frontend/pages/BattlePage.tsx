@@ -204,9 +204,11 @@ function BattleInner({
         title={undefined}
       >
         <style>{`
-          @keyframes countdownPop {
-            0% { opacity: 0; transform: scale(0.4); }
-            100% { opacity: 1; transform: scale(1); }
+          @media (prefers-reduced-motion: no-preference) {
+            @keyframes countdownPop {
+              0% { opacity: 0; transform: scale(0.4); }
+              100% { opacity: 1; transform: scale(1); }
+            }
           }
         `}</style>
         <div
@@ -285,12 +287,14 @@ function BattleResults({
       <Texture />
 
       <style>{`
-        @keyframes cardIn {
-          0%  { opacity: 0; transform: translateY(40px) scale(0.95); }
-          100%{ opacity: 1; transform: translateY(0) scale(1); }
+        @media (prefers-reduced-motion: no-preference) {
+          @keyframes cardIn {
+            0%  { opacity: 0; transform: translateY(40px) scale(0.95); }
+            100%{ opacity: 1; transform: translateY(0) scale(1); }
+          }
+          .card-in { animation: cardIn 0.5s cubic-bezier(0.16,1,0.3,1) forwards; }
+          .card-transition { transition: transform 0.45s cubic-bezier(0.34,1.26,0.64,1), box-shadow 0.45s ease, opacity 0.45s ease; }
         }
-        .card-in { animation: cardIn 0.5s cubic-bezier(0.16,1,0.3,1) forwards; }
-        .card-transition { transition: transform 0.45s cubic-bezier(0.34,1.26,0.64,1), box-shadow 0.45s ease, opacity 0.45s ease; }
       `}</style>
 
       {/* Header */}
@@ -311,7 +315,7 @@ function BattleResults({
       {/* Stacked cards - fixed height container */}
       <div
         className="relative z-10 w-full max-w-md mt-6"
-        style={{ height: "380px" }}
+        style={{ minHeight: "380px" }}
       >
         {cards.length === 2 &&
           cards.map((player, i) => {

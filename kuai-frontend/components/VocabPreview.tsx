@@ -86,12 +86,17 @@ export const VocabPreview: React.FC<VocabPreviewProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-      <div className="bg-[#f8f7f4] w-full max-w-4xl max-h-[80vh] border-4 border-black p-8 flex flex-col shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-md window-popout">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="vocab-modal-title"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+    >
+      <div className="bg-paper w-full max-w-4xl max-h-[80vh] border-4 border-black p-8 flex flex-col shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-md window-popout">
 
         {/* Header */}
         <div className="flex justify-between items-center mb-6 border-b-2 border-black pb-4">
-          <h2 className="text-3xl font-serif font-bold">Vocabulary List</h2>
+          <h2 id="vocab-modal-title" className="text-3xl font-serif font-bold">Vocabulary List</h2>
           <div className="flex items-center gap-3">
             {/* Export button + dropdown */}
             <div className="relative" ref={exportRef}>
@@ -129,7 +134,7 @@ export const VocabPreview: React.FC<VocabPreviewProps> = ({
               )}
             </div>
 
-            <button onClick={onClose} className="hover:rotate-90 transition-transform p-1">
+            <button onClick={onClose} aria-label="Close" className="hover:rotate-90 transition-transform p-1">
               <XMarkIcon className="w-8 h-8" />
             </button>
           </div>

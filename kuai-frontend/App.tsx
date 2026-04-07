@@ -74,6 +74,30 @@ const App: React.FC = () => {
 
   const handleStartSelection = () => transitionTo("selection");
 
+  const handlePracticeSaved = (tokens: GameToken[], practiceD: Difficulty) => {
+    // Build a synthetic lesson from the review tokens so the AI has vocab context
+    const uniqueVocab = tokens
+      .filter((t) => t.definition !== "punctuation" && t.char && t.pinyin)
+      .reduce<{ simplified: string; pinyin: string; definition: string }[]>((acc, t) => {
+        if (!acc.find((v) => v.simplified === t.char))
+          acc.push({ simplified: t.char, pinyin: t.pinyin, definition: t.definition ?? "" });
+        return acc;
+      }, []);
+
+    const practiceLesson = {
+      id: "practice",
+      title: "复习练习",
+      description: "AI-generated practice from your review list",
+      vocabulary: uniqueVocab,
+    };
+
+    transitionTo("game", () => {
+      setLesson(practiceLesson);
+      setDifficulty(practiceD);
+      setReviewTokens(tokens);
+    });
+  };
+
   const handleLessonSelected = (
     selectedLesson: Lesson,
     selectedDifficulty: Difficulty,
@@ -125,6 +149,7 @@ const App: React.FC = () => {
             <Selection
               onSelect={handleLessonSelected}
               onBack={handleHome}
+              onPracticeSaved={handlePracticeSaved}
               initialLessonId={rematch?.lessonId}
               initialDifficulty={rematch?.difficulty}
             />

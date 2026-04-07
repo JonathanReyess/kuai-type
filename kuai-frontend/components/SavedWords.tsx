@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { GameToken } from "../types";
+import { GameToken, Difficulty } from "../types";
 
 type ExportFormat = "quizlet" | "anki" | "smartcards";
 
@@ -17,23 +17,42 @@ function buildExport(tokens: GameToken[], format: ExportFormat): string {
   const words = tokens.filter((t) => t.definition !== "punctuation");
   switch (format) {
     case "quizlet":
-      return words.map((t) => `${t.char}\t${t.pinyin} — ${t.definition}`).join("\n");
+      return words
+        .map((t) => `${t.char}\t${t.pinyin} — ${t.definition}`)
+        .join("\n");
     case "anki":
-      return words.map((t) => `${t.char}\t${t.pinyin}\t${t.definition}`).join("\n");
+      return words
+        .map((t) => `${t.char}\t${t.pinyin}\t${t.definition}`)
+        .join("\n");
     case "smartcards":
-      return words.map((t) => `${t.char}\t${t.pinyin} — ${t.definition}`).join("\n");
+      return words
+        .map((t) => `${t.char}\t${t.pinyin} — ${t.definition}`)
+        .join("\n");
   }
 }
 
-const EXPORT_OPTIONS: { format: ExportFormat; label: string; hint: string }[] = [
-  { format: "quizlet",    label: "Quizlet",    hint: "Character → Pinyin + Definition" },
-  { format: "anki",       label: "Anki",       hint: "3 fields: Character · Pinyin · Definition" },
-  { format: "smartcards", label: "Smartcards", hint: "Tab-separated sides, one card per line" },
-];
+const EXPORT_OPTIONS: { format: ExportFormat; label: string; hint: string }[] =
+  [
+    {
+      format: "quizlet",
+      label: "Quizlet",
+      hint: "Character → Pinyin + Definition",
+    },
+    {
+      format: "anki",
+      label: "Anki",
+      hint: "3 fields: Character · Pinyin · Definition",
+    },
+    {
+      format: "smartcards",
+      label: "Smartcards",
+      hint: "Tab-separated sides, one card per line",
+    },
+  ];
 
 interface SavedWordsProps {
   onClose: () => void;
-  onPractice?: (tokens: GameToken[]) => void;
+  onPractice?: (tokens: GameToken[], difficulty: Difficulty) => void;
 }
 
 interface FlippedCardProps {
@@ -41,38 +60,111 @@ interface FlippedCardProps {
   onClose: () => void;
 }
 
-/* --- NEW SUB-COMPONENT: COMING SOON POPUP --- */
-const ComingSoonPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+const DIFF_META: Record<Difficulty, { label: string; desc: string }> = {
+  easy:   { label: "Easy",   desc: "Short sentences, high repetition."        },
+  medium: { label: "Medium", desc: "Compound sentences, varied structure."    },
+  hard:   { label: "Hard",   desc: "Complex grammar, dense vocabulary usage." },
+};
+
+const DIFF_CHAR: Record<Difficulty, string> = {
+  easy:   "易",
+  medium: "中",
+  hard:   "难",
+};
+
+const DifficultyPicker: React.FC<{
+  wordCount: number;
+  onSelect: (d: Difficulty) => void;
+  onClose: () => void;
+}> = ({ wordCount, onSelect, onClose }) => {
   const protestFont = { fontFamily: "'Protest Revolution', sans-serif" };
+  const calliFont = { fontFamily: "'Ma Shan Zheng', cursive" };
+
   return (
-    <>
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="diff-picker-title"
+      className="fixed inset-0 z-[130] bg-black/70 flex items-center justify-center p-4 sm:p-6"
+      onClick={onClose}
+    >
       <div
-        className="fixed inset-0 z-[130] bg-black/40 backdrop-blur-sm flex items-center justify-center p-6"
-        onClick={onClose}
+        className="bg-paper border-4 border-black w-full max-w-xl shadow-[14px_14px_0px_0px_rgba(0,0,0,1)]"
+        style={{
+          animation: "diffPickerIn 0.22s cubic-bezier(0.22,1,0.36,1) forwards",
+        }}
+        onClick={(e) => e.stopPropagation()}
       >
-        <div
-          className="bg-[#f8f7f4] border-4 border-black p-8 max-w-xs w-full shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center transform transition-transform animate-in fade-in zoom-in duration-200"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="text-5xl mb-4">🚧</div>
-          <h3
-            className="text-2xl mb-2 uppercase tracking-tighter"
-            style={protestFont}
-          >
-            Coming Soon
-          </h3>
-          <p className="font-serif text-sm text-black/60 mb-6">
-            We're currently building the custom practice engine. Stay tuned!
-          </p>
+        <style>{`
+          @media (prefers-reduced-motion: no-preference) {
+            @keyframes diffPickerIn {
+              from { opacity: 0; transform: scale(0.94) translateY(8px); }
+              to   { opacity: 1; transform: scale(1) translateY(0); }
+            }
+          }
+        `}</style>
+
+        {/* Header */}
+        <div className="flex items-end justify-between px-6 pt-5 pb-4 border-b-4 border-black">
+          <div>
+            <h3
+              id="diff-picker-title"
+              className="text-4xl sm:text-5xl uppercase leading-none"
+              style={protestFont}
+            >
+              Difficulty
+            </h3>
+          </div>
           <button
             onClick={onClose}
-            className="w-full py-2 bg-black text-white font-serif uppercase text-xs tracking-widest hover:bg-gray-800 transition-colors"
+            className="text-black/30 hover:text-black transition-colors text-xl font-bold mb-1"
+            aria-label="Close"
           >
-            Got it
+            ✕
           </button>
         </div>
+
+        {/* Three columns */}
+        <div className="grid grid-cols-3 divide-x-4 divide-black">
+          {(["easy", "medium", "hard"] as Difficulty[]).map((d) => (
+            <button
+              key={d}
+              onClick={() => onSelect(d)}
+              className="relative flex flex-col items-center pt-7 pb-6 px-3 sm:px-5 hover:bg-black hover:text-white transition-colors duration-150 group text-center"
+            >
+              {/* Large Chinese character */}
+              <div
+                className="text-[72px] sm:text-[88px] leading-none mb-3 text-black/70 group-hover:text-white/60 transition-colors duration-150"
+                style={calliFont}
+              >
+                {DIFF_CHAR[d]}
+              </div>
+
+              {/* Label */}
+              <div
+                className="text-lg sm:text-xl uppercase tracking-widest leading-none mb-2"
+                style={protestFont}
+              >
+                {DIFF_META[d].label}
+              </div>
+
+              {/* Description */}
+              <p className="font-serif text-xs sm:text-sm text-black/70 group-hover:text-white/80 leading-snug transition-colors duration-150">
+                {DIFF_META[d].desc}
+              </p>
+
+              {/* Arrow — appears on hover */}
+              <span
+                className="mt-2 text-white/0 group-hover:text-white/70 transition-colors duration-150 text-sm"
+                style={protestFont}
+              >
+                →
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
@@ -95,12 +187,14 @@ const FlippedCard: React.FC<FlippedCardProps> = ({ token, onClose }) => {
       : null;
 
   const flipCardStyles = `
-    @keyframes cardEntrance {
-      from { opacity: 0; transform: scale(0.85); }
-      to   { opacity: 1; transform: scale(1); }
-    }
-    .card-entrance {
-      animation: cardEntrance 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    @media (prefers-reduced-motion: no-preference) {
+      @keyframes cardEntrance {
+        from { opacity: 0; transform: scale(0.85); }
+        to   { opacity: 1; transform: scale(1); }
+      }
+      .card-entrance {
+        animation: cardEntrance 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      }
     }
     .flip-inner {
       position: relative;
@@ -128,7 +222,10 @@ const FlippedCard: React.FC<FlippedCardProps> = ({ token, onClose }) => {
     <>
       <style>{flipCardStyles}</style>
       <div
-        className="fixed inset-0 z-[110] bg-black/60 backdrop-blur-md"
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Flashcard for ${token.char}`}
+        className="fixed inset-0 z-[110] bg-black/70"
         onClick={onClose}
       />
       <div className="fixed inset-0 z-[120] flex items-center justify-center p-6 pointer-events-none">
@@ -148,6 +245,7 @@ const FlippedCard: React.FC<FlippedCardProps> = ({ token, onClose }) => {
             <div className="flip-back bg-black text-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,0.4)] rounded-sm flex flex-col">
               <button
                 onClick={onClose}
+                aria-label="Close"
                 className="absolute top-3 right-3 text-white/50 hover:text-white transition-colors text-lg z-10"
               >
                 ✕
@@ -195,7 +293,7 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [selectMode, setSelectMode] = useState(false);
   const [activeToken, setActiveToken] = useState<GameToken | null>(null);
-  const [showComingSoon, setShowComingSoon] = useState(false);
+  const [showDifficultyPicker, setShowDifficultyPicker] = useState(false);
   const [showExport, setShowExport] = useState(false);
   const exportRef = useRef<HTMLDivElement>(null);
 
@@ -235,14 +333,15 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
     setSelected(next);
   };
 
-  /* UPDATED HANDLER */
-  const handlePractice = () => {
-    // Instead of executing onPractice immediately, show the popup
-    setShowComingSoon(true);
+  const handlePractice = () => setShowDifficultyPicker(true);
 
-    // Optional: If you want to keep the logic for when you actually implement it:
-    // const practiceWords = selectMode && selected.size > 0 ? words.filter((_, i) => selected.has(i)) : words;
-    // onPractice?.(practiceWords);
+  const handleDifficultySelected = (difficulty: Difficulty) => {
+    setShowDifficultyPicker(false);
+    const practiceWords =
+      selectMode && selected.size > 0
+        ? words.filter((_, i) => selected.has(i))
+        : words;
+    onPractice?.(practiceWords, difficulty);
   };
 
   useEffect(() => {
@@ -255,9 +354,10 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
   }, [showExport]);
 
   const handleExport = (format: ExportFormat) => {
-    const exportWords = selectMode && selected.size > 0
-      ? words.filter((_, i) => selected.has(i))
-      : words;
+    const exportWords =
+      selectMode && selected.size > 0
+        ? words.filter((_, i) => selected.has(i))
+        : words;
     downloadText(buildExport(exportWords, format), `kuai-review-${format}.txt`);
     setShowExport(false);
   };
@@ -286,9 +386,14 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
         <FlippedCard token={activeToken} onClose={() => setActiveToken(null)} />
       )}
 
-      {/* RENDER POPUP */}
-      {showComingSoon && (
-        <ComingSoonPopup onClose={() => setShowComingSoon(false)} />
+      {showDifficultyPicker && (
+        <DifficultyPicker
+          wordCount={
+            selectMode && selected.size > 0 ? selected.size : words.length
+          }
+          onSelect={handleDifficultySelected}
+          onClose={() => setShowDifficultyPicker(false)}
+        />
       )}
 
       <div
@@ -320,6 +425,7 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
           </div>
           <button
             onClick={onClose}
+            aria-label="Close review list"
             className="text-2xl font-bold hover:scale-125 transition-transform text-white"
           >
             ✕
@@ -434,12 +540,23 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
                 onClick={() => setShowExport((v) => !v)}
                 className="w-full py-3 border-2 border-black/30 font-serif text-sm uppercase tracking-wider hover:border-black hover:bg-black hover:text-white transition-all flex items-center justify-center gap-2"
               >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                >
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                   <polyline points="7 10 12 15 17 10" />
                   <line x1="12" y1="15" x2="12" y2="3" />
                 </svg>
-                Export{selectMode && selected.size > 0 ? ` ${selected.size} Selected` : ""} as Flashcards
+                Export
+                {selectMode && selected.size > 0
+                  ? ` ${selected.size} Selected`
+                  : ""}{" "}
+                as Flashcards
               </button>
 
               {showExport && (
@@ -453,8 +570,12 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
                       onClick={() => handleExport(format)}
                       className="w-full text-left px-4 py-3 hover:bg-black hover:text-white transition-colors border-t border-black/10 group"
                     >
-                      <div className="font-serif font-bold text-sm">{label}</div>
-                      <div className="font-serif text-xs text-black/50 mt-0.5 group-hover:text-white/60">{hint}</div>
+                      <div className="font-serif font-bold text-sm">
+                        {label}
+                      </div>
+                      <div className="font-serif text-xs text-black/50 mt-0.5 group-hover:text-white/60">
+                        {hint}
+                      </div>
                     </button>
                   ))}
                 </div>

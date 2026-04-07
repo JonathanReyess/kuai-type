@@ -55,27 +55,47 @@ export const generateGameContent = async (
   }
 
   const prompt = `
-    Create a coherent, engaging paragraph in Simplified Chinese based on the topic: "${lesson.title}".
-    
-    Difficulty Level: ${difficulty}.
-    - Easy: Simple sentence structures, high frequency of provided vocabulary. 30-50 characters.
-    - Medium: Moderate sentence structures. 50-80 characters.
-    - Hard: Complex structures, sophisticated usage. 80-120 characters.
+### ROLE
+You are an expert Simplified Chinese educator. Your task is to write a paragraph for a student based on the following parameters:
+- **Topic:** ${lesson.title}
+- **Difficulty:** ${difficulty}
+- **Target Vocabulary:** Use at least 5 words from this list: [${vocabList}]
+- **Additional Context:** ${reviewPrompt}
 
-    You MUST use at least 5 words from this vocabulary list: [${vocabList}].
-    ${reviewPrompt}
+### DIFFICULTY SPECIFICATIONS
+Adhere strictly to these length and complexity constraints:
+- **Easy:** 10-15 characters. Use basic SVO (Subject-Verb-Object) structures.
+- **Medium:** 20-30 characters. Include basic conjunctions or descriptive particles (de/de/de).
+- **Hard:** 30-40 characters. Use complex structures (e.g., "not only... but also"), 成语 (idioms), or formal vocabulary.
 
-    CRITICAL: The output must be a strict JSON array of objects. Each object represents ONE Chinese character (Hanzi), its corresponding Pinyin with tone numbers (e.g., 'wo3', 'ni3', 'de0'), and a short English definition of that character in this specific context.
-    
-    For punctuation (，。？！”“), set the pinyin field to the punctuation mark itself and definition to 'punctuation'.
-    
-    Example format:
-    [
-      {"char": "我", "pinyin": "wo3", "definition": "I"},
-      {"char": "爱", "pinyin": "ai4", "definition": "love"},
-      {"char": "，", "pinyin": "，", "definition": "punctuation"}
-    ]
-    `;
+### TONE SANDHI RULES
+The Pinyin provided MUST reflect actual spoken pronunciation (Tone Sandhi) rather than static dictionary tones:
+1. **3-3 Sandhi:** When two 3rd tones are consecutive, the first character must be marked as 2nd tone (e.g., "你好" should be "ni2 hao3").
+2. **"一" (yī) and "不" (bù):** Adjust tones based on the following syllable (e.g., "一样" as "yi4 yang4", "不好" as "bu4 hao3", "不是" as "bu2 shi4").
+3. **Neutral Tones:** Use '0' or '5' for characters that lose their tone in natural speech (e.g., "妈妈" as "ma1 ma0").
+
+### OUTPUT REQUIREMENTS
+1. **Content:** Create one coherent, engaging paragraph. 
+2. **Format:** Output ONLY a valid JSON array of objects. No introductory or concluding text.
+3. **Object Mapping:** Every single character and punctuation mark must be its own object.
+   - "char": The single Hanzi character or punctuation mark.
+   - "pinyin": The Pinyin with **sandhi-adjusted** tone numbers. Punctuation marks should have the mark itself as the pinyin.
+   - "definition": A brief English definition of that character's specific meaning in this context.
+
+### EXAMPLE FORMAT
+Topic: "Greetings"
+[
+  {"char": "你", "pinyin": "ni2", "definition": "you (tone changed to 2nd due to sandhi)"},
+  {"char": "好", "pinyin": "hao3", "definition": "good"},
+  {"char": "吗", "pinyin": "ma0", "definition": "question particle"},
+  {"char": "？", "pinyin": "？", "definition": "punctuation"}
+]
+
+### CRITICAL RULES
+- Do NOT exceed the character count for the selected difficulty.
+- Do NOT include spaces between characters in the JSON.
+- Ensure the JSON is syntactically perfect.
+`;
 
   const schema: Schema = {
     type: Type.ARRAY,
@@ -92,7 +112,7 @@ export const generateGameContent = async (
 
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: "gemini-3.1-flash-lite-preview",
       contents: prompt,
       config: {
         responseMimeType: "application/json",

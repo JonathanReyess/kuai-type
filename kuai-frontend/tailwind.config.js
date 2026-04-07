@@ -11,6 +11,7 @@ export default {
         "paper-dark": "#f0efe9",
         ink: "#000000",
         cinnabar: "#8B2020",
+        sage: "#7E9E73",
       },
       fontFamily: {
         serif: ["Spectral", "serif"],

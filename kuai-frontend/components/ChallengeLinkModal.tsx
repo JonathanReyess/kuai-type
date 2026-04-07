@@ -118,10 +118,16 @@ export default function ChallengeLinkModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg bg-[#f8f7f4] border-4 border-black p-8 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] rounded-sm">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="challenge-modal-title"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 animate-in fade-in duration-200"
+    >
+      <div className="relative w-full max-w-lg bg-paper border-4 border-black p-8 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] rounded-sm">
         <button
           onClick={onClose}
+          aria-label="Close"
           className="absolute top-4 right-4 text-2xl font-bold hover:scale-125 transition-transform"
         >
           ✕
@@ -140,6 +146,7 @@ export default function ChallengeLinkModal({
             </g>
           </svg>
           <h3
+            id="challenge-modal-title"
             className="text-4xl mb-1 tracking-widest uppercase"
             style={protestFont}
           >
@@ -231,7 +238,7 @@ export default function ChallengeLinkModal({
                 className={`px-4 py-2 border-2 font-serif text-sm uppercase tracking-wider transition-all whitespace-nowrap
                   ${
                     copied
-                      ? "bg-[#7E9E73] text-white border-[#7E9E73]"
+                      ? "bg-sage text-white border-sage"
                       : "bg-black text-white border-black hover:bg-gray-800"
                   }`}
               >

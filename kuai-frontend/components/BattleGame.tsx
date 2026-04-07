@@ -27,11 +27,13 @@ const gameStyles = `
     50%, 100% { opacity: 0; }
   }
   .blink-text { animation: arcade-blink 1.25s step-end infinite; }
-  @keyframes windowPop {
-    0% { opacity: 0; transform: scale(0.95); }
-    100% { opacity: 1; transform: scale(1); }
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes windowPop {
+      0% { opacity: 0; transform: scale(0.95); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .window-popout { animation: windowPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
   }
-  .window-popout { animation: windowPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
   @keyframes slideUpFade {
     0% { transform: translate(-50%, 100%); opacity: 0; }
     100% { transform: translate(-50%, 0); opacity: 1; }
@@ -329,6 +331,9 @@ const BattleGame: React.FC<BattleGameProps> = ({
           <div
             role="progressbar"
             aria-valuenow={oppPct}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={`${opponent?.name ?? "Opponent"} progress`}
             className="transform-gpu transition-all duration-500 scale-95 opacity-60 blur-[0.4px] [transform:translateZ(-100px)_rotateX(5deg)]"
             style={{ transformOrigin: "bottom" }}
           >
@@ -352,6 +357,9 @@ const BattleGame: React.FC<BattleGameProps> = ({
           <div
             role="progressbar"
             aria-valuenow={myPct}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label="Your progress"
             className="transform-gpu transition-all duration-300 [transform:translateZ(20px)]"
           >
             <div className="flex justify-between items-center mb-1 font-serif">
@@ -377,10 +385,16 @@ const BattleGame: React.FC<BattleGameProps> = ({
 
       {/* ── Pause overlay ── */}
       {isPaused && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-[#f8f7f4] w-full max-w-xs p-6 sm:p-8 border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-sm window-popout">
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="battle-pause-title"
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4"
+        >
+          <div className="bg-paper w-full max-w-xs p-6 sm:p-8 border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-sm window-popout">
             <div className="text-center">
               <h2
+                id="battle-pause-title"
                 className="text-3xl sm:text-4xl mb-6 sm:mb-8 tracking-widest uppercase"
                 style={protestFont}
               >
@@ -446,6 +460,7 @@ const BattleGame: React.FC<BattleGameProps> = ({
             value={input}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
+            aria-label="Type pinyin here"
             className="opacity-0 absolute top-0 left-0 h-full w-full cursor-default"
             autoFocus
             autoComplete="off"

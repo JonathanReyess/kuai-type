@@ -29,12 +29,14 @@ const GAME_STYLES = `
   .blink-text {
     animation: arcade-blink 1.25s step-end infinite;
   }
-  @keyframes windowPop {
-    0% { opacity: 0; transform: scale(0.95); }
-    100% { opacity: 1; transform: scale(1); }
-  }
-  .window-popout {
-    animation: windowPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes windowPop {
+      0% { opacity: 0; transform: scale(0.95); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .window-popout {
+      animation: windowPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
   }
   @keyframes slideUpFade {
     0% { transform: translate(-50%, 100%); opacity: 0; }
@@ -428,10 +430,13 @@ const Game: React.FC<GameProps> = ({
       {/* --- TUTORIAL OVERLAY --- */}
       {showTutorial && (
         <div
-          className={`fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300 p-4 ${isExitingTutorial ? "opacity-0" : "opacity-100"}`}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="tutorial-title"
+          className={`fixed inset-0 z-50 flex items-center justify-center bg-black/70 transition-opacity duration-300 p-4 ${isExitingTutorial ? "opacity-0" : "opacity-100"}`}
         >
           <div
-            className={`bg-[#f8f7f4] w-full max-w-md p-5 sm:p-8 border-4 border-black shadow-2xl rounded-md relative transform transition-all duration-300 max-h-[90vh] overflow-y-auto ${isExitingTutorial ? "scale-90 translate-y-10" : "scale-100"}`}
+            className={`bg-paper w-full max-w-md p-5 sm:p-8 border-4 border-black shadow-2xl rounded-md relative transform transition-all duration-300 max-h-[90vh] overflow-y-auto ${isExitingTutorial ? "scale-90 translate-y-10" : "scale-100"}`}
           >
             <div
               className="absolute inset-0 opacity-20 pointer-events-none"
@@ -442,6 +447,7 @@ const Game: React.FC<GameProps> = ({
 
             <div className="relative z-10 flex flex-col items-center text-center">
               <h2
+                id="tutorial-title"
                 className="text-2xl sm:text-3xl mb-4 sm:mb-6 tracking-wide"
                 style={PROTEST_FONT}
               >
@@ -499,10 +505,16 @@ const Game: React.FC<GameProps> = ({
       )}
       {/* --- PAUSE MENU OVERLAY --- */}
       {isPaused && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-[#f8f7f4] w-full max-w-xs p-6 sm:p-8 border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-sm window-popout relative">
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="pause-title"
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4"
+        >
+          <div className="bg-paper w-full max-w-xs p-6 sm:p-8 border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-sm window-popout relative">
             <div className="text-center">
               <h2
+                id="pause-title"
                 className="text-3xl sm:text-4xl mb-6 sm:mb-8 tracking-widest uppercase"
                 style={PROTEST_FONT}
               >
@@ -633,6 +645,7 @@ const Game: React.FC<GameProps> = ({
             value={input}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
+            aria-label="Type pinyin here"
             className="opacity-0 absolute top-0 left-0 h-full w-full cursor-default"
             autoFocus={!showTutorial}
             autoComplete="off"

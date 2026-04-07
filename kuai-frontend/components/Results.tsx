@@ -22,16 +22,23 @@ const ComingSoonModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const calliFont = { fontFamily: "'Ma Shan Zheng', cursive" };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg bg-[#f8f7f4] border-4 border-black p-10 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] rounded-sm window-popout text-center">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="coming-soon-title"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 animate-in fade-in duration-200"
+    >
+      <div className="relative w-full max-w-lg bg-paper border-4 border-black p-10 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] rounded-sm window-popout text-center">
         <button
           onClick={onClose}
+          aria-label="Close"
           className="absolute top-4 right-4 text-2xl font-bold hover:scale-125 transition-transform"
         >
           ✕
         </button>
         <div className="text-6xl mb-6 blink-text">🚧</div>
         <h3
+          id="coming-soon-title"
           className="text-5xl mb-4 tracking-tighter uppercase text-black"
           style={protestFont}
         >
@@ -131,11 +138,13 @@ const Results: React.FC<ResultsProps> = ({
   const canChallenge = !!(lessonId && difficulty && challengeTokens.length > 0);
 
   const resultStyles = `
-    @keyframes windowPop {
-      0% { opacity: 0; transform: scale(0.95); }
-      100% { opacity: 1; transform: scale(1); }
+    @media (prefers-reduced-motion: no-preference) {
+      @keyframes windowPop {
+        0% { opacity: 0; transform: scale(0.95); }
+        100% { opacity: 1; transform: scale(1); }
+      }
+      .window-popout { animation: windowPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     }
-    .window-popout { animation: windowPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     @keyframes arcade-blink {
       0%, 49% { opacity: 1; }
       50%, 100% { opacity: 0; }
@@ -235,7 +244,7 @@ const Results: React.FC<ResultsProps> = ({
                   className={`flex items-center gap-2 px-4 py-2 border-2 font-serif text-sm uppercase tracking-wider transition-all rounded-sm
                     ${
                       allSaved
-                        ? "border-[#7E9E73]/70 text-white bg-[#7E9E73]/80 cursor-default"
+                        ? "border-sage/70 text-white bg-sage/80 cursor-default"
                         : "border-black hover:bg-black hover:text-white"
                     }`}
                 >
@@ -277,7 +286,7 @@ const Results: React.FC<ResultsProps> = ({
                     <div
                       key={idx}
                       className={`relative flex flex-col items-center p-3 border-2 rounded-sm transition-all text-center
-                        ${isSaved ? "border-bg-[#7E9E73] bg-[#7E9E73]/25" : "border-black/10 hover:border-black/30 bg-[#f8f7f4]"}`}
+                        ${isSaved ? "border-bg-sage bg-sage/25" : "border-black/10 hover:border-black/30 bg-[#f8f7f4]"}`}
                     >
                       <button
                         onClick={() => handleSaveWord(idx, token)}

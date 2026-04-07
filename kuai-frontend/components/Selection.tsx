@@ -15,7 +15,7 @@ const calligraphyFont = { fontFamily: "'Ma Shan Zheng', cursive" };
 interface SelectionProps {
   onSelect: (lesson: Lesson, difficulty: Difficulty) => void;
   onBack: () => void;
-  onPracticeSaved?: (tokens: GameToken[]) => void;
+  onPracticeSaved?: (tokens: GameToken[], difficulty: Difficulty) => void;
   initialLessonId?: string;
   initialDifficulty?: Difficulty;
 }
@@ -163,9 +163,9 @@ const Selection: React.FC<SelectionProps> = ({
     }
   };
 
-  const handlePractice = (tokens: GameToken[]) => {
+  const handlePractice = (tokens: GameToken[], difficulty: Difficulty) => {
     setShowSavedWords(false);
-    onPracticeSaved?.(tokens);
+    onPracticeSaved?.(tokens, difficulty);
   };
 
   return (
