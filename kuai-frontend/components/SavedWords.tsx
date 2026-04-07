@@ -1,5 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { GameToken } from "../types";
+
+type ExportFormat = "quizlet" | "anki" | "smartcards";
+
+function downloadText(content: string, filename: string) {
+  const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function buildExport(tokens: GameToken[], format: ExportFormat): string {
+  const words = tokens.filter((t) => t.definition !== "punctuation");
+  switch (format) {
+    case "quizlet":
+      return words.map((t) => `${t.char}\t${t.pinyin} — ${t.definition}`).join("\n");
+    case "anki":
+      return words.map((t) => `${t.char}\t${t.pinyin}\t${t.definition}`).join("\n");
+    case "smartcards":
+      return words.map((t) => `${t.char}\t${t.pinyin} — ${t.definition}`).join("\n");
+  }
+}
+
+const EXPORT_OPTIONS: { format: ExportFormat; label: string; hint: string }[] = [
+  { format: "quizlet",    label: "Quizlet",    hint: "Character → Pinyin + Definition" },
+  { format: "anki",       label: "Anki",       hint: "3 fields: Character · Pinyin · Definition" },
+  { format: "smartcards", label: "Smartcards", hint: "Tab-separated sides, one card per line" },
+];
 
 interface SavedWordsProps {
   onClose: () => void;
@@ -165,9 +195,9 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [selectMode, setSelectMode] = useState(false);
   const [activeToken, setActiveToken] = useState<GameToken | null>(null);
-
-  // NEW STATE FOR POPUP
   const [showComingSoon, setShowComingSoon] = useState(false);
+  const [showExport, setShowExport] = useState(false);
+  const exportRef = useRef<HTMLDivElement>(null);
 
   const protestFont = { fontFamily: "'Protest Revolution', sans-serif" };
   const calliFont = { fontFamily: "'Ma Shan Zheng', cursive" };
@@ -213,6 +243,23 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
     // Optional: If you want to keep the logic for when you actually implement it:
     // const practiceWords = selectMode && selected.size > 0 ? words.filter((_, i) => selected.has(i)) : words;
     // onPractice?.(practiceWords);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (exportRef.current && !exportRef.current.contains(e.target as Node))
+        setShowExport(false);
+    };
+    if (showExport) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showExport]);
+
+  const handleExport = (format: ExportFormat) => {
+    const exportWords = selectMode && selected.size > 0
+      ? words.filter((_, i) => selected.has(i))
+      : words;
+    downloadText(buildExport(exportWords, format), `kuai-review-${format}.txt`);
+    setShowExport(false);
   };
 
   const handleCardClick = (token: GameToken, idx: number) => {
@@ -367,7 +414,7 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
         </div>
 
         {words.length > 0 && (
-          <div className="relative z-10 p-6 border-t-2 border-black bg-[#f8f7f4]/90">
+          <div className="relative z-10 p-6 border-t-2 border-black bg-[#f8f7f4]/90 flex flex-col gap-3">
             <button
               onClick={handlePractice}
               className="w-full py-4 bg-black text-white font-serif uppercase tracking-[0.25em] hover:bg-gray-900 transition-all active:translate-y-0.5 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] flex items-center justify-center gap-3"
@@ -380,6 +427,39 @@ const SavedWords: React.FC<SavedWordsProps> = ({ onClose, onPractice }) => {
               </span>
               <span className="text-black/40">→</span>
             </button>
+
+            {/* Export flashcards */}
+            <div className="relative" ref={exportRef}>
+              <button
+                onClick={() => setShowExport((v) => !v)}
+                className="w-full py-3 border-2 border-black/30 font-serif text-sm uppercase tracking-wider hover:border-black hover:bg-black hover:text-white transition-all flex items-center justify-center gap-2"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                Export{selectMode && selected.size > 0 ? ` ${selected.size} Selected` : ""} as Flashcards
+              </button>
+
+              {showExport && (
+                <div className="absolute bottom-full mb-1 left-0 right-0 bg-[#f8f7f4] border-2 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] z-20">
+                  <p className="px-4 pt-3 pb-1 text-[10px] uppercase tracking-widest text-black/40 font-serif">
+                    Export as…
+                  </p>
+                  {EXPORT_OPTIONS.map(({ format, label, hint }) => (
+                    <button
+                      key={format}
+                      onClick={() => handleExport(format)}
+                      className="w-full text-left px-4 py-3 hover:bg-black hover:text-white transition-colors border-t border-black/10 group"
+                    >
+                      <div className="font-serif font-bold text-sm">{label}</div>
+                      <div className="font-serif text-xs text-black/50 mt-0.5 group-hover:text-white/60">{hint}</div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>
