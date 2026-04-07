@@ -346,6 +346,11 @@ const Game: React.FC<GameProps> = ({
 
       const validTargets = [target];
       if (target.endsWith("0")) validTargets.push(target.slice(0, -1) + "4");
+      // Neutral tone: bare syllable, "0", and "5" all accepted
+      if (target.endsWith("0") || target.endsWith("5")) {
+        const bare = target.slice(0, -1);
+        validTargets.push(bare, bare + "0", bare + "5");
+      }
 
       if (validTargets.includes(valLower)) {
         setScore((prev) => prev + 10);

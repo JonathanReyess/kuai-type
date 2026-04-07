@@ -2,10 +2,15 @@
   "name": "chinese-vocab-agent-system",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "pipeline": "node cli/run-pipeline.mjs"
+  },
+  "bin": {
+    "kuai-pipeline": "cli/run-pipeline.mjs"
   },
   "dependencies": {
     "react": "^18.2.0",

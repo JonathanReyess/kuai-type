@@ -1,0 +1,25 @@
+name: Deploy to Railway
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-server:
+    name: Deploy kuai-server
+    runs-on: ubuntu-latest
+    if: |
+      contains(github.event.head_commit.modified, 'kuai-server/') ||
+      contains(github.event.head_commit.added, 'kuai-server/')
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
+      - name: Deploy server
+        working-directory: kuai-server
+        run: railway up --service ${{ vars.RAILWAY_SERVER_SERVICE }} --detach
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}

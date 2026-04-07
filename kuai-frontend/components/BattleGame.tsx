@@ -258,6 +258,11 @@ const BattleGame: React.FC<BattleGameProps> = ({
       target = target.replace(/ü/g, "v");
       const validTargets = [target];
       if (target.endsWith("0")) validTargets.push(target.slice(0, -1) + "4");
+      // Neutral tone: bare syllable, "0", and "5" all accepted
+      if (target.endsWith("0") || target.endsWith("5")) {
+        const bare = target.slice(0, -1);
+        validTargets.push(bare, bare + "0", bare + "5");
+      }
 
       if (validTargets.includes(valLower)) {
         const next = scoreRef.current + 10;
@@ -318,25 +323,24 @@ const BattleGame: React.FC<BattleGameProps> = ({
       />
 
       {/* ── Battle progress bar ── */}
-      <div className="fixed top-0 left-0 right-0 z-30 pointer-events-none mt-6">
-        {/* Perspective Container */}
-        <div className="mx-auto max-w-4xl w-full px-6 py-4 flex flex-col gap-6 pointer-events-auto [perspective:1000px]">
-          {/* Opponent: Pushed back in Z-space, slightly faded and blurred */}
+      <div className="fixed top-0 left-0 right-0 z-30 pointer-events-none">
+        <div className="mx-auto max-w-4xl w-full px-3 sm:px-6 pt-2 sm:pt-4 pb-2 flex flex-col gap-2 sm:gap-3 pointer-events-auto [perspective:1000px]">
+          {/* Opponent */}
           <div
             role="progressbar"
             aria-valuenow={oppPct}
             className="transform-gpu transition-all duration-500 scale-95 opacity-60 blur-[0.4px] [transform:translateZ(-100px)_rotateX(5deg)]"
             style={{ transformOrigin: "bottom" }}
           >
-            <div className="flex justify-between items-end mb-1 font-serif">
-              <span className="text-[#722F37] text-xs font-bold tracking-widest border-b border-[#722F37]/30 uppercase">
+            <div className="flex justify-between items-center mb-0.5 font-serif">
+              <span className="text-[#722F37] text-[10px] sm:text-xs font-bold tracking-widest uppercase truncate max-w-[50%]">
                 {opponent?.name ?? "Opponent"}
               </span>
-              <span className="text-[#5c262d] text-xs tabular-nums opacity-80">
+              <span className="text-[#5c262d] text-[10px] sm:text-xs tabular-nums opacity-80 shrink-0">
                 {opponent?.score ?? 0} PTS • {opponent?.wpm ?? 0} WPM
               </span>
             </div>
-            <div className="h-2 bg-[#f2e6e6]/20 border border-[#722F37]/10 overflow-hidden shadow-sm">
+            <div className="h-1.5 sm:h-2 bg-[#f2e6e6]/20 border border-[#722F37]/10 overflow-hidden shadow-sm">
               <div
                 className="h-full bg-[#722F37]/70 transition-all duration-1000 ease-out"
                 style={{ width: `${oppPct}%` }}
@@ -344,34 +348,27 @@ const BattleGame: React.FC<BattleGameProps> = ({
             </div>
           </div>
 
-          {/* Player: Pulled forward, larger text, and high contrast */}
+          {/* Player */}
           <div
             role="progressbar"
             aria-valuenow={myPct}
             className="transform-gpu transition-all duration-300 [transform:translateZ(20px)]"
           >
-            <div className="flex justify-between items-end mb-2 font-serif">
-              <span className="text-[#2d3b32] text-3xl font-black tracking-tight drop-shadow-sm">
+            <div className="flex justify-between items-center mb-1 font-serif">
+              <span className="text-[#2d3b32] text-sm sm:text-base font-black tracking-tight drop-shadow-sm">
                 YOU
               </span>
-              <div className="flex flex-col items-end">
-                <span className="text-[#3a4d41] text-lg font-bold tabular-nums">
-                  {score}{" "}
-                  <span className="text-xs opacity-50 font-normal">PTS</span>
-                </span>
-                <span className="text-[#3a4d41] text-xs opacity-70 tabular-nums">
-                  {liveWpm} WPM
-                </span>
-              </div>
+              <span className="text-[#3a4d41] text-xs sm:text-sm font-bold tabular-nums shrink-0">
+                {score} <span className="opacity-50 font-normal text-[10px]">PTS</span>
+                <span className="opacity-30 mx-1">•</span>
+                {liveWpm} <span className="opacity-50 font-normal text-[10px]">WPM</span>
+              </span>
             </div>
-
-            {/* Thicker bar with a "glow" effect */}
-            <div className="h-4 bg-[#e8edea]/20 border-2 border-[#2d3b32]/40 overflow-hidden shadow-lg relative">
+            <div className="h-2.5 sm:h-3.5 bg-[#e8edea]/20 border sm:border-2 border-[#2d3b32]/40 overflow-hidden shadow-lg relative">
               <div
                 className="h-full bg-[#4d5d53] transition-all duration-300 ease-out relative z-10"
                 style={{ width: `${myPct}%` }}
               />
-              {/* Subtle background track depth */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#2d3b32]/5 to-transparent" />
             </div>
           </div>
@@ -407,7 +404,7 @@ const BattleGame: React.FC<BattleGameProps> = ({
 
       {/* ── Content ── */}
       <div
-        className={`relative z-10 flex flex-col max-w-5xl mx-auto p-3 sm:p-4 md:p-8 min-h-screen pt-28 ${isPaused ? "" : "window-popout"}`}
+        className={`relative z-10 flex flex-col max-w-5xl mx-auto p-3 sm:p-4 md:p-8 min-h-screen pt-20 sm:pt-24 ${isPaused ? "" : "window-popout"}`}
       >
         <div className="flex-grow flex flex-col justify-center relative">
           <div
