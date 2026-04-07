@@ -78,10 +78,11 @@ const App: React.FC = () => {
     selectedLesson: Lesson,
     selectedDifficulty: Difficulty,
   ) => {
-    setLesson(selectedLesson);
-    setDifficulty(selectedDifficulty);
-    setReviewTokens([]);
-    setScreen("game");
+    transitionTo("game", () => {
+      setLesson(selectedLesson);
+      setDifficulty(selectedDifficulty);
+      setReviewTokens([]);
+    });
   };
 
   const handleGameEnd = (gameStats: GameStats) => {
