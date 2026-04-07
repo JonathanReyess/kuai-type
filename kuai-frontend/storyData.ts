@@ -11343,4 +11343,3847 @@ export const PRE_GENERATED_STORIES: StoryDatabase = {
       ],
     ],
   },
+  interview: {
+  "easy": [
+    [
+      {
+        "char": "二",
+        "pinyin": "er4",
+        "definition": "two"
+      },
+      {
+        "char": "一",
+        "pinyin": "yi2",
+        "definition": "one"
+      },
+      {
+        "char": "世",
+        "pinyin": "shi4",
+        "definition": "century"
+      },
+      {
+        "char": "纪",
+        "pinyin": "ji4",
+        "definition": "century"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "跨",
+        "pinyin": "kua4",
+        "definition": "transnational"
+      },
+      {
+        "char": "国",
+        "pinyin": "guo2",
+        "definition": "transnational"
+      },
+      {
+        "char": "公",
+        "pinyin": "gong1",
+        "definition": "company"
+      },
+      {
+        "char": "司",
+        "pinyin": "si1",
+        "definition": "company"
+      },
+      {
+        "char": "进",
+        "pinyin": "jin4",
+        "definition": "to enter"
+      },
+      {
+        "char": "入",
+        "pinyin": "ru4",
+        "definition": "to enter"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "公",
+        "pinyin": "gong1",
+        "definition": "company"
+      },
+      {
+        "char": "司",
+        "pinyin": "si1",
+        "definition": "company"
+      },
+      {
+        "char": "吸",
+        "pinyin": "xi1",
+        "definition": "to attract"
+      },
+      {
+        "char": "引",
+        "pinyin": "yin3",
+        "definition": "to attract"
+      },
+      {
+        "char": "海",
+        "pinyin": "hai3",
+        "definition": "overseas"
+      },
+      {
+        "char": "外",
+        "pinyin": "wai4",
+        "definition": "overseas"
+      },
+      {
+        "char": "人",
+        "pinyin": "ren2",
+        "definition": "person of ability"
+      },
+      {
+        "char": "才",
+        "pinyin": "cai2",
+        "definition": "person of ability"
+      },
+      {
+        "char": "归",
+        "pinyin": "gui1",
+        "definition": "to return"
+      },
+      {
+        "char": "来",
+        "pinyin": "lai2",
+        "definition": "to return"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "经",
+        "pinyin": "jing1",
+        "definition": "manager"
+      },
+      {
+        "char": "理",
+        "pinyin": "li3",
+        "definition": "manager"
+      },
+      {
+        "char": "穿",
+        "pinyin": "chuan1",
+        "definition": "wear"
+      },
+      {
+        "char": "套",
+        "pinyin": "tao4",
+        "definition": "suit"
+      },
+      {
+        "char": "装",
+        "pinyin": "zhuang1",
+        "definition": "suit"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "上",
+        "pinyin": "shang4",
+        "definition": "upper"
+      },
+      {
+        "char": "衣",
+        "pinyin": "yi1",
+        "definition": "garment"
+      },
+      {
+        "char": "湿",
+        "pinyin": "shi1",
+        "definition": "wet"
+      },
+      {
+        "char": "了",
+        "pinyin": "le5",
+        "definition": "particle"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "总",
+        "pinyin": "zong3",
+        "definition": "general"
+      },
+      {
+        "char": "经",
+        "pinyin": "jing1",
+        "definition": "manager"
+      },
+      {
+        "char": "理",
+        "pinyin": "li3",
+        "definition": "manager"
+      },
+      {
+        "char": "严",
+        "pinyin": "yan2",
+        "definition": "serious"
+      },
+      {
+        "char": "肃",
+        "pinyin": "su4",
+        "definition": "serious"
+      },
+      {
+        "char": "得",
+        "pinyin": "de5",
+        "definition": "particle"
+      },
+      {
+        "char": "吓",
+        "pinyin": "xia4",
+        "definition": "scary"
+      },
+      {
+        "char": "人",
+        "pinyin": "ren2",
+        "definition": "person"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "天",
+        "pinyin": "tian1",
+        "definition": "sky"
+      },
+      {
+        "char": "阴",
+        "pinyin": "yin1",
+        "definition": "overcast"
+      },
+      {
+        "char": "了",
+        "pinyin": "le5",
+        "definition": "particle"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "云",
+        "pinyin": "yun2",
+        "definition": "cloud"
+      },
+      {
+        "char": "转",
+        "pinyin": "zhuan3",
+        "definition": "to turn"
+      },
+      {
+        "char": "为",
+        "pinyin": "wei2",
+        "definition": "to become"
+      },
+      {
+        "char": "晴",
+        "pinyin": "qing2",
+        "definition": "sunny"
+      },
+      {
+        "char": "天",
+        "pinyin": "tian1",
+        "definition": "sky"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "我",
+        "pinyin": "wo3",
+        "definition": "I"
+      },
+      {
+        "char": "收",
+        "pinyin": "shou1",
+        "definition": "to receive"
+      },
+      {
+        "char": "到",
+        "pinyin": "dao4",
+        "definition": "arrive"
+      },
+      {
+        "char": "录",
+        "pinyin": "lu4",
+        "definition": "employ"
+      },
+      {
+        "char": "用",
+        "pinyin": "yong4",
+        "definition": "employ"
+      },
+      {
+        "char": "通",
+        "pinyin": "tong1",
+        "definition": "notice"
+      },
+      {
+        "char": "知",
+        "pinyin": "zhi1",
+        "definition": "notice"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "既",
+        "pinyin": "ji4",
+        "definition": "since"
+      },
+      {
+        "char": "然",
+        "pinyin": "ran2",
+        "definition": "since"
+      },
+      {
+        "char": "你",
+        "pinyin": "ni3",
+        "definition": "you"
+      },
+      {
+        "char": "喜",
+        "pinyin": "xi3",
+        "definition": "like"
+      },
+      {
+        "char": "欢",
+        "pinyin": "huan1",
+        "definition": "like"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "接",
+        "pinyin": "jie1",
+        "definition": "follow"
+      },
+      {
+        "char": "着",
+        "pinyin": "zhe5",
+        "definition": "continue"
+      },
+      {
+        "char": "做",
+        "pinyin": "zuo4",
+        "definition": "to do"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "这",
+        "pinyin": "zhe4",
+        "definition": "this"
+      },
+      {
+        "char": "产",
+        "pinyin": "chan3",
+        "definition": "product"
+      },
+      {
+        "char": "品",
+        "pinyin": "pin3",
+        "definition": "product"
+      },
+      {
+        "char": "好",
+        "pinyin": "hao3",
+        "definition": "good"
+      },
+      {
+        "char": "在",
+        "pinyin": "zai4",
+        "definition": "at"
+      },
+      {
+        "char": "没",
+        "pinyin": "mei2",
+        "definition": "not"
+      },
+      {
+        "char": "缺",
+        "pinyin": "que1",
+        "definition": "defect"
+      },
+      {
+        "char": "点",
+        "pinyin": "dian3",
+        "definition": "defect"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "他",
+        "pinyin": "ta1",
+        "definition": "he"
+      },
+      {
+        "char": "善",
+        "pinyin": "shan4",
+        "definition": "good at"
+      },
+      {
+        "char": "于",
+        "pinyin": "yu2",
+        "definition": "good at"
+      },
+      {
+        "char": "销",
+        "pinyin": "xiao1",
+        "definition": "sell"
+      },
+      {
+        "char": "售",
+        "pinyin": "shou4",
+        "definition": "sell"
+      },
+      {
+        "char": "零",
+        "pinyin": "ling2",
+        "definition": "snack"
+      },
+      {
+        "char": "食",
+        "pinyin": "shi2",
+        "definition": "snack"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "加",
+        "pinyin": "jia1",
+        "definition": "work overtime"
+      },
+      {
+        "char": "班",
+        "pinyin": "ban1",
+        "definition": "work overtime"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "往",
+        "pinyin": "wang3",
+        "definition": "often"
+      },
+      {
+        "char": "往",
+        "pinyin": "wang3",
+        "definition": "often"
+      },
+      {
+        "char": "不",
+        "pinyin": "bu2",
+        "definition": "not"
+      },
+      {
+        "char": "满",
+        "pinyin": "man3",
+        "definition": "satisfied"
+      },
+      {
+        "char": "意",
+        "pinyin": "yi4",
+        "definition": "satisfied"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ]
+  ],
+  "medium": [
+    [
+      {
+        "char": "二",
+        "pinyin": "er4",
+        "definition": "two"
+      },
+      {
+        "char": "十一",
+        "pinyin": "shi2",
+        "definition": "ten"
+      },
+      {
+        "char": "世",
+        "pinyin": "shi4",
+        "definition": "century"
+      },
+      {
+        "char": "纪",
+        "pinyin": "ji4",
+        "definition": "century"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "这",
+        "pinyin": "zhe4",
+        "definition": "this"
+      },
+      {
+        "char": "家",
+        "pinyin": "jia1",
+        "definition": "family"
+      },
+      {
+        "char": "跨",
+        "pinyin": "kua4",
+        "definition": "transnational"
+      },
+      {
+        "char": "国",
+        "pinyin": "guo2",
+        "definition": "transnational"
+      },
+      {
+        "char": "公",
+        "pinyin": "gong1",
+        "definition": "company"
+      },
+      {
+        "char": "司",
+        "pinyin": "si1",
+        "definition": "company"
+      },
+      {
+        "char": "进",
+        "pinyin": "jin4",
+        "definition": "to enter"
+      },
+      {
+        "char": "入",
+        "pinyin": "ru4",
+        "definition": "to enter"
+      },
+      {
+        "char": "了",
+        "pinyin": "le5",
+        "definition": "particle"
+      },
+      {
+        "char": "本",
+        "pinyin": "ben3",
+        "definition": "this"
+      },
+      {
+        "char": "地",
+        "pinyin": "di4",
+        "definition": "local"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      },
+      {
+        "char": "虽",
+        "pinyin": "sui1",
+        "definition": "although"
+      },
+      {
+        "char": "然",
+        "pinyin": "ran2",
+        "definition": "although"
+      },
+      {
+        "char": "经",
+        "pinyin": "jing1",
+        "definition": "manager"
+      },
+      {
+        "char": "理",
+        "pinyin": "li3",
+        "definition": "manager"
+      },
+      {
+        "char": "很",
+        "pinyin": "hen3",
+        "definition": "very"
+      },
+      {
+        "char": "严",
+        "pinyin": "yan2",
+        "definition": "stern"
+      },
+      {
+        "char": "肃",
+        "pinyin": "su4",
+        "definition": "stern"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "但",
+        "pinyin": "dan4",
+        "definition": "but"
+      },
+      {
+        "char": "吸",
+        "pinyin": "xi1",
+        "definition": "to attract"
+      },
+      {
+        "char": "引",
+        "pinyin": "yin3",
+        "definition": "to attract"
+      },
+      {
+        "char": "了",
+        "pinyin": "le5",
+        "definition": "particle"
+      },
+      {
+        "char": "多",
+        "pinyin": "duo1",
+        "definition": "many"
+      },
+      {
+        "char": "名",
+        "pinyin": "ming2",
+        "definition": "measure word"
+      },
+      {
+        "char": "人",
+        "pinyin": "ren2",
+        "definition": "talent"
+      },
+      {
+        "char": "材",
+        "pinyin": "cai2",
+        "definition": "talent"
+      },
+      {
+        "char": "？",
+        "pinyin": "？",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "海",
+        "pinyin": "hai3",
+        "definition": "overseas"
+      },
+      {
+        "char": "外",
+        "pinyin": "wai4",
+        "definition": "overseas"
+      },
+      {
+        "char": "归",
+        "pinyin": "gui1",
+        "definition": "to return"
+      },
+      {
+        "char": "来",
+        "pinyin": "lai2",
+        "definition": "to return"
+      },
+      {
+        "char": "的",
+        "pinyin": "de5",
+        "definition": "particle"
+      },
+      {
+        "char": "他",
+        "pinyin": "ta1",
+        "definition": "he"
+      },
+      {
+        "char": "常",
+        "pinyin": "chang2",
+        "definition": "often"
+      },
+      {
+        "char": "被",
+        "pinyin": "bei4",
+        "definition": "by"
+      },
+      {
+        "char": "叫",
+        "pinyin": "jiao4",
+        "definition": "called"
+      },
+      {
+        "char": "做",
+        "pinyin": "zuo4",
+        "definition": "called"
+      },
+      {
+        "char": "海",
+        "pinyin": "hai3",
+        "definition": "sea turtle"
+      },
+      {
+        "char": "龟",
+        "pinyin": "gui1",
+        "definition": "sea turtle"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      },
+      {
+        "char": "如",
+        "pinyin": "ru2",
+        "definition": "if"
+      },
+      {
+        "char": "果",
+        "pinyin": "guo3",
+        "definition": "if"
+      },
+      {
+        "char": "不",
+        "pinyin": "bu2",
+        "definition": "not"
+      },
+      {
+        "char": "满",
+        "pinyin": "man3",
+        "definition": "satisfied"
+      },
+      {
+        "char": "意",
+        "pinyin": "yi4",
+        "definition": "satisfied"
+      },
+      {
+        "char": "薪",
+        "pinyin": "xin1",
+        "definition": "salary"
+      },
+      {
+        "char": "水",
+        "pinyin": "shui3",
+        "definition": "salary"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "就",
+        "pinyin": "jiu4",
+        "definition": "then"
+      },
+      {
+        "char": "去",
+        "pinyin": "qu4",
+        "definition": "to go"
+      },
+      {
+        "char": "国",
+        "pinyin": "guo2",
+        "definition": "abroad"
+      },
+      {
+        "char": "外",
+        "pinyin": "wai4",
+        "definition": "abroad"
+      },
+      {
+        "char": "吗",
+        "pinyin": "ma5",
+        "definition": "question particle"
+      },
+      {
+        "char": "？",
+        "pinyin": "？",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "消",
+        "pinyin": "xiao1",
+        "definition": "to sell"
+      },
+      {
+        "char": "售",
+        "pinyin": "shou4",
+        "definition": "to sell"
+      },
+      {
+        "char": "经",
+        "pinyin": "jing1",
+        "definition": "manager"
+      },
+      {
+        "char": "理",
+        "pinyin": "li3",
+        "definition": "manager"
+      },
+      {
+        "char": "穿",
+        "pinyin": "chuan1",
+        "definition": "to wear"
+      },
+      {
+        "char": "着",
+        "pinyin": "zhe5",
+        "definition": "particle"
+      },
+      {
+        "char": "新",
+        "pinyin": "xin1",
+        "definition": "new"
+      },
+      {
+        "char": "套",
+        "pinyin": "tao4",
+        "definition": "suit"
+      },
+      {
+        "char": "装",
+        "pinyin": "zhuang1",
+        "definition": "suit"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "因",
+        "pinyin": "yin1",
+        "definition": "because"
+      },
+      {
+        "char": "为",
+        "pinyin": "wei4",
+        "definition": "because"
+      },
+      {
+        "char": "突",
+        "pinyin": "tu1",
+        "definition": "suddenly"
+      },
+      {
+        "char": "然",
+        "pinyin": "ran2",
+        "definition": "suddenly"
+      },
+      {
+        "char": "下",
+        "pinyin": "xia4",
+        "definition": "to fall"
+      },
+      {
+        "char": "雨",
+        "pinyin": "yu3",
+        "definition": "rain"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "所",
+        "pinyin": "suo3",
+        "definition": "so"
+      },
+      {
+        "char": "以",
+        "pinyin": "yi3",
+        "definition": "so"
+      },
+      {
+        "char": "上",
+        "pinyin": "shang4",
+        "definition": "upper"
+      },
+      {
+        "char": "衣",
+        "pinyin": "yi1",
+        "definition": "upper"
+      },
+      {
+        "char": "湿",
+        "pinyin": "shi1",
+        "definition": "wet"
+      },
+      {
+        "char": "透",
+        "pinyin": "tou4",
+        "definition": "thoroughly"
+      },
+      {
+        "char": "了",
+        "pinyin": "le5",
+        "definition": "particle"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      },
+      {
+        "char": "他",
+        "pinyin": "ta1",
+        "definition": "he"
+      },
+      {
+        "char": "干",
+        "pinyin": "gan4",
+        "definition": "why"
+      },
+      {
+        "char": "吗",
+        "pinyin": "ma5",
+        "definition": "why"
+      },
+      {
+        "char": "没",
+        "pinyin": "mei2",
+        "definition": "not"
+      },
+      {
+        "char": "带",
+        "pinyin": "dai4",
+        "definition": "to bring"
+      },
+      {
+        "char": "伞",
+        "pinyin": "san3",
+        "definition": "umbrella"
+      },
+      {
+        "char": "？",
+        "pinyin": "？",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "总",
+        "pinyin": "zong3",
+        "definition": "general"
+      },
+      {
+        "char": "经",
+        "pinyin": "jing1",
+        "definition": "manager"
+      },
+      {
+        "char": "理",
+        "pinyin": "li3",
+        "definition": "manager"
+      },
+      {
+        "char": "看",
+        "pinyin": "kan4",
+        "definition": "to look"
+      },
+      {
+        "char": "起",
+        "pinyin": "qi3",
+        "definition": "to look"
+      },
+      {
+        "char": "来",
+        "pinyin": "lai2",
+        "definition": "to look"
+      },
+      {
+        "char": "很",
+        "pinyin": "hen3",
+        "definition": "very"
+      },
+      {
+        "char": "严",
+        "pinyin": "yan2",
+        "definition": "stern"
+      },
+      {
+        "char": "肃",
+        "pinyin": "su4",
+        "definition": "stern"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "员",
+        "pinyin": "yuan2",
+        "definition": "staff"
+      },
+      {
+        "char": "工",
+        "pinyin": "gong1",
+        "definition": "staff"
+      },
+      {
+        "char": "都",
+        "pinyin": "dou1",
+        "definition": "all"
+      },
+      {
+        "char": "觉",
+        "pinyin": "jue2",
+        "definition": "to feel"
+      },
+      {
+        "char": "得",
+        "pinyin": "de5",
+        "definition": "particle"
+      },
+      {
+        "char": "他",
+        "pinyin": "ta1",
+        "definition": "he"
+      },
+      {
+        "char": "很",
+        "pinyin": "hen3",
+        "definition": "very"
+      },
+      {
+        "char": "吓",
+        "pinyin": "xia4",
+        "definition": "scary"
+      },
+      {
+        "char": "人",
+        "pinyin": "ren2",
+        "definition": "scary"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      },
+      {
+        "char": "他",
+        "pinyin": "ta1",
+        "definition": "he"
+      },
+      {
+        "char": "解",
+        "pinyin": "jie3",
+        "definition": "to explain"
+      },
+      {
+        "char": "释",
+        "pinyin": "shi4",
+        "definition": "to explain"
+      },
+      {
+        "char": "说",
+        "pinyin": "shuo1",
+        "definition": "to speak"
+      },
+      {
+        "char": "：",
+        "pinyin": "：",
+        "definition": "punctuation"
+      },
+      {
+        "char": "这",
+        "pinyin": "zhe4",
+        "definition": "this"
+      },
+      {
+        "char": "不",
+        "pinyin": "bu2",
+        "definition": "not"
+      },
+      {
+        "char": "是",
+        "pinyin": "shi4",
+        "definition": "is"
+      },
+      {
+        "char": "真",
+        "pinyin": "zhen1",
+        "definition": "true"
+      },
+      {
+        "char": "的",
+        "pinyin": "de5",
+        "definition": "particle"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "天",
+        "pinyin": "tian1",
+        "definition": "sky"
+      },
+      {
+        "char": "阴",
+        "pinyin": "yin1",
+        "definition": "overcast"
+      },
+      {
+        "char": "沉",
+        "pinyin": "chen2",
+        "definition": "heavy"
+      },
+      {
+        "char": "沉",
+        "pinyin": "chen2",
+        "definition": "heavy"
+      },
+      {
+        "char": "的",
+        "pinyin": "de5",
+        "definition": "particle"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "云",
+        "pinyin": "yun2",
+        "definition": "cloud"
+      },
+      {
+        "char": "层",
+        "pinyin": "ceng2",
+        "definition": "layer"
+      },
+      {
+        "char": "转",
+        "pinyin": "zhuan3",
+        "definition": "to turn"
+      },
+      {
+        "char": "黑",
+        "pinyin": "hei1",
+        "definition": "black"
+      },
+      {
+        "char": "了",
+        "pinyin": "le5",
+        "definition": "particle"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      },
+      {
+        "char": "如",
+        "pinyin": "ru2",
+        "definition": "if"
+      },
+      {
+        "char": "果",
+        "pinyin": "guo3",
+        "definition": "if"
+      },
+      {
+        "char": "不",
+        "pinyin": "bu4",
+        "definition": "not"
+      },
+      {
+        "char": "快",
+        "pinyin": "kuai4",
+        "definition": "fast"
+      },
+      {
+        "char": "走",
+        "pinyin": "zou3",
+        "definition": "to walk"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "就",
+        "pinyin": "jiu4",
+        "definition": "then"
+      },
+      {
+        "char": "会",
+        "pinyin": "hui4",
+        "definition": "will"
+      },
+      {
+        "char": "淋",
+        "pinyin": "lin2",
+        "definition": "to soak"
+      },
+      {
+        "char": "雨",
+        "pinyin": "yu3",
+        "definition": "rain"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "因",
+        "pinyin": "yin1",
+        "definition": "because"
+      },
+      {
+        "char": "此",
+        "pinyin": "ci3",
+        "definition": "this"
+      },
+      {
+        "char": "我",
+        "pinyin": "wo3",
+        "definition": "I"
+      },
+      {
+        "char": "们",
+        "pinyin": "men5",
+        "definition": "plural"
+      },
+      {
+        "char": "跑",
+        "pinyin": "pao3",
+        "definition": "to run"
+      },
+      {
+        "char": "得",
+        "pinyin": "de5",
+        "definition": "particle"
+      },
+      {
+        "char": "很",
+        "pinyin": "hen3",
+        "definition": "very"
+      },
+      {
+        "char": "快",
+        "pinyin": "kuai4",
+        "definition": "fast"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "我",
+        "pinyin": "wo3",
+        "definition": "I"
+      },
+      {
+        "char": "给",
+        "pinyin": "gei3",
+        "definition": "to give"
+      },
+      {
+        "char": "公",
+        "pinyin": "gong1",
+        "definition": "company"
+      },
+      {
+        "char": "司",
+        "pinyin": "si1",
+        "definition": "company"
+      },
+      {
+        "char": "寄",
+        "pinyin": "ji4",
+        "definition": "to mail"
+      },
+      {
+        "char": "了",
+        "pinyin": "le5",
+        "definition": "particle"
+      },
+      {
+        "char": "简",
+        "pinyin": "jian3",
+        "definition": "resume"
+      },
+      {
+        "char": "历",
+        "pinyin": "li4",
+        "definition": "resume"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "希",
+        "pinyin": "xi1",
+        "definition": "hope"
+      },
+      {
+        "char": "望",
+        "pinyin": "wang4",
+        "definition": "hope"
+      },
+      {
+        "char": "能",
+        "pinyin": "neng2",
+        "definition": "can"
+      },
+      {
+        "char": "收",
+        "pinyin": "shou1",
+        "definition": "receive"
+      },
+      {
+        "char": "到",
+        "pinyin": "dao4",
+        "definition": "arrive"
+      },
+      {
+        "char": "录",
+        "pinyin": "lu4",
+        "definition": "employ"
+      },
+      {
+        "char": "用",
+        "pinyin": "yong4",
+        "definition": "employ"
+      },
+      {
+        "char": "通",
+        "pinyin": "tong1",
+        "definition": "notice"
+      },
+      {
+        "char": "知",
+        "pinyin": "zhi1",
+        "definition": "notice"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      },
+      {
+        "char": "既然",
+        "pinyin": "ji4",
+        "definition": "since"
+      },
+      {
+        "char": "ran2",
+        "pinyin": "ran2",
+        "definition": "since"
+      },
+      {
+        "char": "选",
+        "pinyin": "xuan3",
+        "definition": "to choose"
+      },
+      {
+        "char": "了",
+        "pinyin": "le5",
+        "definition": "particle"
+      },
+      {
+        "char": "它",
+        "pinyin": "ta1",
+        "definition": "it"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "就",
+        "pinyin": "jiu4",
+        "definition": "then"
+      },
+      {
+        "char": "要",
+        "pinyin": "yao4",
+        "definition": "want"
+      },
+      {
+        "char": "努",
+        "pinyin": "nu3",
+        "definition": "strive"
+      },
+      {
+        "char": "力",
+        "pinyin": "li4",
+        "definition": "effort"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "他",
+        "pinyin": "ta1",
+        "definition": "he"
+      },
+      {
+        "char": "接",
+        "pinyin": "jie1",
+        "definition": "to follow"
+      },
+      {
+        "char": "着",
+        "pinyin": "zhe5",
+        "definition": "to follow"
+      },
+      {
+        "char": "回",
+        "pinyin": "hui2",
+        "definition": "to reply"
+      },
+      {
+        "char": "答",
+        "pinyin": "da2",
+        "definition": "to reply"
+      },
+      {
+        "char": "说",
+        "pinyin": "shuo1",
+        "definition": "to speak"
+      },
+      {
+        "char": "这",
+        "pinyin": "zhe4",
+        "definition": "this"
+      },
+      {
+        "char": "是",
+        "pinyin": "shi4",
+        "definition": "is"
+      },
+      {
+        "char": "短",
+        "pinyin": "duan3",
+        "definition": "short"
+      },
+      {
+        "char": "期",
+        "pinyin": "qi1",
+        "definition": "term"
+      },
+      {
+        "char": "合",
+        "pinyin": "he2",
+        "definition": "cooperation"
+      },
+      {
+        "char": "作",
+        "pinyin": "zuo4",
+        "definition": "cooperation"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      },
+      {
+        "char": "好",
+        "pinyin": "hao3",
+        "definition": "luckily"
+      },
+      {
+        "char": "在",
+        "pinyin": "zai4",
+        "definition": "luckily"
+      },
+      {
+        "char": "产",
+        "pinyin": "chan3",
+        "definition": "product"
+      },
+      {
+        "char": "品",
+        "pinyin": "pin3",
+        "definition": "product"
+      },
+      {
+        "char": "质",
+        "pinyin": "zhi4",
+        "definition": "quality"
+      },
+      {
+        "char": "量",
+        "pinyin": "liang4",
+        "definition": "quality"
+      },
+      {
+        "char": "不",
+        "pinyin": "bu4",
+        "definition": "not"
+      },
+      {
+        "char": "错",
+        "pinyin": "cuo4",
+        "definition": "wrong"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "因",
+        "pinyin": "yin1",
+        "definition": "because"
+      },
+      {
+        "char": "此",
+        "pinyin": "ci3",
+        "definition": "this"
+      },
+      {
+        "char": "没",
+        "pinyin": "mei2",
+        "definition": "not"
+      },
+      {
+        "char": "有",
+        "pinyin": "you3",
+        "definition": "have"
+      },
+      {
+        "char": "缺",
+        "pinyin": "que1",
+        "definition": "shortcoming"
+      },
+      {
+        "char": "点",
+        "pinyin": "dian3",
+        "definition": "shortcoming"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "如",
+        "pinyin": "ru2",
+        "definition": "if"
+      },
+      {
+        "char": "果",
+        "pinyin": "guo3",
+        "definition": "if"
+      },
+      {
+        "char": "爱",
+        "pinyin": "ai4",
+        "definition": "to love"
+      },
+      {
+        "char": "吃",
+        "pinyin": "chi1",
+        "definition": "to eat"
+      },
+      {
+        "char": "零",
+        "pinyin": "ling2",
+        "definition": "snack"
+      },
+      {
+        "char": "食",
+        "pinyin": "shi2",
+        "definition": "snack"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "就",
+        "pinyin": "jiu4",
+        "definition": "then"
+      },
+      {
+        "char": "应",
+        "pinyin": "ying1",
+        "definition": "should"
+      },
+      {
+        "char": "善",
+        "pinyin": "shan4",
+        "definition": "to be good at"
+      },
+      {
+        "char": "于",
+        "pinyin": "yu2",
+        "definition": "to be good at"
+      },
+      {
+        "char": "控",
+        "pinyin": "kong4",
+        "definition": "to control"
+      },
+      {
+        "char": "制",
+        "pinyin": "zhi4",
+        "definition": "to control"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      },
+      {
+        "char": "往",
+        "pinyin": "wang3",
+        "definition": "often"
+      },
+      {
+        "char": "往",
+        "pinyin": "wang3",
+        "definition": "often"
+      },
+      {
+        "char": "这",
+        "pinyin": "zhe4",
+        "definition": "this"
+      },
+      {
+        "char": "样",
+        "pinyin": "yang4",
+        "definition": "like"
+      },
+      {
+        "char": "做",
+        "pinyin": "zuo4",
+        "definition": "to do"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "优",
+        "pinyin": "you1",
+        "definition": "merit"
+      },
+      {
+        "char": "点",
+        "pinyin": "dian3",
+        "definition": "merit"
+      },
+      {
+        "char": "会",
+        "pinyin": "hui4",
+        "definition": "will"
+      },
+      {
+        "char": "更",
+        "pinyin": "geng4",
+        "definition": "more"
+      },
+      {
+        "char": "多",
+        "pinyin": "duo1",
+        "definition": "more"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "虽",
+        "pinyin": "sui1",
+        "definition": "although"
+      },
+      {
+        "char": "然",
+        "pinyin": "ran2",
+        "definition": "although"
+      },
+      {
+        "char": "加",
+        "pinyin": "jia1",
+        "definition": "to work overtime"
+      },
+      {
+        "char": "班",
+        "pinyin": "ban1",
+        "definition": "to work overtime"
+      },
+      {
+        "char": "很",
+        "pinyin": "hen3",
+        "definition": "very"
+      },
+      {
+        "char": "可",
+        "pinyin": "ke3",
+        "definition": "awful"
+      },
+      {
+        "char": "怕",
+        "pinyin": "pa4",
+        "definition": "awful"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "但",
+        "pinyin": "dan4",
+        "definition": "but"
+      },
+      {
+        "char": "我",
+        "pinyin": "wo3",
+        "definition": "I"
+      },
+      {
+        "char": "们",
+        "pinyin": "men5",
+        "definition": "plural"
+      },
+      {
+        "char": "握",
+        "pinyin": "wo4",
+        "definition": "to shake hands"
+      },
+      {
+        "char": "手",
+        "pinyin": "shou3",
+        "definition": "to shake hands"
+      },
+      {
+        "char": "庆",
+        "pinyin": "qing4",
+        "definition": "to celebrate"
+      },
+      {
+        "char": "祝",
+        "pinyin": "zhu4",
+        "definition": "to celebrate"
+      },
+      {
+        "char": "成",
+        "pinyin": "cheng2",
+        "definition": "success"
+      },
+      {
+        "char": "功",
+        "pinyin": "gong1",
+        "definition": "success"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      },
+      {
+        "char": "你",
+        "pinyin": "ni3",
+        "definition": "you"
+      },
+      {
+        "char": "能",
+        "pinyin": "neng2",
+        "definition": "ability"
+      },
+      {
+        "char": "力",
+        "pinyin": "li4",
+        "definition": "ability"
+      },
+      {
+        "char": "真",
+        "pinyin": "zhen1",
+        "definition": "really"
+      },
+      {
+        "char": "大",
+        "pinyin": "da4",
+        "definition": "big"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "祝",
+        "pinyin": "zhu4",
+        "definition": "to wish"
+      },
+      {
+        "char": "贺",
+        "pinyin": "he4",
+        "definition": "to congratulate"
+      },
+      {
+        "char": "你",
+        "pinyin": "ni3",
+        "definition": "you"
+      },
+      {
+        "char": "！",
+        "pinyin": "！",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "晴",
+        "pinyin": "qing2",
+        "definition": "sunny"
+      },
+      {
+        "char": "天",
+        "pinyin": "tian1",
+        "definition": "sunny"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "心",
+        "pinyin": "xin1",
+        "definition": "heart"
+      },
+      {
+        "char": "情",
+        "pinyin": "qing2",
+        "definition": "mood"
+      },
+      {
+        "char": "也",
+        "pinyin": "ye3",
+        "definition": "also"
+      },
+      {
+        "char": "很",
+        "pinyin": "hen3",
+        "definition": "very"
+      },
+      {
+        "char": "好",
+        "pinyin": "hao3",
+        "definition": "good"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      },
+      {
+        "char": "因",
+        "pinyin": "yin1",
+        "definition": "because"
+      },
+      {
+        "char": "为",
+        "pinyin": "wei4",
+        "definition": "because"
+      },
+      {
+        "char": "今",
+        "pinyin": "jin1",
+        "definition": "today"
+      },
+      {
+        "char": "天",
+        "pinyin": "tian1",
+        "definition": "today"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "所",
+        "pinyin": "suo3",
+        "definition": "so"
+      },
+      {
+        "char": "以",
+        "pinyin": "yi3",
+        "definition": "so"
+      },
+      {
+        "char": "我",
+        "pinyin": "wo3",
+        "definition": "I"
+      },
+      {
+        "char": "决",
+        "pinyin": "jue2",
+        "definition": "to decide"
+      },
+      {
+        "char": "定",
+        "pinyin": "ding4",
+        "definition": "to decide"
+      },
+      {
+        "char": "去",
+        "pinyin": "qu4",
+        "definition": "to go"
+      },
+      {
+        "char": "外",
+        "pinyin": "wai4",
+        "definition": "outside"
+      },
+      {
+        "char": "出",
+        "pinyin": "chu1",
+        "definition": "to go out"
+      },
+      {
+        "char": "散",
+        "pinyin": "san4",
+        "definition": "to stroll"
+      },
+      {
+        "char": "步",
+        "pinyin": "bu4",
+        "definition": "to stroll"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "你",
+        "pinyin": "ni3",
+        "definition": "you"
+      },
+      {
+        "char": "想",
+        "pinyin": "xiang3",
+        "definition": "to want"
+      },
+      {
+        "char": "一起",
+        "pinyin": "yi4",
+        "definition": "together"
+      },
+      {
+        "char": "qi3",
+        "pinyin": "qi3",
+        "definition": "together"
+      },
+      {
+        "char": "吗",
+        "pinyin": "ma5",
+        "definition": "question particle"
+      },
+      {
+        "char": "？",
+        "pinyin": "？",
+        "definition": "punctuation"
+      }
+    ]
+  ],
+  "hard": [
+    [
+      {
+        "char": "进",
+        "pinyin": "jin4",
+        "definition": "to enter"
+      },
+      {
+        "char": "入",
+        "pinyin": "ru4",
+        "definition": "to enter"
+      },
+      {
+        "char": "二",
+        "pinyin": "er4",
+        "definition": "two"
+      },
+      {
+        "char": "十",
+        "pinyin": "shi2",
+        "definition": "ten"
+      },
+      {
+        "char": "一",
+        "pinyin": "yi4",
+        "definition": "one"
+      },
+      {
+        "char": "世",
+        "pinyin": "shi4",
+        "definition": "century"
+      },
+      {
+        "char": "纪",
+        "pinyin": "ji4",
+        "definition": "century"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "跨",
+        "pinyin": "kua4",
+        "definition": "transnational"
+      },
+      {
+        "char": "国",
+        "pinyin": "guo2",
+        "definition": "transnational"
+      },
+      {
+        "char": "公",
+        "pinyin": "gong1",
+        "definition": "company"
+      },
+      {
+        "char": "司",
+        "pinyin": "si1",
+        "definition": "company"
+      },
+      {
+        "char": "先",
+        "pinyin": "xian1",
+        "definition": "first"
+      },
+      {
+        "char": "吸",
+        "pinyin": "xi1",
+        "definition": "to attract"
+      },
+      {
+        "char": "引",
+        "pinyin": "yin3",
+        "definition": "to attract"
+      },
+      {
+        "char": "了",
+        "pinyin": "le0",
+        "definition": "particle"
+      },
+      {
+        "char": "海",
+        "pinyin": "hai3",
+        "definition": "overseas"
+      },
+      {
+        "char": "外",
+        "pinyin": "wai4",
+        "definition": "overseas"
+      },
+      {
+        "char": "人",
+        "pinyin": "ren2",
+        "definition": "person"
+      },
+      {
+        "char": "才",
+        "pinyin": "cai2",
+        "definition": "talent"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      },
+      {
+        "char": "然",
+        "pinyin": "ran2",
+        "definition": "then"
+      },
+      {
+        "char": "后",
+        "pinyin": "hou4",
+        "definition": "then"
+      },
+      {
+        "char": "他",
+        "pinyin": "ta1",
+        "definition": "he"
+      },
+      {
+        "char": "们",
+        "pinyin": "men0",
+        "definition": "plural"
+      },
+      {
+        "char": "被",
+        "pinyin": "bei4",
+        "definition": "passive marker"
+      },
+      {
+        "char": "雇",
+        "pinyin": "gu4",
+        "definition": "to hire"
+      },
+      {
+        "char": "佣",
+        "pinyin": "yong1",
+        "definition": "to hire"
+      },
+      {
+        "char": "了",
+        "pinyin": "le0",
+        "definition": "particle"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      },
+      {
+        "char": "最",
+        "pinyin": "zui4",
+        "definition": "last"
+      },
+      {
+        "char": "后",
+        "pinyin": "hou4",
+        "definition": "last"
+      },
+      {
+        "char": "公",
+        "pinyin": "gong1",
+        "definition": "company"
+      },
+      {
+        "char": "司",
+        "pinyin": "si1",
+        "definition": "company"
+      },
+      {
+        "char": "变",
+        "pinyin": "bian4",
+        "definition": "to become"
+      },
+      {
+        "char": "强",
+        "pinyin": "qiang2",
+        "definition": "strong"
+      },
+      {
+        "char": "大",
+        "pinyin": "da4",
+        "definition": "big"
+      },
+      {
+        "char": "了",
+        "pinyin": "le0",
+        "definition": "particle"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "海",
+        "pinyin": "hai3",
+        "definition": "sea turtle"
+      },
+      {
+        "char": "龟",
+        "pinyin": "gui1",
+        "definition": "sea turtle"
+      },
+      {
+        "char": "从",
+        "pinyin": "cong2",
+        "definition": "from"
+      },
+      {
+        "char": "国",
+        "pinyin": "guo2",
+        "definition": "abroad"
+      },
+      {
+        "char": "外",
+        "pinyin": "wai4",
+        "definition": "abroad"
+      },
+      {
+        "char": "归",
+        "pinyin": "gui1",
+        "definition": "to return"
+      },
+      {
+        "char": "来",
+        "pinyin": "lai2",
+        "definition": "to return"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "这",
+        "pinyin": "zhe4",
+        "definition": "this"
+      },
+      {
+        "char": "事",
+        "pinyin": "shi4",
+        "definition": "matter"
+      },
+      {
+        "char": "儿",
+        "pinyin": "er2",
+        "definition": "noun suffix"
+      },
+      {
+        "char": "被",
+        "pinyin": "bei4",
+        "definition": "passive marker"
+      },
+      {
+        "char": "人",
+        "pinyin": "ren2",
+        "definition": "person"
+      },
+      {
+        "char": "叫",
+        "pinyin": "jiao4",
+        "definition": "to call"
+      },
+      {
+        "char": "做",
+        "pinyin": "zuo4",
+        "definition": "to do"
+      },
+      {
+        "char": "回",
+        "pinyin": "hui2",
+        "definition": "to return"
+      },
+      {
+        "char": "国",
+        "pinyin": "guo2",
+        "definition": "country"
+      },
+      {
+        "char": "潮",
+        "pinyin": "chao2",
+        "definition": "tide"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      },
+      {
+        "char": "他",
+        "pinyin": "ta1",
+        "definition": "he"
+      },
+      {
+        "char": "先",
+        "pinyin": "xian1",
+        "definition": "first"
+      },
+      {
+        "char": "找",
+        "pinyin": "zhao3",
+        "definition": "to look for"
+      },
+      {
+        "char": "工",
+        "pinyin": "gong1",
+        "definition": "work"
+      },
+      {
+        "char": "作",
+        "pinyin": "zuo4",
+        "definition": "work"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "然",
+        "pinyin": "ran2",
+        "definition": "then"
+      },
+      {
+        "char": "后",
+        "pinyin": "hou4",
+        "definition": "then"
+      },
+      {
+        "char": "把",
+        "pinyin": "ba3",
+        "definition": "take"
+      },
+      {
+        "char": "积",
+        "pinyin": "ji1",
+        "definition": "accumulate"
+      },
+      {
+        "char": "累",
+        "pinyin": "lei3",
+        "definition": "tired"
+      },
+      {
+        "char": "的",
+        "pinyin": "de0",
+        "definition": "particle"
+      },
+      {
+        "char": "经",
+        "pinyin": "jing1",
+        "definition": "experience"
+      },
+      {
+        "char": "验",
+        "pinyin": "yan4",
+        "definition": "experience"
+      },
+      {
+        "char": "用",
+        "pinyin": "yong4",
+        "definition": "to use"
+      },
+      {
+        "char": "在",
+        "pinyin": "zai4",
+        "definition": "at"
+      },
+      {
+        "char": "产",
+        "pinyin": "chan3",
+        "definition": "product"
+      },
+      {
+        "char": "品",
+        "pinyin": "pin3",
+        "definition": "product"
+      },
+      {
+        "char": "上",
+        "pinyin": "shang4",
+        "definition": "up"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "销",
+        "pinyin": "xiao1",
+        "definition": "to sell"
+      },
+      {
+        "char": "售",
+        "pinyin": "shou4",
+        "definition": "to sell"
+      },
+      {
+        "char": "经",
+        "pinyin": "jing1",
+        "definition": "manager"
+      },
+      {
+        "char": "理",
+        "pinyin": "li3",
+        "definition": "manager"
+      },
+      {
+        "char": "把",
+        "pinyin": "ba3",
+        "definition": "take"
+      },
+      {
+        "char": "新",
+        "pinyin": "xin1",
+        "definition": "new"
+      },
+      {
+        "char": "套",
+        "pinyin": "tao4",
+        "definition": "suit"
+      },
+      {
+        "char": "装",
+        "pinyin": "zhuang1",
+        "definition": "suit"
+      },
+      {
+        "char": "穿",
+        "pinyin": "chuan1",
+        "definition": "to wear"
+      },
+      {
+        "char": "上",
+        "pinyin": "shang4",
+        "definition": "to put on"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "但",
+        "pinyin": "dan4",
+        "definition": "but"
+      },
+      {
+        "char": "上",
+        "pinyin": "shang4",
+        "definition": "upper"
+      },
+      {
+        "char": "衣",
+        "pinyin": "yi1",
+        "definition": "upper"
+      },
+      {
+        "char": "被",
+        "pinyin": "bei4",
+        "definition": "passive marker"
+      },
+      {
+        "char": "雨",
+        "pinyin": "yu3",
+        "definition": "rain"
+      },
+      {
+        "char": "弄",
+        "pinyin": "nong4",
+        "definition": "to make"
+      },
+      {
+        "char": "湿",
+        "pinyin": "shi1",
+        "definition": "wet"
+      },
+      {
+        "char": "了",
+        "pinyin": "le0",
+        "definition": "particle"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      },
+      {
+        "char": "他",
+        "pinyin": "ta1",
+        "definition": "he"
+      },
+      {
+        "char": "先",
+        "pinyin": "xian1",
+        "definition": "first"
+      },
+      {
+        "char": "脱",
+        "pinyin": "tuo1",
+        "definition": "to take off"
+      },
+      {
+        "char": "掉",
+        "pinyin": "diao4",
+        "definition": "away"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "然",
+        "pinyin": "ran2",
+        "definition": "then"
+      },
+      {
+        "char": "后",
+        "pinyin": "hou4",
+        "definition": "then"
+      },
+      {
+        "char": "换",
+        "pinyin": "huan4",
+        "definition": "to change"
+      },
+      {
+        "char": "干",
+        "pinyin": "gan1",
+        "definition": "dry"
+      },
+      {
+        "char": "净",
+        "pinyin": "jing4",
+        "definition": "clean"
+      },
+      {
+        "char": "的",
+        "pinyin": "de0",
+        "definition": "particle"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "最",
+        "pinyin": "zui4",
+        "definition": "last"
+      },
+      {
+        "char": "后",
+        "pinyin": "hou4",
+        "definition": "last"
+      },
+      {
+        "char": "去",
+        "pinyin": "qu4",
+        "definition": "to go"
+      },
+      {
+        "char": "工",
+        "pinyin": "gong1",
+        "definition": "work"
+      },
+      {
+        "char": "作",
+        "pinyin": "zuo4",
+        "definition": "work"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "总",
+        "pinyin": "zong3",
+        "definition": "chief"
+      },
+      {
+        "char": "经",
+        "pinyin": "jing1",
+        "definition": "manager"
+      },
+      {
+        "char": "理",
+        "pinyin": "li3",
+        "definition": "manager"
+      },
+      {
+        "char": "很",
+        "pinyin": "hen3",
+        "definition": "very"
+      },
+      {
+        "char": "严",
+        "pinyin": "yan2",
+        "definition": "serious"
+      },
+      {
+        "char": "肃",
+        "pinyin": "su4",
+        "definition": "serious"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "做",
+        "pinyin": "zuo4",
+        "definition": "to do"
+      },
+      {
+        "char": "事",
+        "pinyin": "shi4",
+        "definition": "matter"
+      },
+      {
+        "char": "太",
+        "pinyin": "tai4",
+        "definition": "too"
+      },
+      {
+        "char": "吓",
+        "pinyin": "xia4",
+        "definition": "scary"
+      },
+      {
+        "char": "人",
+        "pinyin": "ren2",
+        "definition": "scary"
+      },
+      {
+        "char": "了",
+        "pinyin": "le0",
+        "definition": "particle"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      },
+      {
+        "char": "他",
+        "pinyin": "ta1",
+        "definition": "he"
+      },
+      {
+        "char": "先",
+        "pinyin": "xian1",
+        "definition": "first"
+      },
+      {
+        "char": "把",
+        "pinyin": "ba3",
+        "definition": "take"
+      },
+      {
+        "char": "错",
+        "pinyin": "cuo4",
+        "definition": "mistake"
+      },
+      {
+        "char": "误",
+        "pinyin": "wu4",
+        "definition": "mistake"
+      },
+      {
+        "char": "解",
+        "pinyin": "jie3",
+        "definition": "explain"
+      },
+      {
+        "char": "释",
+        "pinyin": "shi4",
+        "definition": "explain"
+      },
+      {
+        "char": "清",
+        "pinyin": "qing1",
+        "definition": "clear"
+      },
+      {
+        "char": "楚",
+        "pinyin": "chu3",
+        "definition": "clear"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "然",
+        "pinyin": "ran2",
+        "definition": "then"
+      },
+      {
+        "char": "后",
+        "pinyin": "hou4",
+        "definition": "then"
+      },
+      {
+        "char": "改",
+        "pinyin": "gai3",
+        "definition": "to change"
+      },
+      {
+        "char": "正",
+        "pinyin": "zheng4",
+        "definition": "to correct"
+      },
+      {
+        "char": "计",
+        "pinyin": "ji4",
+        "definition": "plan"
+      },
+      {
+        "char": "划",
+        "pinyin": "hua4",
+        "definition": "plan"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "最",
+        "pinyin": "zui4",
+        "definition": "last"
+      },
+      {
+        "char": "后",
+        "pinyin": "hou4",
+        "definition": "last"
+      },
+      {
+        "char": "拿",
+        "pinyin": "na2",
+        "definition": "to take"
+      },
+      {
+        "char": "到",
+        "pinyin": "dao4",
+        "definition": "to get"
+      },
+      {
+        "char": "满",
+        "pinyin": "man3",
+        "definition": "satisfied"
+      },
+      {
+        "char": "意",
+        "pinyin": "yi4",
+        "definition": "satisfied"
+      },
+      {
+        "char": "结",
+        "pinyin": "jie2",
+        "definition": "result"
+      },
+      {
+        "char": "果",
+        "pinyin": "guo3",
+        "definition": "result"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "天",
+        "pinyin": "tian1",
+        "definition": "sky"
+      },
+      {
+        "char": "空",
+        "pinyin": "kong1",
+        "definition": "sky"
+      },
+      {
+        "char": "阴",
+        "pinyin": "yin1",
+        "definition": "overcast"
+      },
+      {
+        "char": "转",
+        "pinyin": "zhuan3",
+        "definition": "to turn"
+      },
+      {
+        "char": "云",
+        "pinyin": "yun2",
+        "definition": "cloud"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "要",
+        "pinyin": "yao4",
+        "definition": "to want"
+      },
+      {
+        "char": "下",
+        "pinyin": "xia4",
+        "definition": "to fall"
+      },
+      {
+        "char": "雨",
+        "pinyin": "yu3",
+        "definition": "rain"
+      },
+      {
+        "char": "了",
+        "pinyin": "le0",
+        "definition": "particle"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      },
+      {
+        "char": "他",
+        "pinyin": "ta1",
+        "definition": "he"
+      },
+      {
+        "char": "先",
+        "pinyin": "xian1",
+        "definition": "first"
+      },
+      {
+        "char": "把",
+        "pinyin": "ba3",
+        "definition": "take"
+      },
+      {
+        "char": "录",
+        "pinyin": "lu4",
+        "definition": "employ"
+      },
+      {
+        "char": "用",
+        "pinyin": "yong4",
+        "definition": "employ"
+      },
+      {
+        "char": "通",
+        "pinyin": "tong1",
+        "definition": "notice"
+      },
+      {
+        "char": "知",
+        "pinyin": "zhi1",
+        "definition": "notice"
+      },
+      {
+        "char": "寄",
+        "pinyin": "ji4",
+        "definition": "to send"
+      },
+      {
+        "char": "走",
+        "pinyin": "zou3",
+        "definition": "to leave"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "然",
+        "pinyin": "ran2",
+        "definition": "then"
+      },
+      {
+        "char": "后",
+        "pinyin": "hou4",
+        "definition": "then"
+      },
+      {
+        "char": "关",
+        "pinyin": "guan1",
+        "definition": "to close"
+      },
+      {
+        "char": "窗",
+        "pinyin": "chuang1",
+        "definition": "window"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "最",
+        "pinyin": "zui4",
+        "definition": "last"
+      },
+      {
+        "char": "后",
+        "pinyin": "hou4",
+        "definition": "last"
+      },
+      {
+        "char": "坐",
+        "pinyin": "zuo4",
+        "definition": "to sit"
+      },
+      {
+        "char": "下",
+        "pinyin": "xia4",
+        "definition": "down"
+      },
+      {
+        "char": "等",
+        "pinyin": "deng3",
+        "definition": "to wait"
+      },
+      {
+        "char": "候",
+        "pinyin": "hou4",
+        "definition": "to wait"
+      },
+      {
+        "char": "天",
+        "pinyin": "tian1",
+        "definition": "day"
+      },
+      {
+        "char": "晴",
+        "pinyin": "qing2",
+        "definition": "sunny"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "既",
+        "pinyin": "ji4",
+        "definition": "since"
+      },
+      {
+        "char": "然",
+        "pinyin": "ran2",
+        "definition": "since"
+      },
+      {
+        "char": "接",
+        "pinyin": "jie1",
+        "definition": "to receive"
+      },
+      {
+        "char": "到",
+        "pinyin": "dao4",
+        "definition": "to arrive"
+      },
+      {
+        "char": "回",
+        "pinyin": "hui2",
+        "definition": "to answer"
+      },
+      {
+        "char": "答",
+        "pinyin": "da2",
+        "definition": "to answer"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "他",
+        "pinyin": "ta1",
+        "definition": "he"
+      },
+      {
+        "char": "先",
+        "pinyin": "xian1",
+        "definition": "first"
+      },
+      {
+        "char": "看",
+        "pinyin": "kan4",
+        "definition": "to look"
+      },
+      {
+        "char": "清",
+        "pinyin": "qing1",
+        "definition": "clear"
+      },
+      {
+        "char": "楚",
+        "pinyin": "chu3",
+        "definition": "clear"
+      },
+      {
+        "char": "短",
+        "pinyin": "duan3",
+        "definition": "short"
+      },
+      {
+        "char": "期",
+        "pinyin": "qi1",
+        "definition": "term"
+      },
+      {
+        "char": "任",
+        "pinyin": "ren4",
+        "definition": "duty"
+      },
+      {
+        "char": "务",
+        "pinyin": "wu4",
+        "definition": "duty"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "然",
+        "pinyin": "ran2",
+        "definition": "then"
+      },
+      {
+        "char": "后",
+        "pinyin": "hou4",
+        "definition": "then"
+      },
+      {
+        "char": "准",
+        "pinyin": "zhun3",
+        "definition": "to prepare"
+      },
+      {
+        "char": "备",
+        "pinyin": "bei4",
+        "definition": "to prepare"
+      },
+      {
+        "char": "材",
+        "pinyin": "cai2",
+        "definition": "material"
+      },
+      {
+        "char": "料",
+        "pinyin": "liao4",
+        "definition": "material"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "最",
+        "pinyin": "zui4",
+        "definition": "last"
+      },
+      {
+        "char": "后",
+        "pinyin": "hou4",
+        "definition": "last"
+      },
+      {
+        "char": "好",
+        "pinyin": "hao3",
+        "definition": "good"
+      },
+      {
+        "char": "在",
+        "pinyin": "zai4",
+        "definition": "at"
+      },
+      {
+        "char": "产",
+        "pinyin": "chan3",
+        "definition": "product"
+      },
+      {
+        "char": "品",
+        "pinyin": "pin3",
+        "definition": "product"
+      },
+      {
+        "char": "无",
+        "pinyin": "wu2",
+        "definition": "none"
+      },
+      {
+        "char": "缺",
+        "pinyin": "que1",
+        "definition": "defect"
+      },
+      {
+        "char": "点",
+        "pinyin": "dian3",
+        "definition": "defect"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "他",
+        "pinyin": "ta1",
+        "definition": "he"
+      },
+      {
+        "char": "善",
+        "pinyin": "shan4",
+        "definition": "good at"
+      },
+      {
+        "char": "于",
+        "pinyin": "yu2",
+        "definition": "at"
+      },
+      {
+        "char": "吃",
+        "pinyin": "chi1",
+        "definition": "to eat"
+      },
+      {
+        "char": "零",
+        "pinyin": "ling2",
+        "definition": "snack"
+      },
+      {
+        "char": "食",
+        "pinyin": "shi2",
+        "definition": "snack"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "往",
+        "pinyin": "wang3",
+        "definition": "often"
+      },
+      {
+        "char": "往",
+        "pinyin": "wang3",
+        "definition": "often"
+      },
+      {
+        "char": "被",
+        "pinyin": "bei4",
+        "definition": "passive marker"
+      },
+      {
+        "char": "同",
+        "pinyin": "tong2",
+        "definition": "colleague"
+      },
+      {
+        "char": "事",
+        "pinyin": "shi4",
+        "definition": "colleague"
+      },
+      {
+        "char": "笑",
+        "pinyin": "xiao4",
+        "definition": "to laugh"
+      },
+      {
+        "char": "话",
+        "pinyin": "hua4",
+        "definition": "to laugh"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      },
+      {
+        "char": "他",
+        "pinyin": "ta1",
+        "definition": "he"
+      },
+      {
+        "char": "先",
+        "pinyin": "xian1",
+        "definition": "first"
+      },
+      {
+        "char": "把",
+        "pinyin": "ba3",
+        "definition": "take"
+      },
+      {
+        "char": "优",
+        "pinyin": "you1",
+        "definition": "merit"
+      },
+      {
+        "char": "点",
+        "pinyin": "dian3",
+        "definition": "merit"
+      },
+      {
+        "char": "显",
+        "pinyin": "xian3",
+        "definition": "to show"
+      },
+      {
+        "char": "示",
+        "pinyin": "shi4",
+        "definition": "to show"
+      },
+      {
+        "char": "出",
+        "pinyin": "chu1",
+        "definition": "out"
+      },
+      {
+        "char": "来",
+        "pinyin": "lai2",
+        "definition": "to come"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "然",
+        "pinyin": "ran2",
+        "definition": "then"
+      },
+      {
+        "char": "后",
+        "pinyin": "hou4",
+        "definition": "then"
+      },
+      {
+        "char": "加",
+        "pinyin": "jia1",
+        "definition": "to work"
+      },
+      {
+        "char": "班",
+        "pinyin": "ban1",
+        "definition": "to work"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "最",
+        "pinyin": "zui4",
+        "definition": "last"
+      },
+      {
+        "char": "后",
+        "pinyin": "hou4",
+        "definition": "last"
+      },
+      {
+        "char": "获",
+        "pinyin": "huo4",
+        "definition": "to gain"
+      },
+      {
+        "char": "得",
+        "pinyin": "de2",
+        "definition": "to gain"
+      },
+      {
+        "char": "认",
+        "pinyin": "ren4",
+        "definition": "recognize"
+      },
+      {
+        "char": "可",
+        "pinyin": "ke3",
+        "definition": "recognize"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "可",
+        "pinyin": "ke3",
+        "definition": "terrible"
+      },
+      {
+        "char": "怕",
+        "pinyin": "pa4",
+        "definition": "terrible"
+      },
+      {
+        "char": "的",
+        "pinyin": "de0",
+        "definition": "particle"
+      },
+      {
+        "char": "事",
+        "pinyin": "shi4",
+        "definition": "matter"
+      },
+      {
+        "char": "情",
+        "pinyin": "qing2",
+        "definition": "matter"
+      },
+      {
+        "char": "发",
+        "pinyin": "fa1",
+        "definition": "to happen"
+      },
+      {
+        "char": "生",
+        "pinyin": "sheng1",
+        "definition": "to happen"
+      },
+      {
+        "char": "了",
+        "pinyin": "le0",
+        "definition": "particle"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "他",
+        "pinyin": "ta1",
+        "definition": "he"
+      },
+      {
+        "char": "先",
+        "pinyin": "xian1",
+        "definition": "first"
+      },
+      {
+        "char": "把",
+        "pinyin": "ba3",
+        "definition": "take"
+      },
+      {
+        "char": "门",
+        "pinyin": "men2",
+        "definition": "door"
+      },
+      {
+        "char": "关",
+        "pinyin": "guan1",
+        "definition": "to close"
+      },
+      {
+        "char": "紧",
+        "pinyin": "jin3",
+        "definition": "to close"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "然",
+        "pinyin": "ran2",
+        "definition": "then"
+      },
+      {
+        "char": "后",
+        "pinyin": "hou4",
+        "definition": "then"
+      },
+      {
+        "char": "冷",
+        "pinyin": "leng3",
+        "definition": "calm"
+      },
+      {
+        "char": "静",
+        "pinyin": "jing4",
+        "definition": "calm"
+      },
+      {
+        "char": "地",
+        "pinyin": "di0",
+        "definition": "particle"
+      },
+      {
+        "char": "思",
+        "pinyin": "si1",
+        "definition": "to think"
+      },
+      {
+        "char": "考",
+        "pinyin": "kao3",
+        "definition": "to think"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "最",
+        "pinyin": "zui4",
+        "definition": "last"
+      },
+      {
+        "char": "后",
+        "pinyin": "hou4",
+        "definition": "last"
+      },
+      {
+        "char": "找",
+        "pinyin": "zhao3",
+        "definition": "to find"
+      },
+      {
+        "char": "出",
+        "pinyin": "chu1",
+        "definition": "out"
+      },
+      {
+        "char": "了",
+        "pinyin": "le0",
+        "definition": "particle"
+      },
+      {
+        "char": "方",
+        "pinyin": "fang1",
+        "definition": "method"
+      },
+      {
+        "char": "法",
+        "pinyin": "fa3",
+        "definition": "method"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "初",
+        "pinyin": "chu1",
+        "definition": "beginning"
+      },
+      {
+        "char": "次",
+        "pinyin": "ci4",
+        "definition": "beginning"
+      },
+      {
+        "char": "见",
+        "pinyin": "jian4",
+        "definition": "to meet"
+      },
+      {
+        "char": "面",
+        "pinyin": "mian4",
+        "definition": "to meet"
+      },
+      {
+        "char": "要",
+        "pinyin": "yao4",
+        "definition": "must"
+      },
+      {
+        "char": "握",
+        "pinyin": "wo4",
+        "definition": "to shake"
+      },
+      {
+        "char": "手",
+        "pinyin": "shou3",
+        "definition": "to shake"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "礼",
+        "pinyin": "li3",
+        "definition": "etiquette"
+      },
+      {
+        "char": "貌",
+        "pinyin": "mao4",
+        "definition": "etiquette"
+      },
+      {
+        "char": "很",
+        "pinyin": "hen3",
+        "definition": "very"
+      },
+      {
+        "char": "重",
+        "pinyin": "zhong4",
+        "definition": "important"
+      },
+      {
+        "char": "要",
+        "pinyin": "yao4",
+        "definition": "important"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      },
+      {
+        "char": "他",
+        "pinyin": "ta1",
+        "definition": "he"
+      },
+      {
+        "char": "先",
+        "pinyin": "xian1",
+        "definition": "first"
+      },
+      {
+        "char": "把",
+        "pinyin": "ba3",
+        "definition": "take"
+      },
+      {
+        "char": "手",
+        "pinyin": "shou3",
+        "definition": "hand"
+      },
+      {
+        "char": "伸",
+        "pinyin": "shen1",
+        "definition": "to stretch"
+      },
+      {
+        "char": "出",
+        "pinyin": "chu1",
+        "definition": "out"
+      },
+      {
+        "char": "来",
+        "pinyin": "lai2",
+        "definition": "to come"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "然",
+        "pinyin": "ran2",
+        "definition": "then"
+      },
+      {
+        "char": "后",
+        "pinyin": "hou4",
+        "definition": "then"
+      },
+      {
+        "char": "微",
+        "pinyin": "wei1",
+        "definition": "smile"
+      },
+      {
+        "char": "笑",
+        "pinyin": "xiao4",
+        "definition": "smile"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "最",
+        "pinyin": "zui4",
+        "definition": "last"
+      },
+      {
+        "char": "后",
+        "pinyin": "hou4",
+        "definition": "last"
+      },
+      {
+        "char": "结",
+        "pinyin": "jie2",
+        "definition": "end"
+      },
+      {
+        "char": "束",
+        "pinyin": "shu4",
+        "definition": "end"
+      },
+      {
+        "char": "了",
+        "pinyin": "le0",
+        "definition": "particle"
+      },
+      {
+        "char": "交",
+        "pinyin": "jiao1",
+        "definition": "exchange"
+      },
+      {
+        "char": "谈",
+        "pinyin": "tan2",
+        "definition": "exchange"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ],
+    [
+      {
+        "char": "能",
+        "pinyin": "neng2",
+        "definition": "ability"
+      },
+      {
+        "char": "力",
+        "pinyin": "li4",
+        "definition": "ability"
+      },
+      {
+        "char": "不",
+        "pinyin": "bu2",
+        "definition": "not"
+      },
+      {
+        "char": "足",
+        "pinyin": "zu2",
+        "definition": "not"
+      },
+      {
+        "char": "怎",
+        "pinyin": "zen3",
+        "definition": "how"
+      },
+      {
+        "char": "么",
+        "pinyin": "me0",
+        "definition": "how"
+      },
+      {
+        "char": "办",
+        "pinyin": "ban4",
+        "definition": "to do"
+      },
+      {
+        "char": "？",
+        "pinyin": "？",
+        "definition": "punctuation"
+      },
+      {
+        "char": "他",
+        "pinyin": "ta1",
+        "definition": "he"
+      },
+      {
+        "char": "先",
+        "pinyin": "xian1",
+        "definition": "first"
+      },
+      {
+        "char": "把",
+        "pinyin": "ba3",
+        "definition": "take"
+      },
+      {
+        "char": "书",
+        "pinyin": "shu1",
+        "definition": "book"
+      },
+      {
+        "char": "读",
+        "pinyin": "du2",
+        "definition": "to read"
+      },
+      {
+        "char": "懂",
+        "pinyin": "dong3",
+        "definition": "to understand"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "然",
+        "pinyin": "ran2",
+        "definition": "then"
+      },
+      {
+        "char": "后",
+        "pinyin": "hou4",
+        "definition": "then"
+      },
+      {
+        "char": "多",
+        "pinyin": "duo1",
+        "definition": "much"
+      },
+      {
+        "char": "练",
+        "pinyin": "lian4",
+        "definition": "to practice"
+      },
+      {
+        "char": "习",
+        "pinyin": "xi2",
+        "definition": "to practice"
+      },
+      {
+        "char": "，",
+        "pinyin": "，",
+        "definition": "punctuation"
+      },
+      {
+        "char": "最",
+        "pinyin": "zui4",
+        "definition": "last"
+      },
+      {
+        "char": "后",
+        "pinyin": "hou4",
+        "definition": "last"
+      },
+      {
+        "char": "终",
+        "pinyin": "zhong1",
+        "definition": "finally"
+      },
+      {
+        "char": "于",
+        "pinyin": "yu2",
+        "definition": "finally"
+      },
+      {
+        "char": "成",
+        "pinyin": "cheng2",
+        "definition": "to become"
+      },
+      {
+        "char": "功",
+        "pinyin": "gong1",
+        "definition": "to become"
+      },
+      {
+        "char": "了",
+        "pinyin": "le0",
+        "definition": "particle"
+      },
+      {
+        "char": "。",
+        "pinyin": "。",
+        "definition": "punctuation"
+      }
+    ]
+  ]
+}
 };

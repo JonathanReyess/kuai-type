@@ -1008,6 +1008,224 @@ export const vocabvocabFinance = [
   },
 ];
 
+export const vocabInterview = [
+  {
+    simplified: "世纪",
+    pinyin: "shìjì",
+    definition: "century",
+  },
+  {
+    simplified: "跨国",
+    pinyin: "kuàguó",
+    definition: "transnational, multinational",
+  },
+  {
+    simplified: "进入",
+    pinyin: "jìnrù",
+    definition: "to enter, to get into",
+  },
+  {
+    simplified: "吸引",
+    pinyin: "xīyǐn",
+    definition: "to attract, to draw",
+  },
+  {
+    simplified: "人材",
+    pinyin: "réncái",
+    definition: "person of ability and talent",
+  },
+  {
+    simplified: "国外",
+    pinyin: "guówài",
+    definition: "abroad",
+  },
+  {
+    simplified: "海外",
+    pinyin: "hǎiwài",
+    definition: "overseas",
+  },
+  {
+    simplified: "归来",
+    pinyin: "guīlái",
+    definition: "to return, to come back",
+  },
+  {
+    simplified: "叫做",
+    pinyin: "jiào zuò",
+    definition: "to be called, to be known as",
+  },
+  {
+    simplified: "海龟",
+    pinyin: "hǎiguī",
+    definition: "sea turtle",
+  },
+  {
+    simplified: "满意",
+    pinyin: "mǎnyì",
+    definition: "to be satisfied, to be pleased",
+  },
+  {
+    simplified: "销售",
+    pinyin: "xiāoshòu",
+    definition: "to sell, to market",
+  },
+  {
+    simplified: "经理",
+    pinyin: "jīnglǐ",
+    definition: "manager",
+  },
+  {
+    simplified: "套装",
+    pinyin: "tàozhuāng",
+    definition: "suit, a set of matching outer garments",
+  },
+  {
+    simplified: "上衣",
+    pinyin: "shàngyī",
+    definition: "upper outer garment, jacket",
+  },
+  {
+    simplified: "湿",
+    pinyin: "shī",
+    definition: "wet",
+  },
+  {
+    simplified: "干吗",
+    pinyin: "gànmá",
+    definition: "why, why on earth",
+  },
+  {
+    simplified: "总",
+    pinyin: "zǒng",
+    definition: "general, chief",
+  },
+  {
+    simplified: "严肃",
+    pinyin: "yánsù",
+    definition: "stern, serious",
+  },
+  {
+    simplified: "吓人",
+    pinyin: "xiàrén",
+    definition: "scary, frightening",
+  },
+  {
+    simplified: "解释",
+    pinyin: "jiěshì",
+    definition: "to explain",
+  },
+  {
+    simplified: "阴",
+    pinyin: "yīn",
+    definition: "overcast, hidd",
+  },
+  {
+    simplified: "转",
+    pinyin: "zhuǎn",
+    definition: "to turn, to shift",
+  },
+  {
+    simplified: "云",
+    pinyin: "yún",
+    definition: "cloud",
+  },
+  {
+    simplified: "寄",
+    pinyin: "jì",
+    definition: "to mail, to send",
+  },
+  {
+    simplified: "录用",
+    pinyin: "lùyòng",
+    definition: "to take someone on staff, to employ",
+  },
+  {
+    simplified: "通知",
+    pinyin: "tōngzhī",
+    definition: "notice, to notify",
+  },
+  {
+    simplified: "既然",
+    pinyin: "jìrán",
+    definition: "since, as",
+  },
+  {
+    simplified: "接着",
+    pinyin: "jiēzhe",
+    definition: "to follow, to continue",
+  },
+  {
+    simplified: "回答",
+    pinyin: "huídá",
+    definition: "to reply, to answer",
+  },
+  {
+    simplified: "短期",
+    pinyin: "duǎnqī",
+    definition: "short term",
+  },
+  {
+    simplified: "好在",
+    pinyin: "hǎozài",
+    definition: "fortunately, luckily",
+  },
+  {
+    simplified: "产品",
+    pinyin: "chǎnpǐn",
+    definition: "product, merchandise",
+  },
+  {
+    simplified: "晴",
+    pinyin: "qíng",
+    definition: "sunny",
+  },
+  {
+    simplified: "缺点",
+    pinyin: "quēdiǎn",
+    definition: "shortcoming, defect",
+  },
+  {
+    simplified: "零食",
+    pinyin: "língshí",
+    definition: "snack",
+  },
+  {
+    simplified: "善于",
+    pinyin: "shànyú",
+    definition: "to be good at, to be adept in",
+  },
+  {
+    simplified: "往往",
+    pinyin: "wǎngwǎng",
+    definition: "more often than not",
+  },
+  {
+    simplified: "加班",
+    pinyin: "jiā bān",
+    definition: "to work overtime, to work extra shifts",
+  },
+  {
+    simplified: "优点",
+    pinyin: "yōudiǎn",
+    definition: "merit, strong point",
+  },
+  {
+    simplified: "可怕",
+    pinyin: "kěpà",
+    definition: "awful, terrible",
+  },
+  {
+    simplified: "握手",
+    pinyin: "wò shǒu",
+    definition: "to shake hands, to clasp hands",
+  },
+  {
+    simplified: "能力",
+    pinyin: "nénglì",
+    definition: "ability, capacity",
+  },
+];
+
 export const LESSONS: Lesson[] = [
   {
     id: "festival",
@@ -1051,5 +1269,11 @@ export const LESSONS: Lesson[] = [
     title: "理财与投资",
     description: "Learn about financial concepts and practices.",
     vocabulary: vocabFinance,
+  },
+  {
+    id: "interview",
+    title: "面试",
+    description: "Learn about job interviews.",
+    vocabulary: vocabInterview,
   },
 ];
